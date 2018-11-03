@@ -21,6 +21,8 @@ public:
 
 	void update();
 
+	bool onEdit();
+
 private:
 	adlEntity_editor* entity_editor_;
 	adlActor_editor* actor_editor_;

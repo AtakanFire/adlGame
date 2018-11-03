@@ -10,33 +10,37 @@ class adlScene
 {
 public:
 	adlScene(const std::string& scene_name);
-	adlScene(const std::string& scene_name, std::vector<adlEntity_shared_ptr> entities, std::vector<adlActor_shared_ptr> actors, std::vector<adlPoint_light_shared_ptr> point_lights);
+	adlScene(const std::string& scene_name, std::vector<adlEntity*> entities, std::vector<adlActor*> actors);
 	~adlScene();
 
 	void update(float dt);
 	void render();
-
-	void spawn_entity(adlEntity_shared_ptr entity);
-	void spawn_actor(adlActor_shared_ptr actor, adlVec3 position = adlVec3(0.0f), adlVec3 rotation = adlVec3(0.0f), adlVec3 scale = adlVec3(1.0f));
+	
 	void spawn_point_light(adlPoint_light_shared_ptr point_light, adlVec3 position = adlVec3(0.0f), adlVec3 rotation = adlVec3(0.0f), adlVec3 scale = adlVec3(1.0f));
 	void set_sun(adlSun_shared_ptr sun);
 	void set_camera(adlCamera* camera);
 
+	void spawnEntity(adlEntity* entity);
+	void spawnActor(adlActor* actor, adlVec3 position = adlVec3(0.0f), adlVec3 rotation = adlVec3(0.0f), adlVec3 scale = adlVec3(1.0f));
+
 	adlCamera* get_camera();
 	adlSun_shared_ptr get_sun();
-	std::vector<adlEntity_shared_ptr>& get_all_entities();
-	std::vector<adlActor_shared_ptr>& get_all_actors();
 	std::vector<adlPoint_light_shared_ptr>& get_all_point_lights();
+
+	std::vector<adlEntity*>& getAllEntities();
+	std::vector<adlActor*>& getAllActors();
+
 
 	const std::string& get_name();
 
 private:
 
 	std::string scene_name_;
-
-	std::vector<adlEntity_shared_ptr> entities_;
-	std::vector<adlActor_shared_ptr> actors_;
 	std::vector<adlPoint_light_shared_ptr> point_lights_;
+
+	std::vector<adlEntity*> entities_;
+	std::vector<adlActor*> actors_;
+
 
 	adlSun_shared_ptr sun_;
 	adlCamera* camera_;

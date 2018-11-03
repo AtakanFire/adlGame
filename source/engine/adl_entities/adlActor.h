@@ -7,7 +7,6 @@
 #include "engine/adl_resource/adlMaterial.h"
 #include "engine/adlShared_types.h"
 
-
 class adlActor : public adlEntity
 {
 public:
@@ -16,6 +15,9 @@ public:
 
 	virtual void init() override;
 	virtual void update(float dt) override;
+
+	virtual void serialize(PrettyWriter<StringBuffer>& writer) override;
+	virtual void deserialize(const rapidjson::Value& json_object) override;
 
 	void setPosition(adlVec3 position);
 	void set_position(adlVec3 position);

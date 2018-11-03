@@ -13,14 +13,12 @@ adlScene::adlScene(const std::string& scene_name)
 
 }
 
-adlScene::adlScene(const std::string& scene_name, std::vector<adlEntity_shared_ptr> entities, std::vector<adlActor_shared_ptr> actors, std::vector<adlPoint_light_shared_ptr> point_lights)
-	:	entities_(entities),
-		actors_(actors),
-		point_lights_(point_lights),
-		scene_name_(scene_name)
+adlScene::adlScene(const std::string & scene_name, std::vector<adlEntity*> entities, std::vector<adlActor*> actors)
+	: entities_(entities), 
+	actors_(actors)
 {
-}
 
+}
 
 adlScene::~adlScene()
 {
@@ -31,11 +29,6 @@ void adlScene::update(float dt)
 	for (auto entity : entities_)
 	{
 		entity->update(dt);
-	}
-
-	for (auto actor : actors_)
-	{
-		actor->update(dt);
 	}
 
 	camera_->update(dt);
@@ -53,6 +46,7 @@ void adlScene::render()
 	renderer->set_lights(point_lights_);
 	renderer->set_camera(camera_);
 
+
 	for (auto actor : actors_)
 	{
 		renderer->render(actor);
@@ -64,21 +58,6 @@ void adlScene::render()
 	{
 		renderer->render(light);
 	}
-}
-
-void adlScene::spawn_entity(adlEntity_shared_ptr entity)
-{
-	entity->init();
-	entities_.push_back(entity);
-}
-
-void adlScene::spawn_actor(adlActor_shared_ptr actor, adlVec3 position/* = adlVec3(0.0f)*/, adlVec3 rotation/* = adlVec3(0.0f)*/, adlVec3 scale/* = adlVec3(1.0f)*/)
-{
-	actor->init();
-	actor->set_position(position);
-	actor->set_rotation(rotation);
-	actor->set_scale(scale);
-	actors_.push_back(actor);
 }
 
 void adlScene::spawn_point_light(adlPoint_light_shared_ptr point_light, adlVec3 position/* = adlVec3(0.0f)*/, adlVec3 rotation/* = adlVec3(0.0f)*/, adlVec3 scale/* = adlVec3(1.0f)*/)
@@ -100,6 +79,22 @@ void adlScene::set_camera(adlCamera* camera)
 	camera_ = camera;
 }
 
+void adlScene::spawnEntity(adlEntity* entity)
+{
+	entity->init();
+	entities_.push_back(entity);
+}
+
+void adlScene::spawnActor(adlActor* actor, adlVec3 position, adlVec3 rotation, adlVec3 scale)
+{
+	actor->init();
+	actor->set_position(position);
+	actor->set_rotation(rotation);
+	actor->set_scale(scale);
+	entities_.push_back(actor);
+	actors_.push_back(actor);
+}
+
 adlCamera* adlScene::get_camera()
 {
 	return camera_;
@@ -110,19 +105,19 @@ adlSun_shared_ptr adlScene::get_sun()
 	return sun_;
 }
 
-std::vector<adlEntity_shared_ptr>& adlScene::get_all_entities()
+std::vector<adlPoint_light_shared_ptr>& adlScene::get_all_point_lights()
+{
+	return point_lights_;
+}
+
+std::vector<adlEntity*>& adlScene::getAllEntities()
 {
 	return entities_;
 }
 
-std::vector<adlActor_shared_ptr>& adlScene::get_all_actors()
+std::vector<adlActor*>& adlScene::getAllActors()
 {
 	return actors_;
-}
-
-std::vector<adlPoint_light_shared_ptr>& adlScene::get_all_point_lights()
-{
-	return point_lights_;
 }
 
 const std::string& adlScene::get_name()

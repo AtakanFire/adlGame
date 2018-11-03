@@ -22,35 +22,44 @@ adlScene_shared_ptr adlScene_loader::load_scene(const std::string& scene_path)
 	std::vector<adlPoint_light_shared_ptr> point_lights_array;
 	std::vector<adlEntity_shared_ptr> entities_array;
 
+	std::vector<adlEntity*> allEntities;
+	std::vector<adlActor*> allActors;
+
 	std::string scene_text = get_whole_file_string(scene_path);
 	rapidjson::Document document;
 
 	document.Parse(scene_text.c_str());
 	adl_assert(document.IsObject());
 
-	const rapidjson::Value& sun_object = document["sun"];
+	const rapidjson::Value& entities = document["Entities"];
+
+	for (rapidjson::Value::ConstValueIterator itr = entities.Begin(); itr != entities.End(); ++itr)
+	{
+		const rapidjson::Value& entityItr = *itr;
+
+		adlEntity* entity = loadEntity(entityItr);
+
+		allEntities.push_back(entity);
+
+		if (dynamic_cast<adlActor*>(entity))
+		{
+			allActors.push_back(dynamic_cast<adlActor*>(entity));
+		}
+
+	}
+
+
+	/*const rapidjson::Value& sun_object = document["sun"];
 	adl_assert(sun_object.IsObject());
-	adlSun_shared_ptr sun = load_sun(sun_object);
+	adlSun_shared_ptr sun = load_sun(sun_object);*/
 
-	const rapidjson::Value& actors = document["actors"];
-	for (rapidjson::Value::ConstValueIterator itr = actors.Begin(); itr != actors.End(); ++itr)
-	{
-		const rapidjson::Value& actor_object = *itr;
-		adlActor_shared_ptr actor = load_actor(actor_object);
-		actor->deserialize(actor_object);
-		actors_array.push_back(actor);
-	}
+	adlSun_shared_ptr sun = MAKE_SHARED(adlSun);
+	sun->set_position(adlVec3(0, 20, 20));
+	sun->setScale(adlVec3(1, 1, 1));
 
-	const rapidjson::Value& lights = document["point_lights"];
-	for (rapidjson::Value::ConstValueIterator itr = lights.Begin(); itr != lights.End(); ++itr)
-	{
-		const rapidjson::Value& light_object = *itr;
-		adlPoint_light_shared_ptr point_light = load_point_light(light_object);
-		point_lights_array.push_back(point_light);
-	}
 
 	adlCamera* camera = ADL_NEW(adlCamera);
-	adlScene_shared_ptr scene = MAKE_SHARED(adlScene, "Dicks", entities_array, actors_array, point_lights_array);
+	adlScene_shared_ptr scene = MAKE_SHARED(adlScene, "Dicks", allEntities, allActors);
 	scene->set_sun(sun);
 	scene->set_camera(camera);
 
@@ -97,13 +106,26 @@ adlVec3 adlScene_loader::load_vec3(const rapidjson::Value& object, std::string a
 	return vec3;
 }
 
+adlEntity* adlScene_loader::loadEntity(const rapidjson::Value& object)
+{
+	adlEntity_factory* factory = &adlEntity_factory::get();
+	adlResource_manager* adl_rm = &adlResource_manager::get();
+
+	std::string type_name = object["typeName"].GetString();
+	adlEntity* entity = (adlEntity*)factory->construct_entity(type_name);
+
+	entity->deserialize(object);
+
+	return entity;
+}
+
 adlActor_shared_ptr adlScene_loader::load_actor(const rapidjson::Value& object)
 {
 	adlEntity_factory* factory = &adlEntity_factory::get();
 	adlResource_manager* adl_rm = &adlResource_manager::get();
 
 	std::string type_name = object["type_name"].GetString();
-	adlActor* actor = (adlActor*)factory->construct_actor(type_name);
+	adlActor* actor = (adlActor*)factory->construct_entity(type_name);
 	adlActor_shared_ptr actor_shared(actor);
 
 	std::string actor_name = object["name"].GetString();

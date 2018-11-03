@@ -129,6 +129,10 @@ void adlEditor_manager::update()
 		MainMenu();
 
 		// adlEditor Shortcuts
+		if (input->get_key_down(adl_key_f1))
+		{
+			help_open_ = !help_open_;
+		}
 		if (input->get_key_down(adl_key_f2))
 		{
 			spawner_editor_open_ = !spawner_editor_open_;
@@ -157,11 +161,11 @@ void adlEditor_manager::update()
 		adlScene_manager* scene_manager = &adlScene_manager::get();
 		if (entity_editor_open_)
 		{
-			entity_editor_->update(scene_manager->get_all_entities());
+			//entity_editor_->update(scene_manager->get_all_entities());
 		}
 		if (actor_editor_open_)
 		{
-			actor_editor_->update(scene_manager->get_all_actors());
+			//actor_editor_->update(scene_manager->get_all_actors());
 		}
 		if (light_editor_open_)
 		{
@@ -175,16 +179,52 @@ void adlEditor_manager::update()
 		{
 			ImGui::Begin("Help");
 			ImGui::Text("Close/Open Editor: 'CTRL(or CMD)+Shift or \"'");
-			ImGui::Text("Show/Hide Sub Editors:  'adl Editors->Toggle Checkbox'");
-			ImGui::Text("Game Menu:  'Game->...'");
-			ImGui::Text("Change Cameras:  'Cameras-><CamType>'");
-			ImGui::Text("Spawn Editor: 'Game->Spawn(F2)'");
+			ImGui::Text("Show/Hide Sub Editors:  'adl Editors-> Toggle Checkbox'");
+			ImGui::Text("Game Menu:  'Game-> ...'");
+			ImGui::Text("Spawn Editor: 'Game-> Spawn(F2)'");
+			ImGui::Text("Change Cameras:  'Cameras-> <CamType>'");
+			ImGui::Text("Scene Editor: 'Scene-> <Open(ctrl+o)/Save(ctrl+s) Scene>'");
 
 			if (ImGui::CollapsingHeader("Spawn"))
 			{
 				ImGui::Indent();
 
 				ImGui::Text("Choose an entity then click the spawn button!");
+
+				ImGui::Unindent();
+			}
+
+			if (ImGui::CollapsingHeader("Cameras"))
+			{
+				ImGui::Indent();
+
+				ImGui::Text("Choose your camera type!");
+
+				ImGui::Unindent();
+			}
+
+			if (ImGui::CollapsingHeader("Scene"))
+			{
+				ImGui::Indent();
+
+				ImGui::Text("Open or save your scene.");
+
+				ImGui::Unindent();
+			}
+
+			if (ImGui::CollapsingHeader("Some Shortcuts"))
+			{
+				ImGui::Indent();
+
+				ImGui::Text("\t__Generic shortcuts__");
+				ImGui::Text("Close/Open Editor: 'CTRL(or CMD)+Shift or \"'");
+				ImGui::Text("\n");
+
+				ImGui::Text("\t__On the editor__");
+				ImGui::Text("Show bounds: 'z'");
+				ImGui::Text("Toggle Mouse Cursor: 'm'");
+				ImGui::Text("Show Wireframes: 'ctrl+alt'");
+				ImGui::Text("Toggle Cam Movement: 'Shift+Tab'");
 
 				ImGui::Unindent();
 			}
@@ -209,6 +249,11 @@ void adlEditor_manager::update()
 		}
 	}
 
+}
+
+bool adlEditor_manager::onEdit()
+{
+	return main_editor_open_;
 }
 
 void adlEditor_manager::clean_up()

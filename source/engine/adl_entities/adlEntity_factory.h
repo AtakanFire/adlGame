@@ -11,7 +11,7 @@ template <class T> void* constructor() { return (void*)new T(); }
 typedef void*(*constructor_t)();
 typedef std::map<std::string, constructor_t> map_type;
 
-#define REGISTER_ACTOR(class_name) adlEntity_factory* factory = &adlEntity_factory::get(); \
+#define REGISTER_ENTITY(class_name) adlEntity_factory* factory = &adlEntity_factory::get(); \
 								   factory->register_class<class_name>(#class_name, true); \
 								   type_name = #class_name;
 
@@ -28,14 +28,14 @@ public:
 	}
 
 	template <class T>
-	void register_class(const std::string& class_name, bool is_actor)
+	void register_class(const std::string& class_name, bool isEntity)
 	{
-		if (is_actor)
+		if (isEntity)
 		{
-			if (actors_.count(class_name) == 0)
+			if (entities_.count(class_name) == 0)
 			{
-				actors_.insert(std::make_pair(class_name, &constructor<T>));
-				registered_actors_.push_back(class_name);
+				entities_.insert(std::make_pair(class_name, &constructor<T>));
+				registered_entities_.push_back(class_name);
 			}
 		}
 		else
@@ -48,7 +48,7 @@ public:
 		}
 	}
 
-	void* construct_actor(const std::string& class_name);
+	void* construct_entity(const std::string& class_name);
 	void* construct_light(const std::string& class_name);
 
 	const std::vector<std::string>& get_all_registered_actors() const;
@@ -58,9 +58,9 @@ public:
 private:
 	adlEntity_factory();
 
-	map_type actors_;
+	map_type entities_;
 	map_type lights_;
-	std::vector<std::string> registered_actors_;
+	std::vector<std::string> registered_entities_;
 	std::vector<std::string> registered_lights_;
 };
 

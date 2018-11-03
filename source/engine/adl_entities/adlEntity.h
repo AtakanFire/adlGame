@@ -4,7 +4,11 @@
 #include "engine/adlShared_types.h"
 #include "engine/adl_resource/adlModel.h"
 
+#include "engine/adl_resource/adlJsonUtilities.h"
+
 #include <document.h>
+
+using namespace rapidjson;
 
 class adlEntity
 {
@@ -27,7 +31,8 @@ public:
 	const std::string& get_type_name();
 	const std::string& getTypeName();
 
-	virtual void deserialize(const rapidjson::Value& json_object);
+	virtual void serialize(PrettyWriter<StringBuffer>& writer);
+	virtual void deserialize(const rapidjson::Value& reader);
 
 protected:
 	std::string type_name;

@@ -7,8 +7,9 @@ unsigned int adlEntity::current_id = 1;
 adlEntity::adlEntity()
 	: id_(current_id++)
 {
+	REGISTER_ENTITY(adlEntity)
+
 	name_ = "Entity_" + std::to_string(id_);
-	type_name = "adlEntity";
 }
 
 adlEntity::~adlEntity()
@@ -63,7 +64,23 @@ const std::string & adlEntity::getTypeName()
 	return get_type_name();
 }
 
-void adlEntity::deserialize(const rapidjson::Value& json_object)
+void adlEntity::serialize(PrettyWriter<StringBuffer>& writer)
 {
+	writer.String("id");
+	writer.Uint(id_);
+
+	writer.String("name");
+	writer.String(name_.c_str(), static_cast<SizeType>(name_.length()));
+
+	writer.String("typeName");
+	writer.String(type_name.c_str(), static_cast<SizeType>(type_name.length()));
+}
+
+void adlEntity::deserialize(const rapidjson::Value& reader)
+{
+
+	id_ = reader["id"].GetUint();
+	name_ = reader["name"].GetString();
+	type_name = reader["typeName"].GetString();
 
 }

@@ -137,6 +137,7 @@ void adlSpawn_editor::update(adlScene_manager* scene_manager)
 				{
 					ImGui::Indent();
 
+					/*
 					adlActor_shared_ptr spawned_actor = scene_manager->spawn_actor(actors[i].data(), spawn_transform_.o, spawn_transform_.rot, spawn_transform_.scale);
 
 					if (spawn_model_ != nullptr)
@@ -153,6 +154,7 @@ void adlSpawn_editor::update(adlScene_manager* scene_manager)
 					}
 
 					is_visible_ = false;
+					*/
 					ImGui::Unindent();
 				}
 

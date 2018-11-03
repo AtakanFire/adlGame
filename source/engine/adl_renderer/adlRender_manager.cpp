@@ -24,12 +24,70 @@ void adlRender_manager::prepare()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void adlRender_manager::init()
+void adlRender_manager::render(adlActor* actor)
 {
-	is_wire_frame_mode_ = false;
-	glFrontFace(GL_CCW);
-	glCullFace(GL_BACK);
-	glEnable(GL_CULL_FACE);
+	adl_assert(sun_);
+	adlColor color = actor->get_color();
+	if (is_wire_frame_mode_)
+	{
+		color = adlColor::WHITE;
+	}
+	adlModel_shared_ptr model = actor->get_model();
+	adlResource_manager* adl_rm = &adlResource_manager::get();
+	adlMaterial_shared_ptr material = actor->get_material();
+	if (model == nullptr)
+	{
+		material = adl_rm->get_material("blank_material");
+		model = adl_rm->get_model("Cube");
+	}
+	adl_assert(model);
+
+	adlMat4 view_matrix = camera_->get_view_matrix();
+
+	adlShader_shared_ptr shader;
+	if (material != nullptr)
+	{
+		if (material->get_texture() != nullptr)
+		{
+			shader = adl_rm->get_shader("textured");
+		}
+		else
+		{
+			shader = adl_rm->get_shader("no_texture");
+		}
+	}
+	else
+	{
+		shader = adl_rm->get_shader("no_texture");
+	}
+	adl_assert(shader);
+
+	shader->start();
+
+	adlMat4 mvp_matrix = projection_matrix_ * view_matrix * actor->get_transform().get_transformation_matrix();
+	adlMat4 model_matrix = actor->get_transform().get_transformation_matrix();
+	shader->load_mvp(mvp_matrix);
+	shader->load_light(sun_);
+	shader->load_model_matrix(model_matrix);
+	shader->load_camera_position(camera_->get_position());
+	shader->load_point_lights(lights_);
+
+
+	if (material != nullptr)
+	{
+		shader->load_material(material);
+		if (material->get_texture() != nullptr)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, material->get_texture()->get_id());
+			shader->load_texture();
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, material->get_texture()->get_specular_map_id());
+		}
+	}
+	model->draw(shader, model_matrix);
+	shader->stop();
 }
 
 void adlRender_manager::render(adlActor_shared_ptr actor)
@@ -241,4 +299,12 @@ void adlRender_manager::set_lights(const std::vector<adlPoint_light_shared_ptr>&
 adlMat4 adlRender_manager::get_projection_matrix()
 {
 	return projection_matrix_;
+}
+
+void adlRender_manager::init()
+{
+	is_wire_frame_mode_ = false;
+	glFrontFace(GL_CCW);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
 }

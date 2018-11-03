@@ -15,18 +15,6 @@
   ],
   "models": [
     {
-      "name": "AxisArrow",
-      "path": "res/models/AxisArrows/AxisArrow/AxisArrow.blend"
-    },
-    {
-      "name": "AxisArrowFBX",
-      "path": "res/models/AxisArrows/AxisArrowFBX/AxisArrowFBX.fbx"
-    },
-    {
-      "name": "AxisArrowOBJ",
-      "path": "res/models/AxisArrows/AxisArrowOBJ/AxisArrowOBJ.obj"
-    },
-    {
       "name": "Cube",
       "path": "res/models/BasicShapes/Cube/Cube.obj"
     },
@@ -51,83 +39,60 @@
       "path": "res/models/BasicShapes/Torus/Torus.obj"
     },
     {
-      "name": "Test",
-      "path": "res/models/Debugs/Test/test.obj"
-    },
-    {
-      "name": "testtest",
-      "path": "res/models/Debugs/testtest/test.fbx"
-    },
-    {
       "name": "Tree",
       "path": "res/models/Foliage/Tree/Tree.obj"
     },
     {
-      "name": "House",
-      "path": "res/models/Houses/House/House.obj"
+      "name": "PlaceHouse",
+      "path": "res/models/Houses/PlaceHouse/PlaceHouse.obj"
     },
     {
       "name": "Human",
       "path": "res/models/Humans/Human/Human.fbx"
     },
     {
-      "name": "HugeLandscape",
-      "path": "res/models/Landscapes/HugeLandscape/HugeLandscape.fbx"
-    },
-    {
       "name": "Landscape",
       "path": "res/models/Landscapes/Landscape/Landscape.obj"
     },
     {
-      "name": "Rock",
-      "path": "res/models/Stones/Rock/rock.obj"
-    },
-	{
-	  "name": "Room",
-	  "path": "res/models/Room/Room.obj"
-	},
-	{
-	  "name": "Knight",
-	  "path": "res/models/Knight/knight.obj"
-	},
-	{
-	  "name": "IronMan",
-	  "path": "res/models/IronMan/IronMan.obj"
-	}
-  ],
-  "scenes": [
-    {
-      "name": "default_scene",
-      "path": "res/scenes/default_scene.json"
+      "name": "AxisArrowFBX",
+      "path": "res/models/Debugs/AxisArrows/AxisArrowFBX/AxisArrowFBX.fbx"
     },
     {
-      "name": "hello_scene",
-      "path": "res/scenes/hello_scene.json"
-    },
-    {
-      "name": "Showcase",
-      "path": "res/scenes/Showcase.json"
-    },
-    {
-      "name": "test",
-      "path": "res/scenes/test.json"
-    },
-    {
-      "name": "test_scene",
-      "path": "res/scenes/test_scene.json"
+      "name": "AxisArrowOBJ",
+      "path": "res/models/Debugs/AxisArrows/AxisArrowOBJ/AxisArrowOBJ.obj"
     }
   ],
+    "scenes": [
+        {
+            "name": "default_scene",
+            "path": "res/scenes/default_scene.json"
+        },
+        {
+            "name": "Game",
+            "path": "res/scenes/Game.json"
+        },
+        {
+            "name": "Try",
+            "path": "res/scenes/Try.json"
+        }
+    ],
   "textures": [
+    {
+      "name": "Default",
+      "path": "res/textures/Default.png",
+      "specular_map_path": "res/textures/Default_Specular.png"
+    },
     {
       "name": "MetalFrame",
       "path": "res/textures/MetalFrame.png",
       "specular_map_path": "res/textures/MetalFrame_Specular.png"
     },
-	{
-	  "name": "blank_texture",
-	  "path": "res/textures/default.png",
-	  "specular_map_path": ""
-	}
+    {
+      "name": "PlaceHouse",
+      "path": "res/textures/PlaceHouse.png",
+      "specular_map_path": "res/textures/PlaceHouse_Specular.png"
+    }
   ],
   "shaders": [
     {

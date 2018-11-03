@@ -51,6 +51,7 @@ public:
 	void swap_buffers();
 	void close_window();
 
+	bool get_mouse_visible();
 	void set_mouse_visible(bool is_visible);
 
 	void set_fullscreen(bool is_fullscreen);

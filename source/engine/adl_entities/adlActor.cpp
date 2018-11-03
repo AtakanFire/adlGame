@@ -1,10 +1,13 @@
 #include "adlActor.h"
 
 #include "adlEntity_factory.h"
+#include "engine/adl_resource/adlResource_manager.h"
+
+#include "engine/adl_resource/adlJsonUtilities.h"
 
 adlActor::adlActor()
 {
-	REGISTER_ACTOR(adlActor)
+	REGISTER_ENTITY(adlActor)
 }
 
 
@@ -18,6 +21,114 @@ void adlActor::init()
 
 void adlActor::update(float dt)
 {
+
+}
+
+void adlActor::serialize(PrettyWriter<StringBuffer>& writer)
+{
+	adlEntity::serialize(writer);
+
+	// TODO: use json utils for serialize and deserialize
+
+	//jsonUtil.serialize("transform", "Object", 1);
+	//jsonUtil.serialize("position", "adlVec3", transform_.o.x, transform_.o.y, transform_.o.z);
+	//jsonUtil.serialize("rotation", "adlVec3", transform_.rot.x, transform_.rot.y, transform_.rot.z);
+	//jsonUtil.serialize("scale", "adlVec3", transform_.scale.x, transform_.scale.y, transform_.scale.z);
+	//jsonUtil.serialize("transform", "Object", 0);
+
+	//jsonUtil.serialize("model", "Object", 1);
+	//jsonUtil.serialize("mesh", "String", getModel()->get_name().c_str());
+	//jsonUtil.serialize("material", "String", getMaterial()->get_name().c_str());
+
+	writer.String("transform");
+
+	writer.StartObject();
+
+	writer.String("position");
+	writer.StartArray();
+	writer.Double(transform_.o.x);
+	writer.Double(transform_.o.y);
+	writer.Double(transform_.o.z);
+	writer.EndArray();
+
+	writer.String("rotation");
+	writer.StartArray();
+	writer.Double(transform_.rot.x);
+	writer.Double(transform_.rot.y);
+	writer.Double(transform_.rot.z);
+	writer.EndArray();
+
+	writer.String("scale");
+	writer.StartArray();
+	writer.Double(transform_.scale.x);
+	writer.Double(transform_.scale.y);
+	writer.Double(transform_.scale.z);
+	writer.EndArray();
+
+	writer.EndObject();
+
+	writer.String("model");
+
+	writer.StartObject();
+
+	writer.String("mesh");
+	writer.String(getModel()->get_name().c_str());
+
+	if (getMaterial())
+	{
+		writer.String("material");
+		writer.String(getMaterial()->get_name().c_str());
+	}
+
+
+
+	writer.EndObject();
+
+}
+
+void adlActor::deserialize(const rapidjson::Value & reader)
+{
+	adlEntity::deserialize(reader);
+
+
+	// TODO:
+
+	//jsonUtil.deserialize("transform", "Object", 1)
+	//setPosition(jsonUtil.deserialize("position", "adlVec3"));
+	//setRotation(jsonUtil.deserialize("rotation", "adlVec3"));
+	//setScale(jsonUtil.deserialize("scale", "adlVec3"));
+
+	//jsonUtil.deserialize("model", "Object" , 0)
+	//setPosition(jsonUtil.deserialize("mesh", "string"));
+	//if(jsonUtil.hasMember("material"))
+	//	setPosition(jsonUtil.deserialize("material", "string"));
+
+	const rapidjson::Value& readerTransform = reader["transform"];
+	const rapidjson::Value& readerPos = readerTransform["position"];
+
+	setPosition(adlVec3(readerPos[0].GetFloat(), readerPos[1].GetFloat(), readerPos[2].GetFloat()));
+
+	const rapidjson::Value& readerRotation = readerTransform["rotation"];
+
+	setRotation(adlVec3(readerRotation[0].GetFloat(), readerRotation[1].GetFloat(), readerRotation[2].GetFloat()));
+
+	const rapidjson::Value& readerScale = readerTransform["scale"];
+
+	setScale(adlVec3(readerScale[0].GetFloat(), readerScale[1].GetFloat(), readerScale[2].GetFloat()));
+
+
+	const rapidjson::Value& readerModel = reader["model"];
+	const rapidjson::Value& readerMesh = readerModel["mesh"];
+
+	adlResource_manager* adl_rm = &adlResource_manager::get();
+	setModel(adl_rm->getModel(readerMesh.GetString()));
+
+
+	if (readerModel.HasMember("material"))
+	{
+		const rapidjson::Value& readerMaterial = readerModel["material"];
+		setMaterial(adl_rm->getMaterial(readerMaterial.GetString()));
+	}
 }
 
 adlTransform adlActor::get_transform()

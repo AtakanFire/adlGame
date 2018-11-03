@@ -1,0 +1,364 @@
+{
+    "Entities": [
+        {
+            "id": 2,
+            "name": "Entity_2",
+            "typeName": "Construction",
+            "transform": {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "PlaceHouse",
+                "material": "PlaceHouse"
+            },
+            "Attributes": {
+                "Properties": {
+                    "Name": "Entity_2",
+                    "Durability": 10.0,
+                    "Worker": 0.0
+                }
+            }
+        },
+        {
+            "id": 3,
+            "name": "Entity_3",
+            "typeName": "Construction",
+            "transform": {
+                "position": [
+                    3.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "PlaceHouse",
+                "material": "PlaceHouse"
+            },
+            "Attributes": {
+                "Properties": {
+                    "Name": "Entity_3",
+                    "Durability": 10.0,
+                    "Worker": 0.0
+                }
+            }
+        },
+        {
+            "id": 4,
+            "name": "Entity_4",
+            "typeName": "Construction",
+            "transform": {
+                "position": [
+                    6.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "PlaceHouse",
+                "material": "PlaceHouse"
+            },
+            "Attributes": {
+                "Properties": {
+                    "Name": "Entity_4",
+                    "Durability": 10.0,
+                    "Worker": 0.0
+                }
+            }
+        },
+        {
+            "id": 5,
+            "name": "Entity_5",
+            "typeName": "Construction",
+            "transform": {
+                "position": [
+                    9.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "PlaceHouse",
+                "material": "PlaceHouse"
+            },
+            "Attributes": {
+                "Properties": {
+                    "Name": "Entity_5",
+                    "Durability": 10.0,
+                    "Worker": 0.0
+                }
+            }
+        },
+        {
+            "id": 7,
+            "name": "Entity_7",
+            "typeName": "HUD"
+        },
+        {
+            "id": 6,
+            "name": "Entity_6",
+            "typeName": "Construction",
+            "transform": {
+                "position": [
+                    12.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "PlaceHouse",
+                "material": "PlaceHouse"
+            },
+            "Attributes": {
+                "Properties": {
+                    "Name": "Entity_6",
+                    "Durability": 10.0,
+                    "Worker": 0.0
+                }
+            }
+        },
+        {
+            "id": 8,
+            "name": "Entity_8",
+            "typeName": "Construction",
+            "transform": {
+                "position": [
+                    15.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "PlaceHouse",
+                "material": "PlaceHouse"
+            },
+            "Attributes": {
+                "Properties": {
+                    "Name": "Entity_8",
+                    "Durability": 10.0,
+                    "Worker": 0.0
+                }
+            }
+        },
+        {
+            "id": 10,
+            "name": "Entity_10",
+            "typeName": "adlActor",
+            "transform": {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0,
+                    100.0
+                ]
+            },
+            "model": {
+                "mesh": "Plane"
+            }
+        },
+        {
+            "id": 9,
+            "name": "Entity_9",
+            "typeName": "Construction",
+            "transform": {
+                "position": [
+                    18.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "PlaceHouse",
+                "material": "PlaceHouse"
+            },
+            "Attributes": {
+                "Properties": {
+                    "Name": "Entity_9",
+                    "Durability": 10.0,
+                    "Worker": 0.0
+                }
+            }
+        },
+        {
+            "id": 11,
+            "name": "Entity_11",
+            "typeName": "Construction",
+            "transform": {
+                "position": [
+                    21.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "PlaceHouse",
+                "material": "PlaceHouse"
+            },
+            "Attributes": {
+                "Properties": {
+                    "Name": "Entity_11",
+                    "Durability": 10.0,
+                    "Worker": 0.0
+                }
+            }
+        },
+        {
+            "id": 12,
+            "name": "Entity_12",
+            "typeName": "Construction",
+            "transform": {
+                "position": [
+                    24.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "PlaceHouse",
+                "material": "PlaceHouse"
+            },
+            "Attributes": {
+                "Properties": {
+                    "Name": "Entity_12",
+                    "Durability": 10.0,
+                    "Worker": 0.0
+                }
+            }
+        },
+        {
+            "id": 13,
+            "name": "Entity_13",
+            "typeName": "Construction",
+            "transform": {
+                "position": [
+                    27.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "PlaceHouse",
+                "material": "PlaceHouse"
+            },
+            "Attributes": {
+                "Properties": {
+                    "Name": "Entity_13",
+                    "Durability": 10.0,
+                    "Worker": 0.0
+                }
+            }
+        }
+    ]
+}

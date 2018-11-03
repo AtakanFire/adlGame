@@ -231,8 +231,10 @@ void adlDebug_renderer::clear_render_queue()
 
 void adlDebug_renderer::render_bounding_boxes()
 {
+	
 	adlScene_manager* scn_manager = &adlScene_manager::get();
-	const std::vector<adlActor_shared_ptr>& actors = scn_manager->get_all_actors();
+	//const std::vector<adlActor_shared_ptr>& actors = scn_manager->get_all_actors();
+	const std::vector<adlActor*>& actors = scn_manager->getAllActors();
 
 	for (auto actor : actors)
 	{
@@ -267,5 +269,6 @@ void adlDebug_renderer::render_bounding_boxes()
 			render_line3D(bottom_left_front, bottom_right_front, bounding_box_line_width_, bounding_box_color_);
 			render_line3D(bottom_right_front, bottom_right_back, bounding_box_line_width_, bounding_box_color_);
 		}
+		
 	}
 }

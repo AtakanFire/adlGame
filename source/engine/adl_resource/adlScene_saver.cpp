@@ -4,6 +4,12 @@
 #include "engine/adl_entities/adlEntities.h"
 #include "engine/adl_debug/adlLogger.h"
 
+
+#include "prettywriter.h" 
+#include <cstdio>
+#include <string>
+#include <vector>
+
 adlScene_saver::adlScene_saver()
 {
 }
@@ -15,79 +21,41 @@ adlScene_saver::~adlScene_saver()
 
 std::string adlScene_saver::get_serialized_scene(adlScene_shared_ptr scene)
 {
-	const std::vector<adlEntity_shared_ptr>& entities = scene->get_all_entities();
-	const std::vector<adlActor_shared_ptr>& actors = scene->get_all_actors();
+	const std::vector<adlEntity*> entities = scene->getAllEntities();
+
 	const std::vector<adlPoint_light_shared_ptr>& lights = scene->get_all_point_lights();
 	const adlSun_shared_ptr sun = scene->get_sun();
 
-	std::string serialized_scene = "{";
+	std::string serialized_scene = "";
 
-	std::string sun_serialized = serialize_sun(sun);
-	serialized_scene += sun_serialized + ",\"actors\":[";
+	//std::string sun_serialized = serialize_sun(sun);
+	// Sun also a Entity fix it later...
 
-	for (unsigned int i = 0; i < actors.size(); i++)
+
+	StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+
+	writer.String("Entities");
+
+	writer.StartArray();
+	for (auto entity : entities)
 	{
-		adlActor_shared_ptr actor = actors[i];
-		std::string serialized_actor = serialize_actor(actor);
-		serialized_scene += serialized_actor;
-		if (i != actors.size() - 1)
-		{
-			serialized_scene += ",";
-		}
+		writer.StartObject();
+
+		entity->serialize(writer);
+
+		writer.EndObject();
 	}
+	writer.EndArray();
 
-	serialized_scene += "],\"point_lights\":[";
 
-	for (unsigned int i = 0; i < lights.size(); i++)
-	{
-		adlPoint_light_shared_ptr light = lights[i];
-		std::string serialized_light = serialize_point_light(light);
-		serialized_scene += serialized_light;
-		if (i != lights.size() - 1)
-		{
-			serialized_scene += ",";
-		}
-	}
+	writer.EndObject();
 
-	serialized_scene += "]}";
+	serialized_scene += sb.GetString();
 
 	return serialized_scene;
-}
-
-std::string adlScene_saver::serialize_actor(adlActor_shared_ptr actor)
-{
-	std::string serialized_string = "{";
-
-	std::string type_name = actor->get_type_name();
-	std::string actor_name = actor->get_name();
-	std::string model_name = "";
-	if (actor->get_model() != nullptr)
-	{
-		model_name = actor->get_model()->get_name();
-	}
-
-	std::string material_name = "";
-	if (actor->get_material() != nullptr)
-	{
-		material_name = actor->get_material()->get_name();
-	}
-
-	serialized_string += "\"type_name\":\"" + type_name + "\",";
-	serialized_string += "\"name\":\"" + actor_name + "\",";
-
-	adlVec3 position = actor->get_position();
-	adlVec3 rotation = actor->get_rotation();
-	adlVec3 scale = actor->get_scale();
-
-	std::string position_string = serialize_vec3("position", position);
-	std::string rotation_string = serialize_vec3("rotation", rotation);
-	std::string scale_string = serialize_vec3("scale", scale);
-
-	serialized_string += position_string + "," + rotation_string + "," + scale_string + ",";
-	serialized_string += "\"model_name\":\"" + model_name + "\",";
-	serialized_string += "\"material_name\":\"" + material_name + "\"}";
-
-	return serialized_string;
 }
 
 std::string adlScene_saver::serialize_sun(adlSun_shared_ptr sun)

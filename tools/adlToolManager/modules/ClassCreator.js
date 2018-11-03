@@ -28,7 +28,10 @@ FileCreator = function (classPath, options) {
                     + '{\n\n}\n\n'
                     + ((settings[0] == 'isEntity')?'void ' + className + '::init() {\n\n}\n\n' : '')
                     + ((settings[0] == 'isEntity')?'void ' + className + '::update(float dt) {\n\n}\n\n' : '')
-                    + ((settings[2] == 'true')?'void ' + className + '::deserialize(const rapidjson::Value& json_object)\n{\n\n}\n\n': '')
+                    + ((settings[2] == 'true')?'void ' + className + '::serialize(PrettyWriter<StringBuffer>& writer)\n{\n\t'
+                    + settings[3] + '::serialize(writer);' + '\n}\n\n': '')
+                    + ((settings[2] == 'true')?'void ' + className + '::deserialize(const rapidjson::Value & reader)\n{\n\t'
+                    + settings[3] + '::deserialize(reader);' + '\n}\n\n': '')
     
     var hFile = '#ifndef ' + className + '_h__\n' 
                 + '#define ' + className + '_h__\n\n'
@@ -37,9 +40,10 @@ FileCreator = function (classPath, options) {
                 + 'public:\n\n'
                 + '\t' + className +'();\n'
                 + '\t~' + className + '();\n\n'
-                + ((settings[0] == 'isEntity')?'\tvoid init() override;\n' : '')
-                + ((settings[0] == 'isEntity')?'\tvoid update(float dt) override;\n\n' : '')
-                + ((settings[2] == 'true')?'\tvoid deserialize(const rapidjson::Value& json_object) override;\n\n': '')
+                + ((settings[0] == 'isEntity')?'\tvirtual void init() override;\n' : '')
+                + ((settings[0] == 'isEntity')?'\tvirtual void update(float dt) override;\n\n' : '')
+                + ((settings[2] == 'true')?'\tvirtual void serialize(PrettyWriter<StringBuffer>& writer) override;\n': '')
+                + ((settings[2] == 'true')?'\tvirtual void deserialize(const rapidjson::Value & reader) override;\n\n': '')
                 + 'private:\n\n'
                 + '};\n\n'
                 + '#endif //' + className + '_h__\n';

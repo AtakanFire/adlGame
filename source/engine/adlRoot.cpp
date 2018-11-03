@@ -45,14 +45,17 @@ void adlRoot::run()
 
 	float dt = fps_manager_->enforce_fps();
 
-	if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key(adl_key_left_alt) && adl_input->get_key_up(adl_key_w))
+	adlEditor_manager* editorMan = &adlEditor_manager::get();
+	bool onEdit = editorMan->onEdit();
+
+	if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key_up(adl_key_left_alt) && onEdit)
 	{
 		adl_renderer->toggle_wire_frame_mode();
 	}
 
-	if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key_up(adl_key_v))
+	if (adl_input->get_key_up(adl_key_m) && onEdit)
 	{
-		adl_window->set_mouse_visible(true);
+		adl_window->set_mouse_visible(adl_window->get_mouse_visible());
 	}
 
 	if (!update(dt))
@@ -60,7 +63,7 @@ void adlRoot::run()
 		is_running_ = false;
 	}
 
-	if (adl_input->get_key(adl_key_left_ctrl), adl_input->get_key_down(adl_key_z))
+	if (adl_input->get_key_down(adl_key_z) && onEdit)
 	{
 		rendering_bounding_boxes_ = !rendering_bounding_boxes_;
 	}

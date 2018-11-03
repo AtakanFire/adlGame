@@ -52,27 +52,29 @@ void adlScene_manager::render()
 		active_scene_->render();
 	}
 }
-
+/*
 void adlScene_manager::add_to_scene(adlEntity_shared_ptr entity)
 {
 	entity->init();
 	entities_.push_back(entity);
-}
+}*/
 
-void adlScene_manager::addToScene(adlEntity_shared_ptr entity)
+void adlScene_manager::addToScene(adlEntity* entity)
 {
-	add_to_scene(entity);
+	entity->init();
+	entities_.push_back(entity);
 }
-
+/*
 void adlScene_manager::add_to_scene(adlActor_shared_ptr actor)
 {
 	actor->init();
 	actors_.push_back(actor);
-}
+}*/
 
-void adlScene_manager::addToScene(adlActor_shared_ptr actor)
+void adlScene_manager::addToScene(adlActor* actor)
 {
-	add_to_scene(actor);
+	actor->init();
+	actors_.push_back(actor);
 }
 
 void adlScene_manager::set_sun(adlSun_shared_ptr sun)
@@ -88,18 +90,7 @@ void adlScene_manager::setSun(adlSun_shared_ptr sun)
 	set_sun(sun);
 }
 
-adlActor_shared_ptr adlScene_manager::spawn_actor(const std::string& actor_name, adlVec3 position/* = adlVec3(0.0f)*/, adlVec3 rotation/* = adlVec3(0.0f)*/, adlVec3 scale/* = adlVec3(1.0f)*/)
-{
-	adlEntity_factory* factory = &adlEntity_factory::get();
-	adlActor* actor = (adlActor*)factory->construct_actor(actor_name);
-	adlActor_shared_ptr actor_shared(actor);
-
-	active_scene_->spawn_actor(actor_shared, position, rotation, scale);
-
-	return actor_shared;
-}
-
-void adlScene_manager::spawn_actor(adlActor_shared_ptr actor, adlVec3 position, adlVec3 rotation/* = adlVec3(0.0f)*/, adlVec3 scale/* = adlVec3(1.0f)*/)
+void adlScene_manager::spawnActor(adlActor* actor, adlVec3 position, adlVec3 rotation/* = adlVec3(0.0f)*/, adlVec3 scale/* = adlVec3(1.0f)*/)
 {
 	actor->init();
 	actors_.push_back(actor);
@@ -108,9 +99,14 @@ void adlScene_manager::spawn_actor(adlActor_shared_ptr actor, adlVec3 position, 
 	actor->set_scale(scale);
 }
 
-void adlScene_manager::spawnActor(adlActor_shared_ptr actor, adlVec3 position, adlVec3 rotation/* = adlVec3(0.0f)*/, adlVec3 scale/* = adlVec3(1.0f)*/)
+adlEntity* adlScene_manager::spawnActor(const std::string& entity_name, adlVec3 position/* = adlVec3(0.0f)*/, adlVec3 rotation/* = adlVec3(0.0f)*/, adlVec3 scale/* = adlVec3(1.0f)*/)
 {
-	spawn_actor(actor, position, rotation, scale);
+	adlEntity_factory* factory = &adlEntity_factory::get();
+	adlEntity* entity = (adlEntity*)factory->construct_entity(entity_name);
+
+	active_scene_->spawnEntity(entity);
+
+	return entity;
 }
 
 void adlScene_manager::spawn_light(const std::string& light_name, adlVec3 position/* = adlVec3(0.0f)*/, adlVec3 rotation/* = adlVec3(0.0f)*/, adlVec3 scale/* = adlVec3(1.0f)*/)
@@ -133,14 +129,14 @@ void adlScene_manager::add_point_light_scene(adlPoint_light_shared_ptr point_lig
 	point_lights_.push_back(point_light);
 }
 
-std::vector<adlEntity_shared_ptr>& adlScene_manager::get_all_entities()
+std::vector<adlEntity*>& adlScene_manager::getAllEntities()
 {
-	return active_scene_->get_all_entities();
+	return active_scene_->getAllEntities();
 }
 
-std::vector<adlActor_shared_ptr>& adlScene_manager::get_all_actors()
+std::vector<adlActor*>& adlScene_manager::getAllActors()
 {
-	return active_scene_->get_all_actors();
+	return active_scene_->getAllActors();
 }
 
 std::vector<adlPoint_light_shared_ptr>& adlScene_manager::get_all_point_lights()

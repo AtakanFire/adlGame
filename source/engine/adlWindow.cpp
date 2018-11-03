@@ -108,6 +108,11 @@ void adlWindow::close_window()
 #endif // USE_SDL
 }
 
+bool adlWindow::get_mouse_visible()
+{
+	return SDL_GetRelativeMouseMode();
+}
+
 void adlWindow::set_mouse_visible(bool is_visible)
 {
 	if (is_visible)

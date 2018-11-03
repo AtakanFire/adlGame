@@ -7,7 +7,7 @@ adlEntity_factory::adlEntity_factory()
 
 const std::vector<std::string>& adlEntity_factory::get_all_registered_actors() const
 {
-	return registered_actors_;
+	return registered_entities_;
 }
 
 const std::vector<std::string>& adlEntity_factory::get_all_registered_lights() const
@@ -16,14 +16,14 @@ const std::vector<std::string>& adlEntity_factory::get_all_registered_lights() c
 }
 
 
-void* adlEntity_factory::construct_actor(const std::string& class_name)
+void* adlEntity_factory::construct_entity(const std::string& class_name)
 {
 	adlLogger* logger = &adlLogger::get();
 
-	map_type::iterator i = actors_.find(class_name);
-	if (i == actors_.end())
+	map_type::iterator i = entities_.find(class_name);
+	if (i == entities_.end())
 	{
-		logger->log_error("Actor " + class_name + " is not registered.");
+		logger->log_error("Entity " + class_name + " is not registered.");
 		return nullptr;
 	}
 
