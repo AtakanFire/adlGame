@@ -24,6 +24,30 @@ inline void adlJsonUtilities::serialize(const std::string& valueName, const std:
 {
 	//writer.String(valueName);
 
+	if (valueType == "object")
+	{
+		if (isStart)
+		{
+			//writer.StartObject();
+		}
+		else
+		{
+			//writer.EndObject();			
+		}
+
+	}
+	else if (valueType == "array")
+	{
+		if (isStart)
+		{
+			//writer.StartArray();
+		}
+		else
+		{
+			//writer.EndArray();
+		}
+
+	}
 
 	if (valueType == "string")
 	{
@@ -50,34 +74,4 @@ inline void adlJsonUtilities::serialize(const std::string& valueName, const std:
 
 	}
 
-}
-
-void adlJsonUtilities::serialize(const std::string & valueName, const std::string & valueType, bool isStart)
-{
-	//writer.String(valueName);
-
-	if (valueType == "object")
-	{
-		if (isStart)
-		{
-			//writer.StartObject();
-		}
-		else
-		{
-			//writer.EndObject();			
-		}
-
-	}
-	else if (valueType == "array")
-	{
-		if (isStart)
-		{
-			//writer.StartArray();
-		}
-		else
-		{
-			//writer.EndArray();
-		}
-
-	}
 }

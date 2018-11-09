@@ -345,6 +345,11 @@ void adlCamera::toggle_active()
 	is_paused_ = !is_paused_;
 }
 
+Camera_type adlCamera::get_camera_type()
+{
+	return camera_type_;
+}
+
 void adlCamera::set_camera_type(Camera_type type)
 {
 	camera_type_ = type;

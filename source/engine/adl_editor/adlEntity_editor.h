@@ -9,9 +9,15 @@ public:
 	adlEntity_editor();  
 	~adlEntity_editor();  
  
-	void update(std::vector<adlEntity_shared_ptr>& entities);
+	void update(std::vector<adlEntity*>& entities);
+
+	void serializeEntities(std::vector<adlEntity*>& entities);
+	void deserializeEntities(const rapidjson::Value& reader);
+
 private:  
- 
+	void typeBasedSerializer(rapidjson::Value& val, rapidjson::Document::AllocatorType& allocator);
+
+
 };  
  
 #endif // adlEntity_editor_h__  

@@ -18,7 +18,7 @@ void Construction::init() {
 
 void Construction::update(float dt) {
 	//std::cout << "Construction" << std::endl;
-	
+
 }
 
 
@@ -37,7 +37,7 @@ void Construction::serialize(PrettyWriter<StringBuffer>& writer)
 	writer.String("Properties");
 	writer.StartObject();
 	writer.String("Name");
-	writer.String(getName().c_str());
+	writer.String("Construction deserialize isn't added yet!");
 
 	writer.String("Durability");
 	writer.Double(10);

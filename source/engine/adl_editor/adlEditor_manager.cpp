@@ -12,7 +12,7 @@
 adlEditor_manager::adlEditor_manager()
 	: light_editor_open_(false),
 	  actor_editor_open_(false),
-	  main_editor_open_(false),
+	  main_editor_open_(true),
 	  light_editor_(nullptr),
 	  actor_editor_(nullptr),
 	  scene_editor_(nullptr)
@@ -135,11 +135,11 @@ void adlEditor_manager::update()
 		}
 		if (input->get_key_down(adl_key_f2))
 		{
-			spawner_editor_open_ = !spawner_editor_open_;
+			entity_editor_open_ = !entity_editor_open_;
 		}
 		if (input->get_key_down(adl_key_f3))
 		{
-			actor_editor_open_ = !actor_editor_open_;
+			spawner_editor_open_ = !spawner_editor_open_;
 		}
 		if (input->get_key(adl_key_left_ctrl) && input->get_key_down(adl_key_q))
 		{
@@ -151,17 +151,30 @@ void adlEditor_manager::update()
 			spawner_editor_open_ = false;
 			scene_editor_open_ = false;
 		}
-		if (input->get_key(adl_key_left_shift) && input->get_key_down(adl_key_tab))
+		if (input->get_key(adl_key_left_ctrl) && input->get_key_up(adl_key_less))
 		{
 			adlWindow* window = adlWindow::get();
 			scene_manager->get_camera()->toggle_active();
+		}
+
+		if (input->get_key(adl_key_left_alt) && input->get_key_down(adl_key_less))
+		{
+			adlCamera* c = scene_manager->getCamera();
+			if (c->get_camera_type() == Camera_type::ct_god_mode)
+			{
+				c->set_camera_type(ct_rts);
+			}
+			else
+			{
+				c->set_camera_type(ct_god_mode);
+			}
 		}
 
 		// adlEditors
 		adlScene_manager* scene_manager = &adlScene_manager::get();
 		if (entity_editor_open_)
 		{
-			//entity_editor_->update(scene_manager->get_all_entities());
+			entity_editor_->update(scene_manager->getAllEntities());
 		}
 		if (actor_editor_open_)
 		{
@@ -221,10 +234,11 @@ void adlEditor_manager::update()
 				ImGui::Text("\n");
 
 				ImGui::Text("\t__On the editor__");
-				ImGui::Text("Show bounds: 'z'");
-				ImGui::Text("Toggle Mouse Cursor: 'm'");
-				ImGui::Text("Show Wireframes: 'ctrl+alt'");
-				ImGui::Text("Toggle Cam Movement: 'Shift+Tab'");
+				ImGui::Text("Show bounds: 'rightctrl+k'");
+				ImGui::Text("Show Wireframes: 'rightctrl+l'");
+				ImGui::Text("Toggle Mouse Cursor: '<'");
+				ImGui::Text("Toggle Cam Movement: 'ctrl+<'");
+				ImGui::Text("Switch RTS/GOD Cam: 'alt+<'");
 
 				ImGui::Unindent();
 			}

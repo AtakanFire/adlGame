@@ -37,7 +37,6 @@ bool Game::init()
 	scene->set_sun(sun);
 	scene->set_camera(camera);
 
-
 	for (int i = 0; i < 10; i++)
 	{
 		Construction* house = new Construction();
@@ -45,6 +44,7 @@ bool Game::init()
 		house->setMaterial(adl_rm->getMaterial("PlaceHouse"));
 		scene->spawnActor(house);
 		house->set_position(adlVec3(i*3, 0, 0));
+		house->setName("PlaceHouse" + std::to_string(i));
 	}
 
 	for (int i = 0; i < 5; i++)
@@ -53,15 +53,21 @@ bool Game::init()
 		axis->setModel(adl_rm->getModel("AxisArrowFBX"));
 		scene->spawnActor(axis);
 		axis->set_position(adlVec3(0, (10+i * 3), 0));
+		axis->setName("Axis" + std::to_string(i));
+
 	}
 
 
 	adlActor* actor = new adlActor();
 	actor->setModel(adl_rm->getModel("Plane"));
 	scene->spawnActor(actor, adlVec3(0), adlVec3(0), adlVec3(100, 100, 100));
+	actor->setName("Plane");
+
 
 	HUD* hud = new HUD();
 	scene->spawnEntity(hud);
+	hud->setName("HUD");
+
 
 	
 	std::cout << "\n\n\n" << std::endl;

@@ -48,12 +48,12 @@ void adlRoot::run()
 	adlEditor_manager* editorMan = &adlEditor_manager::get();
 	bool onEdit = editorMan->onEdit();
 
-	if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key_up(adl_key_left_alt) && onEdit)
+	if (adl_input->get_key(adl_key_right_ctrl) && adl_input->get_key_up(adl_key_l) && onEdit)
 	{
 		adl_renderer->toggle_wire_frame_mode();
 	}
 
-	if (adl_input->get_key_up(adl_key_m) && onEdit)
+	if (adl_input->get_key_down(adl_key_less) && !adl_input->get_key(adl_key_left_ctrl) && !adl_input->get_key(adl_key_left_alt) && onEdit)
 	{
 		adl_window->set_mouse_visible(adl_window->get_mouse_visible());
 	}
@@ -63,7 +63,7 @@ void adlRoot::run()
 		is_running_ = false;
 	}
 
-	if (adl_input->get_key_down(adl_key_z) && onEdit)
+	if (adl_input->get_key(adl_key_right_ctrl) && adl_input->get_key_down(adl_key_k) && onEdit)
 	{
 		rendering_bounding_boxes_ = !rendering_bounding_boxes_;
 	}

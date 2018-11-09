@@ -2,7 +2,7 @@
     "Entities": [
         {
             "id": 2,
-            "name": "Entity_2",
+            "name": "PlaceHouse0",
             "typeName": "Construction",
             "transform": {
                 "position": [
@@ -27,7 +27,7 @@
             },
             "Attributes": {
                 "Properties": {
-                    "Name": "Entity_2",
+                    "Name": "Construction deserialize isn't added yet!",
                     "Durability": 10.0,
                     "Worker": 0.0
                 }
@@ -35,7 +35,7 @@
         },
         {
             "id": 3,
-            "name": "Entity_3",
+            "name": "PlaceHouse1",
             "typeName": "Construction",
             "transform": {
                 "position": [
@@ -60,7 +60,7 @@
             },
             "Attributes": {
                 "Properties": {
-                    "Name": "Entity_3",
+                    "Name": "Construction deserialize isn't added yet!",
                     "Durability": 10.0,
                     "Worker": 0.0
                 }
@@ -68,7 +68,7 @@
         },
         {
             "id": 4,
-            "name": "Entity_4",
+            "name": "PlaceHouse2",
             "typeName": "Construction",
             "transform": {
                 "position": [
@@ -93,7 +93,7 @@
             },
             "Attributes": {
                 "Properties": {
-                    "Name": "Entity_4",
+                    "Name": "Construction deserialize isn't added yet!",
                     "Durability": 10.0,
                     "Worker": 0.0
                 }
@@ -101,7 +101,7 @@
         },
         {
             "id": 5,
-            "name": "Entity_5",
+            "name": "PlaceHouse3",
             "typeName": "Construction",
             "transform": {
                 "position": [
@@ -126,20 +126,15 @@
             },
             "Attributes": {
                 "Properties": {
-                    "Name": "Entity_5",
+                    "Name": "Construction deserialize isn't added yet!",
                     "Durability": 10.0,
                     "Worker": 0.0
                 }
             }
         },
         {
-            "id": 7,
-            "name": "Entity_7",
-            "typeName": "HUD"
-        },
-        {
             "id": 6,
-            "name": "Entity_6",
+            "name": "PlaceHouse4",
             "typeName": "Construction",
             "transform": {
                 "position": [
@@ -164,15 +159,15 @@
             },
             "Attributes": {
                 "Properties": {
-                    "Name": "Entity_6",
+                    "Name": "Construction deserialize isn't added yet!",
                     "Durability": 10.0,
                     "Worker": 0.0
                 }
             }
         },
         {
-            "id": 8,
-            "name": "Entity_8",
+            "id": 7,
+            "name": "PlaceHouse5",
             "typeName": "Construction",
             "transform": {
                 "position": [
@@ -197,40 +192,15 @@
             },
             "Attributes": {
                 "Properties": {
-                    "Name": "Entity_8",
+                    "Name": "Construction deserialize isn't added yet!",
                     "Durability": 10.0,
                     "Worker": 0.0
                 }
             }
         },
         {
-            "id": 10,
-            "name": "Entity_10",
-            "typeName": "adlActor",
-            "transform": {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "scale": [
-                    100.0,
-                    100.0,
-                    100.0
-                ]
-            },
-            "model": {
-                "mesh": "Plane"
-            }
-        },
-        {
-            "id": 9,
-            "name": "Entity_9",
+            "id": 8,
+            "name": "PlaceHouse6",
             "typeName": "Construction",
             "transform": {
                 "position": [
@@ -255,15 +225,15 @@
             },
             "Attributes": {
                 "Properties": {
-                    "Name": "Entity_9",
+                    "Name": "Construction deserialize isn't added yet!",
                     "Durability": 10.0,
                     "Worker": 0.0
                 }
             }
         },
         {
-            "id": 11,
-            "name": "Entity_11",
+            "id": 9,
+            "name": "PlaceHouse7",
             "typeName": "Construction",
             "transform": {
                 "position": [
@@ -288,15 +258,15 @@
             },
             "Attributes": {
                 "Properties": {
-                    "Name": "Entity_11",
+                    "Name": "Construction deserialize isn't added yet!",
                     "Durability": 10.0,
                     "Worker": 0.0
                 }
             }
         },
         {
-            "id": 12,
-            "name": "Entity_12",
+            "id": 10,
+            "name": "PlaceHouse8",
             "typeName": "Construction",
             "transform": {
                 "position": [
@@ -321,15 +291,15 @@
             },
             "Attributes": {
                 "Properties": {
-                    "Name": "Entity_12",
+                    "Name": "Construction deserialize isn't added yet!",
                     "Durability": 10.0,
                     "Worker": 0.0
                 }
             }
         },
         {
-            "id": 13,
-            "name": "Entity_13",
+            "id": 11,
+            "name": "PlaceHouse9",
             "typeName": "Construction",
             "transform": {
                 "position": [
@@ -354,11 +324,166 @@
             },
             "Attributes": {
                 "Properties": {
-                    "Name": "Entity_13",
+                    "Name": "Construction deserialize isn't added yet!",
                     "Durability": 10.0,
                     "Worker": 0.0
                 }
             }
+        },
+        {
+            "id": 12,
+            "name": "Axis0",
+            "typeName": "adlActor",
+            "transform": {
+                "position": [
+                    0.0,
+                    10.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "AxisArrowFBX"
+            }
+        },
+        {
+            "id": 13,
+            "name": "Axis1",
+            "typeName": "adlActor",
+            "transform": {
+                "position": [
+                    0.0,
+                    13.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "AxisArrowFBX"
+            }
+        },
+        {
+            "id": 14,
+            "name": "Axis2",
+            "typeName": "adlActor",
+            "transform": {
+                "position": [
+                    0.0,
+                    16.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "AxisArrowFBX"
+            }
+        },
+        {
+            "id": 15,
+            "name": "Axis3",
+            "typeName": "adlActor",
+            "transform": {
+                "position": [
+                    0.0,
+                    19.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "AxisArrowFBX"
+            }
+        },
+        {
+            "id": 16,
+            "name": "Axis4",
+            "typeName": "adlActor",
+            "transform": {
+                "position": [
+                    0.0,
+                    22.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model": {
+                "mesh": "AxisArrowFBX"
+            }
+        },
+        {
+            "id": 17,
+            "name": "Plane",
+            "typeName": "adlActor",
+            "transform": {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    100.0,
+                    100.0,
+                    100.0
+                ]
+            },
+            "model": {
+                "mesh": "Plane"
+            }
+        },
+        {
+            "id": 18,
+            "name": "HUD",
+            "typeName": "HUD"
         }
     ]
 }

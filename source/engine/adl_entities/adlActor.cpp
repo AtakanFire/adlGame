@@ -4,6 +4,7 @@
 #include "engine/adl_resource/adlResource_manager.h"
 
 #include "engine/adl_resource/adlJsonUtilities.h"
+#include "engine//adl_math/adlMath.h"
 
 adlActor::adlActor()
 {
@@ -53,9 +54,9 @@ void adlActor::serialize(PrettyWriter<StringBuffer>& writer)
 
 	writer.String("rotation");
 	writer.StartArray();
-	writer.Double(transform_.rot.x);
-	writer.Double(transform_.rot.y);
-	writer.Double(transform_.rot.z);
+	writer.Double(adlMath::rad_to_deg(transform_.rot.x));
+	writer.Double(adlMath::rad_to_deg(transform_.rot.y));
+	writer.Double(adlMath::rad_to_deg(transform_.rot.z));
 	writer.EndArray();
 
 	writer.String("scale");
@@ -110,8 +111,11 @@ void adlActor::deserialize(const rapidjson::Value & reader)
 
 	const rapidjson::Value& readerRotation = readerTransform["rotation"];
 
-	setRotation(adlVec3(readerRotation[0].GetFloat(), readerRotation[1].GetFloat(), readerRotation[2].GetFloat()));
-
+	setRotation(
+		adlVec3(adlMath::deg_to_rad(readerRotation[0].GetFloat()), 
+			adlMath::deg_to_rad(readerRotation[1].GetFloat()),
+			adlMath::deg_to_rad(readerRotation[2].GetFloat())));
+	
 	const rapidjson::Value& readerScale = readerTransform["scale"];
 
 	setScale(adlVec3(readerScale[0].GetFloat(), readerScale[1].GetFloat(), readerScale[2].GetFloat()));

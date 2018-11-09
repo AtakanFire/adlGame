@@ -6,7 +6,9 @@
 
 #include <document.h>
 #include <prettywriter.h>
-
+#include <cstdio>
+#include <string>
+#include <vector>
 
 class adlJsonUtilities { 
 
@@ -14,8 +16,6 @@ public:
 	 
 	adlJsonUtilities();
 	~adlJsonUtilities();
-	
-
 
 	virtual void ReadFromJson();
 	virtual void WriteToJson();
@@ -23,12 +23,12 @@ public:
 	template <typename T>
 	void serialize(const std::string& valueName, const std::string& valueType, const T& value0, const T& value1, const T& value2);
 
-	void serialize(const std::string& valueName, const std::string& valueType, bool isStart);
-
 	// serialize(valueName, valueType, value)
 	// deserialize(valueName, valueType, value)
 
+
 private:
+
 
 };
 

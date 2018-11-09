@@ -15,78 +15,65 @@
   ],
   "models": [
     {
-      "name": "Cube",
-      "path": "res/models/BasicShapes/Cube/Cube.obj"
-    },
-    {
-      "name": "Icosphere",
-      "path": "res/models/BasicShapes/Icosphere/icosphere.obj"
-    },
-    {
-      "name": "Monkey",
-      "path": "res/models/BasicShapes/Monkey/Monkey.obj"
-    },
-    {
-      "name": "Plane",
-      "path": "res/models/BasicShapes/Plane/Plane.obj"
-    },
-    {
-      "name": "Sphere",
-      "path": "res/models/BasicShapes/Sphere/Sphere.obj"
-    },
-    {
-      "name": "Torus",
-      "path": "res/models/BasicShapes/Torus/Torus.obj"
-    },
-    {
-      "name": "Tree",
-      "path": "res/models/Foliage/Tree/Tree.obj"
-    },
-    {
-      "name": "PlaceHouse",
-      "path": "res/models/Houses/PlaceHouse/PlaceHouse.obj"
-    },
-    {
       "name": "Human",
       "path": "res/models/Humans/Human/Human.fbx"
     },
     {
-      "name": "Landscape",
-      "path": "res/models/Landscapes/Landscape/Landscape.obj"
+      "name": "Cube",
+      "path": "res/models/adl/BasicShapes/Cube/Cube.obj"
+    },
+    {
+      "name": "Icosphere",
+      "path": "res/models/adl/BasicShapes/Icosphere/icosphere.obj"
+    },
+    {
+      "name": "Monkey",
+      "path": "res/models/adl/BasicShapes/Monkey/Monkey.obj"
+    },
+    {
+      "name": "Plane",
+      "path": "res/models/adl/BasicShapes/Plane/Plane.obj"
+    },
+    {
+      "name": "Sphere",
+      "path": "res/models/adl/BasicShapes/Sphere/Sphere.obj"
+    },
+    {
+      "name": "Torus",
+      "path": "res/models/adl/BasicShapes/Torus/Torus.obj"
+    },
+    {
+      "name": "PlaceHouse",
+      "path": "res/models/Constructions/Houses/PlaceHouse/PlaceHouse.obj"
+    },
+    {
+      "name": "Tree",
+      "path": "res/models/Resources/Foliage/Tree/Tree.obj"
     },
     {
       "name": "AxisArrowFBX",
-      "path": "res/models/Debugs/AxisArrows/AxisArrowFBX/AxisArrowFBX.fbx"
+      "path": "res/models/adl/Debugs/AxisArrows/AxisArrowFBX/AxisArrowFBX.fbx"
     },
     {
       "name": "AxisArrowOBJ",
-      "path": "res/models/Debugs/AxisArrows/AxisArrowOBJ/AxisArrowOBJ.obj"
+      "path": "res/models/adl/Debugs/AxisArrows/AxisArrowOBJ/AxisArrowOBJ.obj"
     }
   ],
-    "scenes": [
-        {
-            "name": "default_scene",
-            "path": "res/scenes/default_scene.json"
-        },
-        {
-            "name": "Game",
-            "path": "res/scenes/Game.json"
-        },
-        {
-            "name": "Try",
-            "path": "res/scenes/Try.json"
-        }
-    ],
+  "scenes": [
+    {
+      "name": "default_scene",
+      "path": "res/scenes/default_scene.json"
+    },
+    {
+      "name": "Game",
+      "path": "res/scenes/Game.json"
+    }
+  ],
   "textures": [
     {
       "name": "Default",
       "path": "res/textures/Default.png",
       "specular_map_path": "res/textures/Default_Specular.png"
-    },
-    {
-      "name": "MetalFrame",
-      "path": "res/textures/MetalFrame.png",
-      "specular_map_path": "res/textures/MetalFrame_Specular.png"
     },
     {
       "name": "PlaceHouse",

@@ -35,6 +35,7 @@ public:
 	void set_movement_speed(float speed);
 	float get_movement_speed();
 
+	Camera_type get_camera_type();
 	void set_camera_type(Camera_type type);
 	
 protected:
