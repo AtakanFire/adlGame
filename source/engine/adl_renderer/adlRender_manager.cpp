@@ -6,6 +6,8 @@
 #include "engine/adl_resource/adlResource_manager.h"
 #include "engine/adl_resource/adlMaterial.h"
 #include "engine/adl_resource/adlTexture.h"
+#include "engine/adl_resource/adlTerrain.h"
+#include "engine/adl_resource/adlCube_map.h"
 #include "engine/adlWindow.h"
 #include "engine/adl_renderer/adlDebug_renderer.h"
 
@@ -103,7 +105,7 @@ void adlRender_manager::render(adlActor_shared_ptr actor)
 	adlMaterial_shared_ptr material = actor->get_material();
 	if (model == nullptr)
 	{
-		material = adl_rm->get_material("blank_material");
+		material = adl_rm->get_material("missing");
 		model = adl_rm->get_model("Cube");
 	}
 	adl_assert(model);
@@ -193,6 +195,60 @@ void adlRender_manager::render(adlPoint_light_shared_ptr point_light)
 
 	model->draw(shader, point_light->get_transform().get_transformation_matrix());
 	shader->stop();
+}
+
+void adlRender_manager::render(adlTerrain_shared_ptr terrain)
+{
+	if (terrain == nullptr)
+	{
+		return;
+	}
+
+	adlModel_shared_ptr terrain_model = terrain->get_model();
+	adl_assert(terrain_model);
+
+	adlResource_manager* adl_rm = &adlResource_manager::get();
+
+	adlMat4 view_matrix = camera_->get_view_matrix();
+	adlShader_shared_ptr shader = adl_rm->get_shader("no_texture");
+
+	adlTransform transform = adlTransform::identity();
+	adlMat4 model_matrix = transform.get_transformation_matrix();
+	adlMat4 mvp_matrix = projection_matrix_ * view_matrix * model_matrix;
+
+	shader->start();
+	shader->load_mvp(mvp_matrix);
+	shader->load_light(sun_);
+	shader->load_camera_position(camera_->get_position());
+	shader->load_point_lights(lights_);
+	shader->load_model_matrix(model_matrix);
+	shader->load_material(adl_rm->get_material("matte"));
+	terrain_model->draw(shader, transform.get_transformation_matrix());
+	shader->stop();
+}
+
+void adlRender_manager::render(adlCube_map_shared_ptr cube_map)
+{
+	adlResource_manager* rm = &adlResource_manager::get();
+	adlShader_shared_ptr skybox_shader = rm->get_shader("skybox_shader");
+
+	adlMat4 view_matrix = adlMat4(camera_->get_view_matrix().to_mat3());
+
+	glDepthMask(GL_FALSE);
+	skybox_shader->start();
+
+	skybox_shader->load_projection_matrix(projection_matrix_);
+	skybox_shader->load_view_matrix(view_matrix);
+	
+	glDisable(GL_CULL_FACE);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, cube_map->get_id());
+
+	adlModel_shared_ptr cube_model = rm->get_model("Cube");
+
+	cube_model->draw(skybox_shader, adlMat4::identity());
+	glDepthMask(GL_TRUE);
+	glEnable(GL_CULL_FACE);
 }
 
 void adlRender_manager::render_text(const std::string& text, adlFont_shared_ptr font, float x, float y, float scale, adlColor color)

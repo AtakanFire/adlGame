@@ -29,6 +29,10 @@ void adlScene_manager::set_active_scene(adlScene_shared_ptr scene)
 	renderer->set_sun(active_scene_->get_sun());
 	renderer->set_lights(active_scene_->get_all_point_lights());
 	camera_ = scene->get_camera();
+	if (camera_ != nullptr)
+	{
+		camera_->set_paused(true);
+	}
 }
 
 void adlScene_manager::update(float dt)
@@ -97,6 +101,7 @@ void adlScene_manager::spawnActor(adlActor* actor, adlVec3 position, adlVec3 rot
 	actor->set_position(position);
 	actor->set_rotation(rotation);
 	actor->set_scale(scale);
+	active_scene_->spawnActor(actor, position, rotation, scale);
 }
 
 adlEntity* adlScene_manager::spawnActor(const std::string& entity_name, adlVec3 position/* = adlVec3(0.0f)*/, adlVec3 rotation/* = adlVec3(0.0f)*/, adlVec3 scale/* = adlVec3(1.0f)*/)

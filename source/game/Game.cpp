@@ -22,12 +22,20 @@ bool Game::init()
 	adlScene_shared_ptr scene = adl_scene_manager->create_empty_scene("NewScene");
 	adl_scene_manager->set_active_scene(scene);
 
+	scene->set_cube_map(adl_rm->get_cube_map("default"));
+
+	Cube_actor cube;
+
+
 	adlSun_shared_ptr sun = MAKE_SHARED(adlSun);
-	sun->set_position(adlVec3(0, 20, 20));
+	sun->set_position(adlVec3(0, 300, 20));
 	adl_scene_manager->setSun(sun);
 
+	adlPoint_light_shared_ptr point_light = MAKE_SHARED(adlPoint_light);
+	point_light->set_name("Light_#1");
+
 	adlCamera* camera = ADL_NEW(adlCamera);
-	camera->set_camera_type(ct_rts);
+	camera->set_camera_type(ct_god_mode);
 	camera->init();
 
 	adl_scene_manager->set_camera(camera);
@@ -81,6 +89,12 @@ bool Game::init()
 
 	std::cout << "\n\n\n" << std::endl;
 
+	adlTerrain_shared_ptr terrain = adl_rm->get_terrain("test_terrain");
+	
+
+
+
+
 	return true;
 }
 
@@ -95,6 +109,8 @@ bool Game::update(float dt)
 	{
 		adl_window->toggle_fullscreen();
 	}
+
+	Game x(Game());
 
 	return true;
 }

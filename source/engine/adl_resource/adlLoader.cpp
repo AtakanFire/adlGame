@@ -4,16 +4,25 @@
 #include "adlModel.h"
 #include "adlFont.h"
 #include "adlTexture.h"
+#include "adlTerrain.h"
 #include "engine/adl_debug/adlLogger.h"
 #include "engine/adl_resource/adlStatic_shader.h"
+#include "adlCube_map.h"
+
+#include "engine/adl_renderer/adlRender_manager.h"
+#include "engine/adlScene_manager.h"
+#include "engine/adl_renderer/adlDebug_renderer.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include <stdlib.h>
+#include <time.h>  
+
 adlLoader::adlLoader()
 {
-
+	srand(time(NULL));
 }
 
 adlLoader::~adlLoader()
@@ -61,7 +70,6 @@ void adlLoader::process_ai_node(aiNode* node, const aiScene* scene, adlModel_sha
 		aiMaterial* mtl = scene->mMaterials[mesh->mMaterialIndex];
 		if (mtl != nullptr)
 		{
-			adlLogger* logger = &adlLogger::get();
 			aiColor4D diffuse(0.0f, 0.0f, 0.0f, 0.0f);
 			aiGetMaterialColor(mtl, AI_MATKEY_COLOR_DIFFUSE, &diffuse);
 
@@ -273,7 +281,10 @@ adlTexture_shared_ptr adlLoader::load_texture(const std::pair<std::string, std::
 	adlTexture_shared_ptr texture = MAKE_SHARED(adlTexture);
 
 	load_texture_from_file(texture->get_id(), texture_paths.first);
-	load_texture_from_file(texture->get_specular_map_id(), texture_paths.second);
+	if (!texture_paths.second.empty())
+	{
+		load_texture_from_file(texture->get_specular_map_id(), texture_paths.second);
+	}
 
 	return texture;
 }
@@ -312,7 +323,7 @@ void adlLoader::load_texture_from_file(unsigned int texture_id, const std::strin
 	}
 	else
 	{
-		logger->log_error("Failed to load diffuse texture at " + file_path);
+		logger->log_error("Failed to load texture at " + file_path);
 	}
 
 	stbi_image_free(data);
@@ -323,6 +334,150 @@ adlScene_shared_ptr adlLoader::load_scene(const std::string& scene_path)
 	adlScene_shared_ptr scene = scene_loader_.load_scene(scene_path);
 
 	return scene;
+}
+
+adlTerrain_shared_ptr adlLoader::load_terrain(const std::string& terrain_path, const std::string& terrain_name)
+{
+	int width;
+	int height;
+	int color_channels;
+	unsigned char* data = stbi_load(terrain_path.c_str(), &width, &height, &color_channels, 1);
+
+	std::vector<Vertex> vertices;
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			float y = (float)data[width * (j) + i] / 20.0f;
+			Vertex vertex(adlVec3(width / 2 - j, y, height / 2 - i), adlVec3(0, 1, 0), adlVec2(0, 0));
+			vertices.push_back(vertex);
+		}
+	}
+
+	std::vector<unsigned int> indices;
+	std::vector<adlVec3> faces;
+
+	std::map<unsigned int, std::vector<adlVec3>> vertices_normals;
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			if (i == height - 1 || j == width - 1)
+			{
+				continue;
+			}
+			int index = width * i + j;
+			indices.push_back(index + 1);
+			indices.push_back(index);
+			indices.push_back(index + width);
+
+			indices.push_back(index + 1);
+			indices.push_back(index + width);
+			indices.push_back(index + width + 1);
+
+			adlVec3 edge1 = vertices[index + width].position - vertices[index].position;
+			adlVec3 edge2 = vertices[index + 1].position - vertices[index].position;
+			adlVec3 normal = adlMath::crossp(edge1, edge2);
+			normal = normal.normalize();
+
+			std::vector<adlVec3> normals = vertices_normals[index + 1];
+			normals.push_back(normal);
+			vertices_normals[index + 1] = normals;
+			/*std::vector<adlVec3> */normals = vertices_normals[index];
+			normals.push_back(normal);
+			vertices_normals[index] = normals;
+			normals = vertices_normals[index + width];
+			normals.push_back(normal);
+			vertices_normals[index + width] = normals;
+
+			normals = vertices_normals[index + 1];
+			normals.push_back(normal);
+			vertices_normals[index + 1] = normals;
+			normals = vertices_normals[index + width];
+			normals.push_back(normal);
+			vertices_normals[index + width] = normals;
+			normals = vertices_normals[index + width + 1];
+			normals.push_back(normal);
+			vertices_normals[index + width + 1] = normals;
+
+			faces.push_back(vertices[index + 1].position);
+			faces.push_back(vertices[index].position);
+			faces.push_back(vertices[index + width].position);
+
+			faces.push_back(vertices[index + 1].position);
+			faces.push_back(vertices[index + width].position);
+			faces.push_back(vertices[index + width + 1].position);
+		}
+	}
+
+	for (unsigned int i = 0; i < vertices.size(); i++)
+	{
+		std::vector<adlVec3> normals = vertices_normals[i];
+		adlVec3 average_normal(0.0f);
+		for (auto normal : normals)
+		{
+			average_normal = average_normal + normal;
+		}
+		average_normal = average_normal / normals.size();
+		vertices[i].normal = average_normal;
+	}
+
+	std::vector<adlVec3> face_normals;
+
+	for (unsigned int i = 0; i < faces.size(); i = i + 3)
+	{
+		adlVec3 edge1 = faces[i] - faces[i + 2];
+		adlVec3 edge2 = faces[i + 1] - faces[i + 2];
+
+		adlVec3 normal = adlMath::crossp(edge1, edge2);
+		normal = normal.normalize();
+		face_normals.push_back(normal);
+		adlVec3 tri_center;
+		tri_center.x = (faces[i].x + faces[i + 1].x + faces[i + 2].x) / 3.0f;
+		tri_center.y = (faces[i].y + faces[i + 1].y + faces[i + 2].y) / 3.0f;
+		tri_center.z = (faces[i].z + faces[i + 1].z + faces[i + 2].z) / 3.0f;
+		face_normals.push_back(tri_center);
+ 	}
+
+	adlTerrain_shared_ptr terrain = MAKE_SHARED(adlTerrain, vertices, indices, terrain_name, faces, face_normals);
+
+	return terrain;
+}
+
+adlCube_map_shared_ptr adlLoader::load_cube_map(const std::vector<std::string>& faces)
+{
+	adlLogger* logger = &adlLogger::get();
+
+	adlCube_map_shared_ptr cube_map = MAKE_SHARED(adlCube_map);
+
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cube_map->get_id());
+
+	int width, height, nrChannels;
+	for (unsigned int i = 0; i < faces.size(); i++)
+	{
+		unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+		if (data)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			stbi_image_free(data);
+		}
+		else
+		{
+			logger->log_error("Cube map texture failed to load at path: " + faces[i]);
+			stbi_image_free(data);
+
+			return nullptr;
+		}
+	}
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	return cube_map;
 }
 
 void adlLoader::generate_bounding_box(adlVec2 min_max_x, adlVec2 min_max_y, adlVec2 min_max_z)

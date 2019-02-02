@@ -3,6 +3,8 @@
 
 #include "engine/adlRoot.h"
 
+#include "Cube_actor.h"
+
 class Game : public adlRoot
 {
 public:

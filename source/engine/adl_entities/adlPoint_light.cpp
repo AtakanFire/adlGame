@@ -37,7 +37,7 @@ void adlPoint_light::init()
 
 void adlPoint_light::update(float dt)
 {
-
+	
 }
 
 void adlPoint_light::set_constant(float constant)

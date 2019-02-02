@@ -19,6 +19,14 @@
       "path": "res/models/Humans/Human/Human.fbx"
     },
     {
+      "name": "Cat",
+      "path": "res/models/Try/Cat/cat.obj"
+    },
+    {
+      "name": "Head",
+      "path": "res/models/Try/Head/head.obj"
+    },
+    {
       "name": "Cube",
       "path": "res/models/adl/BasicShapes/Cube/Cube.obj"
     },
@@ -79,6 +87,21 @@
       "name": "PlaceHouse",
       "path": "res/textures/PlaceHouse.png",
       "specular_map_path": "res/textures/PlaceHouse_Specular.png"
+    },
+    {
+      "name": "blank_texture",
+      "path": "res/textures/default.png",
+      "specular_map_path": ""
+    },
+    {
+      "name": "missing_resource",
+      "path": "res/textures/missing.png",
+      "specular_map_path": ""
+    },
+    {
+      "name": "grass",
+      "path": "res/textures/grass.jpg",
+      "specular_map_path": ""
     }
   ],
   "shaders": [
@@ -116,6 +139,32 @@
       "name": "debug_render",
       "vertex_shader_path": "res/shaders/debug_render.vert",
       "fragment_shader_path": "res/shaders/debug_render.frag"
+    },
+    {
+      "name": "skybox_shader",
+      "vertex_shader_path": "res/shaders/skybox_shader.vert",
+      "fragment_shader_path": "res/shaders/skybox_shader.frag"
+    }
+  ],
+  "terrains": [
+    {
+      "name": "test_terrain",
+      "height_map": "res/terrains/test_terrain/height_map.png"
+    },
+    {
+      "name": "test",
+      "height_map": "res/terrains/snaeT.pngl"
+    }
+  ],
+  "cube_maps": [
+      {
+      "name": "default",
+      "right": "default/right.png",
+      "left": "default/left.png",
+      "top": "default/top.png",
+      "bottom": "default/bottom.png",
+      "back": "default/back.png",
+      "front": "default/front.png"
     }
   ]
 }
