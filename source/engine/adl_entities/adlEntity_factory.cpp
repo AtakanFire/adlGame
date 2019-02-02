@@ -5,7 +5,7 @@ adlEntity_factory::adlEntity_factory()
 {
 }
 
-const std::vector<std::string>& adlEntity_factory::get_all_registered_actors() const
+const std::vector<std::string>& adlEntity_factory::get_all_registered_entities() const
 {
 	return registered_entities_;
 }

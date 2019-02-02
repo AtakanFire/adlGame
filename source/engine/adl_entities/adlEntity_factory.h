@@ -51,7 +51,7 @@ public:
 	void* construct_entity(const std::string& class_name);
 	void* construct_light(const std::string& class_name);
 
-	const std::vector<std::string>& get_all_registered_actors() const;
+	const std::vector<std::string>& get_all_registered_entities() const;
 	const std::vector<std::string>& get_all_registered_lights() const;
 
 

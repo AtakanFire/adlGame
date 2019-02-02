@@ -23,19 +23,19 @@ void adlSpawn_editor::update(adlScene_manager* scene_manager)
 	adlEntity_factory* factory = &adlEntity_factory::get();
 	adlResource_manager* adl_rm = &adlResource_manager::get();
 	
-	const std::vector<std::string> actors = factory->get_all_registered_actors();
+	const std::vector<std::string> entities = factory->get_all_registered_entities();
 	const std::vector<std::string> lights = factory->get_all_registered_lights();
 
 	ImGui::Begin("Spawn Editor");
 
-	if (ImGui::CollapsingHeader("Actors"))
+	if (ImGui::CollapsingHeader("Entities"))
 	{
 		ImGui::Indent();
 
-		for (size_t i = 0; i < actors.size(); i++)
+		for (size_t i = 0; i < entities.size(); i++)
 		{
 
-			if (ImGui::CollapsingHeader(actors[i].data()))
+			if (ImGui::CollapsingHeader(entities[i].data()))
 			{
 				ImGui::Indent();
 
@@ -51,7 +51,7 @@ void adlSpawn_editor::update(adlScene_manager* scene_manager)
 					{
 						ImGui::Text("Position(x,y,z)");
 
-						std::string label = actors[i] + " Pos";
+						std::string label = entities[i] + " Pos";
 
 						float actorPos[3] = { actor_position.x, actor_position.y, actor_position.z };
 						ImGui::InputFloat3(label.data(), &actorPos[0], 2);
@@ -61,7 +61,7 @@ void adlSpawn_editor::update(adlScene_manager* scene_manager)
 					{
 						ImGui::Text("Rotation(x,y,z)");
 
-						std::string label = actors[i] + " Rot";
+						std::string label = entities[i] + " Rot";
 
 						float actorRot[3] = { adlMath::rad_to_deg(actor_rotation.x), adlMath::rad_to_deg(actor_rotation.y), adlMath::rad_to_deg(actor_rotation.z) };
 						ImGui::InputFloat3(label.data(), &actorRot[0], 2);
@@ -71,7 +71,7 @@ void adlSpawn_editor::update(adlScene_manager* scene_manager)
 					{
 						ImGui::Text("Scale(x,y,z)");
 
-						std::string label = actors[i] + " Scale";
+						std::string label = entities[i] + " Scale";
 
 						float actorScale[3] = { actor_scale.x, actor_scale.y, actor_scale.z };
 						ImGui::InputFloat3(label.data(), &actorScale[0], 2);
@@ -130,7 +130,7 @@ void adlSpawn_editor::update(adlScene_manager* scene_manager)
 				}
 
 
-				std::string button_label = "Spawn " + actors[i] + " actor";
+				std::string button_label = "Spawn " + entities[i] + " actor";
 
 
 				if (ImGui::Button(button_label.data()))
