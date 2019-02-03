@@ -17,10 +17,10 @@ adlTerrain::adlTerrain(const std::vector<Vertex>& vertices, std::vector<unsigned
 	terrain_model_->add_mesh(mesh);
 }
 
-//adlTerrain::~adlTerrain()
-//{
-//
-//}
+adlTerrain::~adlTerrain()
+{
+
+}
 
 adlModel_shared_ptr adlTerrain::get_model()
 {

@@ -78,6 +78,7 @@ void adlEntity::serialize(PrettyWriter<StringBuffer>& writer)
 
 void adlEntity::deserialize(const rapidjson::Value& reader)
 {
+	std::cout << type_name << std::endl;
 
 	id_ = reader["id"].GetUint();
 	name_ = reader["name"].GetString();

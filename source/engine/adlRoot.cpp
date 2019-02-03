@@ -95,7 +95,12 @@ void adlRoot::run()
 	fps_string = fps_string.substr(0, fps_string.size() - 4);
 
 	adlFont_shared_ptr arial = adl_rm->get_font("arial");
-	adl_renderer->render_text("FPS: " + fps_string, arial, 0.89f * adl_window->get_width(), 0.95f * adl_window->get_height(), 0.5f, adlColor::YELLOW);
+
+	if (onEdit)
+	{
+		adl_renderer->render_text("FPS: " + fps_string, arial, 0.89f * adl_window->get_width(), 0.95f * adl_window->get_height(), 0.5f, adlColor::YELLOW);
+	}
+
 #endif // _DEBUG
 
 	ImGui::Render();

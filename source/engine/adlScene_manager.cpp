@@ -109,7 +109,7 @@ adlEntity* adlScene_manager::spawnActor(const std::string& entity_name, adlVec3 
 	adlEntity_factory* factory = &adlEntity_factory::get();
 	adlEntity* entity = (adlEntity*)factory->construct_entity(entity_name);
 
-	active_scene_->spawnEntity(entity);
+	active_scene_->spawnActor((adlActor*)entity);
 
 	return entity;
 }

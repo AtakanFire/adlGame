@@ -15,24 +15,12 @@
   ],
   "models": [
     {
-      "name": "Human",
-      "path": "res/models/Humans/Human/Human.fbx"
-    },
-    {
-      "name": "Cat",
-      "path": "res/models/Try/Cat/cat.obj"
-    },
-    {
-      "name": "Head",
-      "path": "res/models/Try/Head/head.obj"
-    },
-    {
       "name": "Cube",
       "path": "res/models/adl/BasicShapes/Cube/Cube.obj"
     },
     {
       "name": "Icosphere",
-      "path": "res/models/adl/BasicShapes/Icosphere/icosphere.obj"
+      "path": "res/models/adl/BasicShapes/Icosphere/Icosphere.obj"
     },
     {
       "name": "Monkey",
@@ -51,20 +39,28 @@
       "path": "res/models/adl/BasicShapes/Torus/Torus.obj"
     },
     {
-      "name": "PlaceHouse",
-      "path": "res/models/Constructions/Houses/PlaceHouse/PlaceHouse.obj"
-    },
-    {
-      "name": "Tree",
-      "path": "res/models/Resources/Foliage/Tree/Tree.obj"
-    },
-    {
       "name": "AxisArrowFBX",
       "path": "res/models/adl/Debugs/AxisArrows/AxisArrowFBX/AxisArrowFBX.fbx"
     },
     {
       "name": "AxisArrowOBJ",
       "path": "res/models/adl/Debugs/AxisArrows/AxisArrowOBJ/AxisArrowOBJ.obj"
+    },
+    {
+      "name": "PlaceHouse",
+      "path": "res/models/Constructions/Houses/PlaceHouse/PlaceHouse.obj"
+    },
+    {
+      "name": "Human",
+      "path": "res/models/Humans/Human/Human.fbx"
+    },
+    {
+      "name": "Tree",
+      "path": "res/models/Resources/Foliage/Tree/Tree.obj"
+    },
+    {
+      "name": "head",
+      "path": "res/models/Try/Head/head.obj"
     }
   ],
   "scenes": [
@@ -77,31 +73,41 @@
       "path": "res/scenes/Game.json"
     }
   ],
+  "terrains": [
+    {
+      "name": "test",
+      "height_map": "res/terrains/test/test.png"
+    },
+    {
+      "name": "test_terrain",
+      "height_map": "res/terrains/test_terrain/test_terrain.png"
+    }
+  ],
   "textures": [
+    {
+      "name": "blank_texture",
+      "path": "res/textures/blank_texture.png",
+      "specular_map_path": "res/textures/blank_texture_Specular.png"
+    },
     {
       "name": "Default",
       "path": "res/textures/Default.png",
       "specular_map_path": "res/textures/Default_Specular.png"
     },
     {
-      "name": "PlaceHouse",
-      "path": "res/textures/PlaceHouse.png",
-      "specular_map_path": "res/textures/PlaceHouse_Specular.png"
-    },
-    {
-      "name": "blank_texture",
-      "path": "res/textures/default.png",
-      "specular_map_path": ""
+      "name": "grass",
+      "path": "res/textures/grass.jpg",
+      "specular_map_path": "res/textures/grass_Specular.jpg"
     },
     {
       "name": "missing_resource",
-      "path": "res/textures/missing.png",
-      "specular_map_path": ""
+      "path": "res/textures/missing_resource.png",
+      "specular_map_path": "res/textures/missing_resource_Specular.png"
     },
     {
-      "name": "grass",
-      "path": "res/textures/grass.jpg",
-      "specular_map_path": ""
+      "name": "PlaceHouse",
+      "path": "res/textures/PlaceHouse.png",
+      "specular_map_path": "res/textures/PlaceHouse_Specular.png"
     }
   ],
   "shaders": [
@@ -146,18 +152,8 @@
       "fragment_shader_path": "res/shaders/skybox_shader.frag"
     }
   ],
-  "terrains": [
-    {
-      "name": "test_terrain",
-      "height_map": "res/terrains/test_terrain/height_map.png"
-    },
-    {
-      "name": "test",
-      "height_map": "res/terrains/snaeT.pngl"
-    }
-  ],
   "cube_maps": [
-      {
+    {
       "name": "default",
       "right": "default/right.png",
       "left": "default/left.png",

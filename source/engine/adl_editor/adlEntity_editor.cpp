@@ -237,9 +237,9 @@ void adlEntity_editor::typeBasedSerializer(rapidjson::Value& val, rapidjson::Doc
 
 			ImGui::InputText(tag.c_str(), &buff[0], sizeof(buff));
 
-			std::cout << "--" << std::endl;
+			/*std::cout << "--" << std::endl;
 			std::cout << temp << std::endl;
-			std::cout << buff << std::endl;
+			std::cout << buff << std::endl;*/
 
 			if (ImGui::Button("Assign"))
 			{

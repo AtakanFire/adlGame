@@ -109,8 +109,12 @@ void adlEditor_manager::update()
 			scene_editor_open_ = true;
 		}
 		else
-		{
-			window->set_mouse_visible(false);
+		{	// Gameplay -> Close Editor
+			adlCamera* c = scene_manager->getCamera();
+			c->set_camera_type(ct_rts);
+			c->set_paused(false);
+			window->set_mouse_visible(true);
+
 			entity_editor_open_ = false;
 			actor_editor_open_ = false;
 			light_editor_open_ = false;

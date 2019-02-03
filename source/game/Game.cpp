@@ -19,20 +19,15 @@ Game::~Game()
 
 bool Game::init()
 {
+	// Main Scene Elements
 	adlScene_shared_ptr scene = adl_scene_manager->create_empty_scene("NewScene");
 	adl_scene_manager->set_active_scene(scene);
 
 	scene->set_cube_map(adl_rm->get_cube_map("default"));
 
-	Cube_actor cube;
-
-
 	adlSun_shared_ptr sun = MAKE_SHARED(adlSun);
 	sun->set_position(adlVec3(0, 300, 20));
 	adl_scene_manager->setSun(sun);
-
-	adlPoint_light_shared_ptr point_light = MAKE_SHARED(adlPoint_light);
-	point_light->set_name("Light_#1");
 
 	adlCamera* camera = ADL_NEW(adlCamera);
 	camera->set_camera_type(ct_god_mode);
@@ -40,10 +35,17 @@ bool Game::init()
 
 	adl_scene_manager->set_camera(camera);
 
-	adl_window->set_mouse_visible(false);
-
 	scene->set_sun(sun);
 	scene->set_camera(camera);
+
+	// Other Elements
+
+	adlPoint_light_shared_ptr point_light = MAKE_SHARED(adlPoint_light);
+	point_light->set_name("Light_#1");
+
+	Cube_actor cube;
+
+
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -62,10 +64,9 @@ bool Game::init()
 		scene->spawnActor(axis);
 		axis->set_position(adlVec3(0, (10+i * 3), 0));
 		axis->setName("Axis" + std::to_string(i));
-
 	}
 
-
+	
 	adlActor* actor = new adlActor();
 	actor->setModel(adl_rm->getModel("Plane"));
 	scene->spawnActor(actor, adlVec3(0), adlVec3(0), adlVec3(100, 100, 100));
@@ -75,7 +76,6 @@ bool Game::init()
 	HUD* hud = new HUD();
 	scene->spawnEntity(hud);
 	hud->setName("HUD");
-
 
 	
 	std::cout << "\n\n\n" << std::endl;
@@ -89,10 +89,8 @@ bool Game::init()
 
 	std::cout << "\n\n\n" << std::endl;
 
-	adlTerrain_shared_ptr terrain = adl_rm->get_terrain("test_terrain");
-	
-
-
+	/*adlTerrain_shared_ptr terrain = adl_rm->get_terrain("test_terrain");
+	scene->set_terrain(terrain);*/
 
 
 	return true;
@@ -109,8 +107,6 @@ bool Game::update(float dt)
 	{
 		adl_window->toggle_fullscreen();
 	}
-
-	Game x(Game());
 
 	return true;
 }

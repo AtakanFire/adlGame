@@ -20,18 +20,13 @@ adlScene::adlScene(const std::string& scene_name)
 
 }
 
-// adlScene::adlScene(const std::string& scene_name, std::vector<adlEntity_shared_ptr> entities, std::vector<adlActor_shared_ptr> actors, std::vector<adlPoint_light_shared_ptr> point_lights)
-// 	:	entities_(entities),
-// 		actors_(actors),
-// 		point_lights_(point_lights),
-// 		scene_name_(scene_name),
-// 		sun_(nullptr),
-// 		camera_(nullptr),
-// 		terrain_(nullptr),
-// 		cube_map_(nullptr)
 adlScene::adlScene(const std::string & scene_name, std::vector<adlEntity*> entities, std::vector<adlActor*> actors)
 	: entities_(entities), 
 	actors_(actors),
+	// point_lights_(point_lights),
+	scene_name_(scene_name),
+	sun_(nullptr),
+	camera_(nullptr),
 	terrain_(nullptr),
 	cube_map_(nullptr)
 {

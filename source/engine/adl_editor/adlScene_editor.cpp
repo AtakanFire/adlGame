@@ -60,6 +60,7 @@ void adlScene_editor::update()
 				if (ImGui::Button(scene_name.c_str()))
 				{
 					adlScene_shared_ptr scene = adl_rm->get_scene(scene_name);
+					scene->set_cube_map(adl_rm->get_cube_map("default"));
 					scene_manager->set_active_scene(scene);
 				}
 			}

@@ -17,6 +17,10 @@ public:
 	virtual void deserialize(const rapidjson::Value & reader) override;
 
 private:
+	bool openHUD_;
+
+	void MainMenu();
+
 
 };
 
