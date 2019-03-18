@@ -20,8 +20,9 @@ CoreRefresher = function (dirFile, coreFile = {}) {
             if (dirFile.name == "fonts" ||
               dirFile.name == "models" ||
                dirFile.name == "textures" ||
-               dirFile.name == "scenes"||
-               dirFile.name == "terrains") {
+               dirFile.name == "scenes" ||
+               dirFile.name == "terrains" ||
+               dirFile.name == "entities") {
                 var propertyName = dirFile.name;
                 var propertyData = element;
 
@@ -100,6 +101,9 @@ PropertyParser = function (data, baseDirectory) { // Edit for different needs
         // console.log(path.basename(data.name, path.extname(data.name)));
         data.height_map = data.path;
         data.path = undefined;
+    } else if (baseDirectory === "entities") {
+        // console.log(path.basename(data.name, path.extname(data.name)));
+        data.name = path.basename(data.name, path.extname(data.name));
     } else {
         //data.name = path.basename(data.name, path.extname(data.name));
         console.log(path.basename(data.name, path.extname(data.name)));
@@ -111,7 +115,7 @@ WriteJSONFile = function (pathName, content = {}) {
     /*console.log("¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨");
     console.log(content);*/
     
-    var others = JSON.parse(fs.readFileSync(pathName + "/others.json", 'utf8'));
+    var others = JSON.parse(fs.readFileSync(pathName + "/shaders.json", 'utf8'));
     content.shaders = others.shaders;
     content.cube_maps = others.cube_maps;
 

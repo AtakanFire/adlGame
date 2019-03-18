@@ -26,7 +26,7 @@ bool Game::init()
 	scene->set_cube_map(adl_rm->get_cube_map("default"));
 
 	adlSun_shared_ptr sun = MAKE_SHARED(adlSun);
-	sun->set_position(adlVec3(0, 300, 20));
+	sun->set_position(adlVec3(0, 50, 20));
 	adl_scene_manager->setSun(sun);
 
 	adlCamera* camera = ADL_NEW(adlCamera);
@@ -50,21 +50,30 @@ bool Game::init()
 	for (int i = 0; i < 10; i++)
 	{
 		Construction* house = new Construction();
-		house->setModel(adl_rm->getModel("PlaceHouse"));
-		house->setMaterial(adl_rm->getMaterial("PlaceHouse"));
+		house->setModel(adl_rm->getModel("House"));
+		//house->setMaterial(adl_rm->getMaterial("PlaceHouse"));
 		scene->spawnActor(house);
-		house->set_position(adlVec3(i*3, 0, 0));
+		house->set_position(adlVec3(i * 6, 0, 0));
 		house->setName("PlaceHouse" + std::to_string(i));
 	}
 
 	for (int i = 0; i < 5; i++)
+	{
+		adlActor* tree = new adlActor();
+		tree->setModel(adl_rm->getModel("Tree"));
+		scene->spawnActor(tree);
+		tree->set_position(adlVec3(i*3, 0, 4));
+		tree->setName("Tree" + std::to_string(i));
+	}
+
+	/*for (int i = 0; i < 5; i++)
 	{
 		adlActor* axis = new adlActor();
 		axis->setModel(adl_rm->getModel("AxisArrowFBX"));
 		scene->spawnActor(axis);
 		axis->set_position(adlVec3(0, (10+i * 3), 0));
 		axis->setName("Axis" + std::to_string(i));
-	}
+	}*/
 
 	
 	adlActor* actor = new adlActor();

@@ -47,6 +47,10 @@
       "path": "res/models/adl/Debugs/AxisArrows/AxisArrowOBJ/AxisArrowOBJ.obj"
     },
     {
+      "name": "House",
+      "path": "res/models/Constructions/Houses/House/House.obj"
+    },
+    {
       "name": "PlaceHouse",
       "path": "res/models/Constructions/Houses/PlaceHouse/PlaceHouse.obj"
     },
@@ -57,10 +61,6 @@
     {
       "name": "Tree",
       "path": "res/models/Resources/Foliage/Tree/Tree.obj"
-    },
-    {
-      "name": "head",
-      "path": "res/models/Try/Head/head.obj"
     }
   ],
   "scenes": [
