@@ -32,7 +32,7 @@ public:
 
 	void add_to_scene(adlEntity_shared_ptr entity);
 
-	// void set_sun(adlEntity_shared_ptr sun);
+	void set_sun(adlEntity_shared_ptr sun);
 
 	void set_camera(adlCamera* camera);
 

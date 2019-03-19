@@ -81,8 +81,11 @@ adlEntity_shared_ptr adlScene_manager::add_entity_to_scene(const std::string& en
 	adlEntity_factory* entity_factory = &adlEntity_factory::get();
 	adlEntity_shared_ptr entity = entity_factory->construct_entity(entity_name);
 
-	entities_.push_back(entity);
-	active_scene_->spawn_entity(entity);
+	if (entity)
+	{
+		entities_.push_back(entity);
+		active_scene_->spawn_entity(entity);
+	}
 
 	return entity;
 }
@@ -116,6 +119,25 @@ void adlScene_manager::set_camera(adlCamera* camera)
 adlScene_shared_ptr adlScene_manager::get_active_scene()
 {
 	return active_scene_;
+}
+
+void adlScene_manager::set_sun(adlEntity_shared_ptr sun)
+{
+	adl_assert(sun);
+	if (!sun)
+	{
+		return;
+	}
+
+	if (!sun->has_component("adlSun_component"))
+	{
+		adlLogger* logger = &adlLogger::get();
+		logger->log_warning("Entity " + sun->get_name() + " has no sun component. It can't be the sun.");
+	}
+	else
+	{
+		active_scene_->set_sun(sun);
+	}
 }
 
 void adlScene_manager::light_component_added(adlEntity_shared_ptr entity, const std::string& component_name)
