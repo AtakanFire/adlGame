@@ -10,15 +10,14 @@
 #include "engine/adl_entities/adlEntity_factory.h"
 
 adlEditor_manager::adlEditor_manager()
-	: light_editor_open_(false),
-	  actor_editor_open_(false),
-	  main_editor_open_(true),
-	  light_editor_(nullptr),
-	  actor_editor_(nullptr),
-	  scene_editor_(nullptr)
+	:	main_editor_open_(false),
+		scene_editor_open_(false),
+		entity_editor_open_(false),
+		scene_editor_(nullptr),
+		spawn_editor_(nullptr),
+		entity_editor_(nullptr)
 {
-	light_editor_ = ADL_NEW(adlLight_editor);
-	actor_editor_ = ADL_NEW(adlActor_editor);
+	entity_editor_ = ADL_NEW(adlEntity_editor);
 	spawn_editor_ = ADL_NEW(adlSpawn_editor);
 	scene_editor_ = ADL_NEW(adlScene_editor);
 }
@@ -30,15 +29,11 @@ void adlEditor_manager::MainMenu()
 		if (ImGui::BeginMenu("adl Editors"))
 		{
 			ImGui::Checkbox("Entity Editor", &entity_editor_open_);
-			ImGui::Checkbox("Actor Editor", &actor_editor_open_);
-			ImGui::Checkbox("Light Editor", &light_editor_open_);
 			ImGui::Checkbox("Help", &help_open_);
 
 			if (ImGui::MenuItem("Close All Editors", "CTRL+Q"))
 			{
 				entity_editor_open_ = false;
-				actor_editor_open_ = false;
-				light_editor_open_ = false;
 				help_open_ = false;
 				show_demo_window_ = false;
 				spawner_editor_open_ = false;
@@ -105,8 +100,9 @@ void adlEditor_manager::update()
 		adlWindow* window = adlWindow::get();
 		if (main_editor_open_)
 		{
+			was_mouse_visible_ = window->is_mouse_visible();
 			window->set_mouse_visible(true);
-			scene_editor_open_ = true;
+			scene_editor_open_ = false;
 		}
 		else
 		{	// Gameplay -> Close Editor
@@ -114,10 +110,9 @@ void adlEditor_manager::update()
 			c->set_camera_type(ct_rts);
 			c->set_paused(false);
 			window->set_mouse_visible(true);
+			// window->set_mouse_visible(was_mouse_visible_);
 
 			entity_editor_open_ = false;
-			actor_editor_open_ = false;
-			light_editor_open_ = false;
 			help_open_ = false;		
 			show_demo_window_ = false;
 
@@ -147,8 +142,6 @@ void adlEditor_manager::update()
 		if (input->get_key(adl_key_left_ctrl) && input->get_key_down(adl_key_q))
 		{
 			entity_editor_open_ = false;
-			actor_editor_open_ = false;
-			light_editor_open_ = false;
 			help_open_ = false;
 			show_demo_window_ = false;
 			spawner_editor_open_ = false;
@@ -173,18 +166,9 @@ void adlEditor_manager::update()
 		}
 
 		// adlEditors
-		adlScene_manager* scene_manager = &adlScene_manager::get();
 		if (entity_editor_open_)
 		{
-			entity_editor_->update(scene_manager->getAllEntities());
-		}
-		if (actor_editor_open_)
-		{
-			//actor_editor_->update(scene_manager->get_all_actors());
-		}
-		if (light_editor_open_)
-		{
-			light_editor_->update(scene_manager->get_sun(), scene_manager->get_all_point_lights());
+			entity_editor_->update(scene_manager->get_all_entities());
 		}
 		if (scene_editor_open_)
 		{
@@ -275,8 +259,6 @@ bool adlEditor_manager::onEdit()
 void adlEditor_manager::clean_up()
 {
 	ADL_DELETE(entity_editor_);
-	ADL_DELETE(actor_editor_);
-	ADL_DELETE(light_editor_);
 	ADL_DELETE(spawn_editor_);
 	ADL_DELETE(scene_editor_);
 }

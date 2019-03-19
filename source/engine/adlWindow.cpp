@@ -9,9 +9,10 @@
 adlWindow* adlWindow::instance_ = nullptr;
 
 adlWindow::adlWindow(const std::string& title, int width, int height)
-	: title_(title),
-	  width_(width),
-	  height_(height)
+	:	title_(title),
+		width_(width),
+		height_(height),
+		mouse_visible_(true)
 {
 	adlLogger* adl_logger = &adlLogger::get();
 #ifdef USE_SDL
@@ -115,6 +116,13 @@ bool adlWindow::get_mouse_visible()
 
 void adlWindow::set_mouse_visible(bool is_visible)
 {
+	if (mouse_visible_ == is_visible)
+	{
+		return;
+	}
+
+	mouse_visible_ = is_visible;
+
 	if (is_visible)
 	{
 		SDL_ShowCursor(SDL_ENABLE);
@@ -125,6 +133,11 @@ void adlWindow::set_mouse_visible(bool is_visible)
 		SDL_ShowCursor(SDL_DISABLE);
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 	}
+}
+
+bool adlWindow::is_mouse_visible()
+{
+	return mouse_visible_;
 }
 
 void adlWindow::set_fullscreen(bool is_fullscreen)

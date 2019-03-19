@@ -2,14 +2,15 @@
 
 #include <iostream>
 
-#include "engine/adl_entities/adlSun.h"
 #include "engine/adl_entities/adlEntity_factory.h"
-
-#include "game/GUI/HUD/HUD.h"
-#include "game/GameObjects/Construction/Construction.h"
+#include "engine/adl_entities/adlTransform_component.h"
+#include "engine/adl_entities/adlRender_component.h"
+#include "engine/adl_entities/adlPhysics_component.h"
+#include "engine/adl_entities/adlPoint_light_component.h"
 
 Game::Game()
 {
+
 }
 
 Game::~Game()
@@ -17,90 +18,40 @@ Game::~Game()
 
 }
 
+
 bool Game::init()
 {
-	// Main Scene Elements
-	adlScene_shared_ptr scene = adl_scene_manager->create_empty_scene("NewScene");
+	adlTransform_component tc;
+	adlRender_component r;
+	adlPhysics_component p;
+	adlPoint_light_component l;
+	adlScene_shared_ptr scene = adl_scene_manager->create_empty_scene("new_scene");
 	adl_scene_manager->set_active_scene(scene);
 
 	scene->set_cube_map(adl_rm->get_cube_map("default"));
-
-	adlSun_shared_ptr sun = MAKE_SHARED(adlSun);
-	sun->set_position(adlVec3(0, 50, 20));
-	adl_scene_manager->setSun(sun);
-
-	adlCamera* camera = ADL_NEW(adlCamera);
-	camera->set_camera_type(ct_god_mode);
-	camera->init();
-
-	adl_scene_manager->set_camera(camera);
-
-	scene->set_sun(sun);
-	scene->set_camera(camera);
-
-	// Other Elements
-
-	adlPoint_light_shared_ptr point_light = MAKE_SHARED(adlPoint_light);
-	point_light->set_name("Light_#1");
-
-	Cube_actor cube;
-
-
-
-	for (int i = 0; i < 10; i++)
-	{
-		Construction* house = new Construction();
-		house->setModel(adl_rm->getModel("House"));
-		//house->setMaterial(adl_rm->getMaterial("PlaceHouse"));
-		scene->spawnActor(house);
-		house->set_position(adlVec3(i * 6, 0, 0));
-		house->setName("PlaceHouse" + std::to_string(i));
-	}
-
-	for (int i = 0; i < 5; i++)
-	{
-		adlActor* tree = new adlActor();
-		tree->setModel(adl_rm->getModel("Tree"));
-		scene->spawnActor(tree);
-		tree->set_position(adlVec3(i*3, 0, 4));
-		tree->setName("Tree" + std::to_string(i));
-	}
-
-	/*for (int i = 0; i < 5; i++)
-	{
-		adlActor* axis = new adlActor();
-		axis->setModel(adl_rm->getModel("AxisArrowFBX"));
-		scene->spawnActor(axis);
-		axis->set_position(adlVec3(0, (10+i * 3), 0));
-		axis->setName("Axis" + std::to_string(i));
-	}*/
-
 	
-	adlActor* actor = new adlActor();
-	actor->setModel(adl_rm->getModel("Plane"));
-	scene->spawnActor(actor, adlVec3(0), adlVec3(0), adlVec3(100, 100, 100));
-	actor->setName("Plane");
+	listener_ = ADL_NEW(Physics_listener);
+	adl_scene_manager->add_physics_observer(listener_);
 
+	adlCamera* scene_camera = ADL_NEW(adlCamera);
+	scene_camera->set_camera_type(ct_god_mode);
+	scene_camera->init();
+	scene_camera->set_pitch(-50);
+	scene_camera->set_position(adlVec3(0, 30, 10));
 
-	HUD* hud = new HUD();
-	scene->spawnEntity(hud);
-	hud->setName("HUD");
+	adl_scene_manager->set_camera(scene_camera);
 
-	
-	std::cout << "\n\n\n" << std::endl;
+	// adl_window->set_mouse_visible(false);
 
-	std::cout << sun->getName() << ": " << sun->getTypeName() << std::endl;
+	scene->set_camera(scene_camera);
 
-	for (auto entity : scene->getAllEntities())
-	{
-		std::cout << entity->getName() << ": " << entity->getTypeName() << std::endl;
-	}
+	adlTerrain_shared_ptr terrain = adl_rm->get_terrain("test_terrain");
+	adl_scene_manager->set_terrain(terrain);
 
-	std::cout << "\n\n\n" << std::endl;
+	entity = adl_scene_manager->add_entity_to_scene("test_entity");
+	adlEntity_shared_ptr entity1 = adl_scene_manager->add_entity_to_scene("test_entity");
 
-	/*adlTerrain_shared_ptr terrain = adl_rm->get_terrain("test_terrain");
-	scene->set_terrain(terrain);*/
-
+	std::shared_ptr<adlTransform_component> component = std::shared_ptr(entity->get_component<adlTransform_component>("adlTransform_component"));
 
 	return true;
 }
@@ -115,6 +66,42 @@ bool Game::update(float dt)
 	if (adl_input->get_key(adl_key_left_alt) && adl_input->get_key_down(adl_key_f))
 	{
 		adl_window->toggle_fullscreen();
+	}
+
+	if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key(adl_key_y))
+	{
+		if (entity->has_component("adlPhysics_component"))
+		{
+			std::shared_ptr<adlPhysics_component> component = std::shared_ptr(entity->get_component<adlPhysics_component>("adlPhysics_component"));
+			component->apply_force(adlVec3(0, 0, 1), 2);
+		}
+	}
+
+	if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key_down(adl_key_h))
+	{
+		adlEntity_factory* fac = &adlEntity_factory::get();
+		fac->remove_component_from_entity(entity, "adlPhysics_component");
+	}
+
+	if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key_down(adl_key_n))
+	{
+		if (!entity->has_component("adlPhysics_component"))
+		{
+			adlEntity_factory* fac = &adlEntity_factory::get();
+			fac->add_component_to_entity(entity, "adlPhysics_component");
+		}
+	}
+
+	if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key_down(adl_key_j))
+	{
+		adlEntity_factory* fac = &adlEntity_factory::get();
+		fac->remove_component_from_entity(entity, "adlPoint_light_component");
+	}
+
+	if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key_down(adl_key_m))
+	{
+		adlEntity_factory* fac = &adlEntity_factory::get();
+		fac->add_component_to_entity(entity, "adlPoint_light_component");
 	}
 
 	return true;

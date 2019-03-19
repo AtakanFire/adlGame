@@ -13,6 +13,7 @@ adlRoot::~adlRoot()
 {
 	ADL_DELETE(fps_manager_);
 	ADL_DELETE(camera);
+	ADL_DELETE(physics_);
 
 #ifdef _DEBUG
 	ADL_DELETE(terrain_debugger);
@@ -49,6 +50,7 @@ void adlRoot::run()
 
 	float dt = fps_manager_->enforce_fps();
 
+	// if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key(adl_key_left_alt) && adl_input->get_key_up(adl_key_w))
 	adlEditor_manager* editorMan = &adlEditor_manager::get();
 	bool onEdit = editorMan->onEdit();
 
@@ -57,9 +59,11 @@ void adlRoot::run()
 		adl_renderer->toggle_wire_frame_mode();
 	}
 
+	// if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key_up(adl_key_v))
 	if (adl_input->get_key_down(adl_key_less) && !adl_input->get_key(adl_key_left_ctrl) && !adl_input->get_key(adl_key_left_alt) && onEdit)
 	{
 		adl_window->set_mouse_visible(adl_window->get_mouse_visible());
+		// adl_window->set_mouse_visible(true);
 	}
 
 	if (!update(dt))
@@ -67,9 +71,20 @@ void adlRoot::run()
 		is_running_ = false;
 	}
 
+	// if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key_down(adl_key_z))
 	if (adl_input->get_key(adl_key_right_ctrl) && adl_input->get_key_down(adl_key_k) && onEdit)
 	{
 		rendering_bounding_boxes_ = !rendering_bounding_boxes_;
+	}
+
+	if (adl_input->get_key(adl_key_left_ctrl) && adl_input->get_key_down(adl_key_p))
+	{
+		rendering_physics_diagnostics_ = !rendering_physics_diagnostics_;
+	}
+
+	if (rendering_physics_diagnostics_)
+	{
+		physics_->render_diagnostics();
 	}
 
 	if (rendering_bounding_boxes_)
@@ -77,15 +92,19 @@ void adlRoot::run()
 		debug_renderer->render_bounding_boxes();
 	}
 
+	mouse_picker->update(adl_renderer->get_projection_matrix(), adl_scene_manager->get_camera()->get_view_matrix());
+
 	adl_scene_manager->update(dt);
 	adl_scene_manager->render();
+
+	//physics_->sync_physics_to_rendering();
+	physics_->update(dt);
+	physics_->sync_scene();
 
 	terrain_debugger->update();
 
 	debug_renderer->render();
 	debug_renderer->clear_render_queue();
-
-	mouse_picker->update(adl_renderer->get_projection_matrix(), adl_scene_manager->get_camera()->get_view_matrix());
 
 #ifdef _DEBUG
 	adl_editor->update();
@@ -95,10 +114,10 @@ void adlRoot::run()
 	fps_string = fps_string.substr(0, fps_string.size() - 4);
 
 	adlFont_shared_ptr arial = adl_rm->get_font("arial");
-
+	
 	if (onEdit)
 	{
-		adl_renderer->render_text("FPS: " + fps_string, arial, 0.89f * adl_window->get_width(), 0.95f * adl_window->get_height(), 0.5f, adlColor::YELLOW);
+	adl_renderer->render_text("FPS: " + fps_string, arial, 0.89f * adl_window->get_width(), 0.95f * adl_window->get_height(), 0.5f, adlColor::YELLOW);
 	}
 
 #endif // _DEBUG
@@ -129,6 +148,10 @@ void adlRoot::game_thread()
 	terrain_debugger	= ADL_NEW(adlTerrain_debugger);
 #endif // _DEBUG
 	camera				= ADL_NEW(adlCamera);
+	physics_			= ADL_NEW(adlBullet_physics);
+	physics_->initialize();
+
+	adl_scene_manager->set_physics(physics_);
 
 	//adl_scene_manager->set_camera(camera);
 	adlMat4 projection_matrix = projection_matrix.create_projection_matrix(adl_window->get_width(), adl_window->get_height(), adlMath::deg_to_rad(45), 0.1f, 1000.0f);

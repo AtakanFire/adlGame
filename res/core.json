@@ -1,4 +1,10 @@
 {
+  "entities": [
+    {
+      "name": "test_entity",
+      "path": "res/entities/test_entity.json"
+    }
+  ],
   "fonts": [
     {
       "name": "arial",

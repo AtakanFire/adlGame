@@ -2,8 +2,7 @@
 #define game_h__
 
 #include "engine/adlRoot.h"
-
-#include "Cube_actor.h"
+#include "game/Physics_listener.h"
 
 class Game : public adlRoot
 {
@@ -16,6 +15,8 @@ public:
 
 private:
 	adlTimer timer_;
+	Physics_listener* listener_;
+	adlEntity_shared_ptr entity = nullptr;
 };
 
 #endif // game_h__

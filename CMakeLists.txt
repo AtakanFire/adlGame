@@ -104,6 +104,9 @@ INCLUDE(${ADL_CMAKE_DIR}/FindSTBIMAGE.cmake)
 # RTTR
 INCLUDE(${ADL_CMAKE_DIR}/FindRTTR.cmake)
 
+# BULLETPHYSICS
+INCLUDE(${ADL_CMAKE_DIR}/FindBULLET.cmake)
+
 # IMGUI
 # INCLUDE(${ADL_CMAKE_DIR}/FindIMGUI.cmake)
 
@@ -112,7 +115,7 @@ INCLUDE(${ADL_CMAKE_DIR}/FindRTTR.cmake)
 
 
 # ADL Includes
-include_directories(
+include_directories( SYSTEM
 	${PROJECT_SOURCE_DIR}/headers/
 	${PROJECT_SOURCE_DIR}/sources/
 	${PROJECT_SOURCE_DIR}/source/
@@ -127,6 +130,7 @@ include_directories(
 	${FREETYPE_INCLUDE_DIRS}
 	${STBIMAGE_INCLUDE_DIRS}
 	${RTTR_INCLUDE_DIRS}
+	${BULLET_INCLUDE_DIRS}
 )
 
 # ADL Libs
@@ -139,6 +143,9 @@ target_link_libraries( game
 	${ASSIMP_LIBRARIES}
 	${FREETYPE_LIBRARIES}
 	${RTTR_LIBRARIES}
+	${BULLET_LINEAR_MATH_LIB}
+	${BULLET_COLLISION_LIB}
+	${BULLET_DYNAMICS_LIB}
 )
 
 if(UNIX)

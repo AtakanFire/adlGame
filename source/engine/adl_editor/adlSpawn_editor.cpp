@@ -137,24 +137,22 @@ void adlSpawn_editor::update(adlScene_manager* scene_manager)
 				{
 					ImGui::Indent();
 
-					
-					adlActor* spawned_actor = new adlActor();
+					//adlActor_shared_ptr spawned_actor = scene_manager->spawn_actor(actors[i].data(), spawn_transform_.o, spawn_transform_.rot, spawn_transform_.scale);
 
 					if (spawn_model_ != nullptr)
 					{
-						spawned_actor->set_model(spawn_model_);
+						//spawned_actor->set_model(spawn_model_);
 						spawn_model_ = adl_rm->get_model("");
 
 					}
 
 					if (spawn_material_ != nullptr)
 					{
-						spawned_actor->set_material(spawn_material_);
+						//spawned_actor->set_material(spawn_material_);
 						spawn_material_ = adl_rm->get_material("");
 					}
 
-					scene_manager->spawnActor(spawned_actor, spawn_transform_.o, spawn_transform_.rot, spawn_transform_.scale);
-
+					//is_visible_ = false;
 					ImGui::Unindent();
 				}
 
@@ -229,7 +227,7 @@ void adlSpawn_editor::update(adlScene_manager* scene_manager)
 				{
 					ImGui::Indent();
 
-					scene_manager->spawn_light(lights[i].data(), spawn_transform_.o, spawn_transform_.rot, spawn_transform_.scale);
+					//scene_manager->spawn_light(lights[i].data(), spawn_transform_.o, spawn_transform_.rot, spawn_transform_.scale);
 
 					is_visible_ = false;
 					ImGui::Unindent();

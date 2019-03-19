@@ -10,6 +10,8 @@
 #include "engine/adl_resource/adlCube_map.h"
 #include "engine/adlWindow.h"
 #include "engine/adl_renderer/adlDebug_renderer.h"
+#include "engine/adl_entities/adlRender_component.h"
+#include "engine/adl_entities/adlTransform_component.h"
 
 #include <iostream>
 #include <GL/glew.h>
@@ -26,90 +28,45 @@ void adlRender_manager::prepare()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void adlRender_manager::render(adlActor* actor)
+void adlRender_manager::init()
 {
-	adl_assert(sun_);
-	adlColor color = actor->get_color();
-	if (is_wire_frame_mode_)
-	{
-		color = adlColor::WHITE;
-	}
-	adlModel_shared_ptr model = actor->get_model();
-	adlResource_manager* adl_rm = &adlResource_manager::get();
-	adlMaterial_shared_ptr material = actor->get_material();
-	if (model == nullptr)
-	{
-		material = adl_rm->get_material("blank_material");
-		model = adl_rm->get_model("Cube");
-	}
-	adl_assert(model);
-
-	adlMat4 view_matrix = camera_->get_view_matrix();
-
-	adlShader_shared_ptr shader;
-	if (material != nullptr)
-	{
-		if (material->get_texture() != nullptr)
-		{
-			shader = adl_rm->get_shader("textured");
-		}
-		else
-		{
-			shader = adl_rm->get_shader("no_texture");
-		}
-	}
-	else
-	{
-		shader = adl_rm->get_shader("no_texture");
-	}
-	adl_assert(shader);
-
-	shader->start();
-
-	adlMat4 mvp_matrix = projection_matrix_ * view_matrix * actor->get_transform().get_transformation_matrix();
-	adlMat4 model_matrix = actor->get_transform().get_transformation_matrix();
-	shader->load_mvp(mvp_matrix);
-	shader->load_light(sun_);
-	shader->load_model_matrix(model_matrix);
-	shader->load_camera_position(camera_->get_position());
-	shader->load_point_lights(lights_);
-
-
-	if (material != nullptr)
-	{
-		shader->load_material(material);
-		if (material->get_texture() != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, material->get_texture()->get_id());
-			shader->load_texture();
-
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, material->get_texture()->get_specular_map_id());
-		}
-	}
-	model->draw(shader, model_matrix);
-	shader->stop();
+	is_wire_frame_mode_ = false;
+	glFrontFace(GL_CCW);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
 }
 
-void adlRender_manager::render(adlActor_shared_ptr actor)
+void adlRender_manager::render(adlEntity_shared_ptr entity)
 {
-	adl_assert(sun_);
-	adlColor color = actor->get_color();
-	if (is_wire_frame_mode_)
+	if (!entity)
 	{
-		color = adlColor::WHITE;
+		return;
 	}
-	adlModel_shared_ptr model = actor->get_model();
+	std::shared_ptr<adlTransform_component> transform_component;
+	if (entity->has_component("adlTransform_component"))
+	{
+		transform_component = std::shared_ptr(entity->get_component<adlTransform_component>("adlTransform_component"));
+	}
+	std::shared_ptr<adlRender_component> render_component;
+	if (entity->has_component("adlRender_component"))
+	{
+		render_component = std::shared_ptr(entity->get_component<adlRender_component>("adlRender_component"));
+	}
+	if (render_component == nullptr)
+	{
+		return;
+	}
+
 	adlResource_manager* adl_rm = &adlResource_manager::get();
-	adlMaterial_shared_ptr material = actor->get_material();
+
+	adlModel_shared_ptr model = render_component->get_model();
+	adlMaterial_shared_ptr material = render_component->get_material();
 	if (model == nullptr)
 	{
 		material = adl_rm->get_material("missing");
 		model = adl_rm->get_model("Cube");
 	}
 	adl_assert(model);
-
 	adlMat4 view_matrix = camera_->get_view_matrix();
 
 	adlShader_shared_ptr shader;
@@ -132,13 +89,14 @@ void adlRender_manager::render(adlActor_shared_ptr actor)
 
 	shader->start();
 
-	adlMat4 mvp_matrix = projection_matrix_ * view_matrix * actor->get_transform().get_transformation_matrix();
-	adlMat4 model_matrix = actor->get_transform().get_transformation_matrix();
+	adlMat4 mvp_matrix = projection_matrix_ * view_matrix * transform_component->get_transform().get_transformation_matrix();
+	adlMat4 model_matrix = transform_component->get_transform().get_transformation_matrix();
 	shader->load_mvp(mvp_matrix);
 	shader->load_light(sun_);
 	shader->load_model_matrix(model_matrix);
 	shader->load_camera_position(camera_->get_position());
-	shader->load_point_lights(lights_);
+	shader->load_point_lights(point_lights_);
+	shader->load_material(material);
 
 
 	if (material != nullptr)
@@ -155,45 +113,6 @@ void adlRender_manager::render(adlActor_shared_ptr actor)
 		}
 	}
 	model->draw(shader, model_matrix);
-	shader->stop();
-}
-
-void adlRender_manager::render(adlSun_shared_ptr light)
-{
-	adl_assert(light);
-	adlModel_shared_ptr model = light->get_model();
-	adl_assert(model);
-	adlMat4 view_matrix = camera_->get_view_matrix();
-	adlShader_shared_ptr shader = light->get_shader();
-	adl_assert(shader);
-
-	adlMat4 mvp_matrix = projection_matrix_ * view_matrix * light->get_transform().get_transformation_matrix();
-
-	shader->start();
-	shader->load_mvp(mvp_matrix);
-	shader->load_light_color(light->get_color().to_vec3());
-	//shader->load_light_color(light_->get_color().to_vec3());
-
-	model->draw(shader, light->get_transform().get_transformation_matrix());
-	shader->stop();
-}
-
-void adlRender_manager::render(adlPoint_light_shared_ptr point_light)
-{
-	adl_assert(point_light);
-	adlModel_shared_ptr model = point_light->get_model();
-	adl_assert(model);
-	adlMat4 view_matrix = camera_->get_view_matrix();
-	adlShader_shared_ptr shader = point_light->get_shader();
-	adl_assert(shader);
-
-	adlMat4 mvp_matrix = projection_matrix_ * view_matrix * point_light->get_transform().get_transformation_matrix();
-
-	shader->start();
-	shader->load_mvp(mvp_matrix);
-	shader->load_light_color(point_light->get_diffuse().normalize());
-
-	model->draw(shader, point_light->get_transform().get_transformation_matrix());
 	shader->stop();
 }
 
@@ -220,7 +139,8 @@ void adlRender_manager::render(adlTerrain_shared_ptr terrain)
 	shader->load_mvp(mvp_matrix);
 	shader->load_light(sun_);
 	shader->load_camera_position(camera_->get_position());
-	shader->load_point_lights(lights_);
+	//shader->load_point_lights(lights_);
+	shader->load_point_lights(point_lights_);
 	shader->load_model_matrix(model_matrix);
 	shader->load_material(adl_rm->get_material("matte"));
 	terrain_model->draw(shader, transform.get_transformation_matrix());
@@ -342,14 +262,9 @@ void adlRender_manager::set_camera(adlCamera* camera)
 	camera_ = camera;
 }
 
-void adlRender_manager::set_sun(adlSun_shared_ptr light)
+void adlRender_manager::set_sun(adlEntity_shared_ptr sun)
 {
-	sun_ = light;
-}
-
-void adlRender_manager::set_lights(const std::vector<adlPoint_light_shared_ptr>& lights)
-{
-	lights_ = lights;
+	sun_ = sun;
 }
 
 adlMat4 adlRender_manager::get_projection_matrix()
@@ -357,10 +272,7 @@ adlMat4 adlRender_manager::get_projection_matrix()
 	return projection_matrix_;
 }
 
-void adlRender_manager::init()
+void adlRender_manager::set_lights(const std::vector<adlEntity_shared_ptr>& point_lights)
 {
-	is_wire_frame_mode_ = false;
-	glFrontFace(GL_CCW);
-	glCullFace(GL_BACK);
-	glEnable(GL_CULL_FACE);
+	point_lights_ = point_lights;
 }

@@ -3,6 +3,7 @@
 
 #include "engine/adl_debug/adlLogger.h"
 #include "engine/adlMemory.h"
+#include "engine/adlShared_types.h"
 
 #include <map>
 #include <memory>
@@ -11,7 +12,7 @@ template <class T> void* constructor() { return (void*)new T(); }
 typedef void*(*constructor_t)();
 typedef std::map<std::string, constructor_t> map_type;
 
-#define REGISTER_ENTITY(class_name) adlEntity_factory* factory = &adlEntity_factory::get(); \
+#define REGISTER_COMPONENT(class_name) adlEntity_factory* factory = &adlEntity_factory::get(); \
 								   factory->register_class<class_name>(#class_name, true); \
 								   type_name = #class_name;
 
@@ -28,14 +29,14 @@ public:
 	}
 
 	template <class T>
-	void register_class(const std::string& class_name, bool isEntity)
+	void register_class(const std::string& class_name, bool is_component)
 	{
-		if (isEntity)
+		if (is_component)
 		{
-			if (entities_.count(class_name) == 0)
+			if (components_.count(class_name) == 0)
 			{
-				entities_.insert(std::make_pair(class_name, &constructor<T>));
-				registered_entities_.push_back(class_name);
+				components_.insert(std::make_pair(class_name, &constructor<T>));
+				registered_components_.push_back(class_name);
 			}
 		}
 		else
@@ -48,8 +49,12 @@ public:
 		}
 	}
 
-	void* construct_entity(const std::string& class_name);
+	adlEntity_shared_ptr construct_entity(const std::string& entity_name);
 	void* construct_light(const std::string& class_name);
+	void* construct_component(const std::string& component_name);
+
+	void remove_component_from_entity(adlEntity_shared_ptr entity, const std::string& component_name);
+	void add_component_to_entity(adlEntity_shared_ptr entity, const std::string& component_name);
 
 	const std::vector<std::string>& get_all_registered_entities() const;
 	const std::vector<std::string>& get_all_registered_lights() const;
@@ -57,11 +62,17 @@ public:
 
 private:
 	adlEntity_factory();
+	void light_component_added(adlEntity_shared_ptr entity, const std::string& component_name);
+	void light_component_removed(adlEntity_shared_ptr entity, const std::string& component_name);
 
-	map_type entities_;
+	map_type components_;
 	map_type lights_;
-	std::vector<std::string> registered_entities_;
+	std::vector<std::string> registered_components_;
 	std::vector<std::string> registered_lights_;
+
+	adlEntity_id last_id_;
+
+	static adlEntity_id next_id;
 };
 
 #endif // adl_entity_factory_h__
