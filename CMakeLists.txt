@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 
 # lets name the project
-project(adl)
+project(adlGame)
 
 # add the -c and -Wall flags
 if(MSVC)

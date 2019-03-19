@@ -8,6 +8,8 @@
 #include "engine/adl_entities/adlPhysics_component.h"
 #include "engine/adl_entities/adlPoint_light_component.h"
 
+#include "game/GameComponents/Constructions/ConstructionComponent.h"
+
 Game::Game()
 {
 
@@ -21,10 +23,16 @@ Game::~Game()
 
 bool Game::init()
 {
+	// adl Components
 	adlTransform_component tc;
 	adlRender_component r;
 	adlPhysics_component p;
 	adlPoint_light_component l;
+
+	// Game Components
+	ConstructionComponent cc;
+
+
 	adlScene_shared_ptr scene = adl_scene_manager->create_empty_scene("new_scene");
 	adl_scene_manager->set_active_scene(scene);
 
@@ -49,8 +57,9 @@ bool Game::init()
 	adl_scene_manager->set_terrain(terrain);
 
 	entity = adl_scene_manager->add_entity_to_scene("test_entity");
-	adlEntity_shared_ptr entity1 = adl_scene_manager->add_entity_to_scene("test_entity");
 
+	Entity construction = adl_scene_manager->add_entity_to_scene("Construction");
+	 
 	std::shared_ptr<adlTransform_component> component = std::shared_ptr(entity->get_component<adlTransform_component>("adlTransform_component"));
 
 	return true;

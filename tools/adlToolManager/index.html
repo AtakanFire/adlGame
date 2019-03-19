@@ -40,16 +40,16 @@
         Game? <input type="checkbox" name="pathGame" id="pathGame" checked>
         <br>
         <select name="ClassFormat" id="ClassFormat" onchange="ClassOptionsController()">
-                <option value="isEntity">Entity</option>
+                <option value="isComponent">Component</option>
                 <option value="isCpp">C++</option>
         </select>
         <br>
         <div id="ClassOptions">
+            Class Generic? <input type="checkbox" name="GameGeneric" id="GameGeneric" checked><br>
             Class Register? <input type="checkbox" name="ClassRegister" id="ClassRegister" checked><br>
-            Class Deserialize? <input type="checkbox" name="ClassDeserialize" id="ClassDeserialize" checked><br>
         </div>
-        Parent: <input id="ClassParent" type="text" name="commandInput" placeholder="ClassParent" value="adlActor" /><br>
-        <input id="ClassName" type="text" name="commandInput" placeholder="ClassName" value="" />
+        Parent: <input id="ClassParent" type="text" name="commandInput" placeholder="ClassParent" value="adlEntity_component" /><br>
+        <input id="ClassName" type="text" name="commandInput" placeholder="ClassName" value="GameComponents/" />
         <button onclick="Classor()">Create Class</button>        
     </div>
     <br>
@@ -127,10 +127,10 @@
 
     function Classor() {
         var options = 
-            document.getElementById('ClassFormat').value + ","
-            + document.getElementById('ClassRegister').checked + ","
-            + document.getElementById('ClassDeserialize').checked + ","
-            + document.getElementById('ClassParent').value;
+            document.getElementById('ClassFormat').value + "," // settings[0]
+            + document.getElementById('ClassRegister').checked + "," // settings[1]
+            + document.getElementById('ClassParent').value; // settings[2]
+            + document.getElementById('GameGeneric').checked + "," // settings[3]
         
         var cPath = document.getElementById("pathGame").checked?'game/':'engine/';
         console.log(cPath);
@@ -148,12 +148,12 @@
         if(cFormat.value == 'isCpp'){
             document.getElementById('ClassOptions').hidden = true;
             document.getElementById('ClassRegister').checked = false;
-            document.getElementById('ClassDeserialize').checked = false;
+            document.getElementById('GameGeneric').checked = false;
             document.getElementById('ClassParent').value = "";            
         }else{
             document.getElementById('ClassOptions').hidden = false;
             document.getElementById('ClassRegister').checked = true;
-            document.getElementById('ClassDeserialize').checked = true;
+            document.getElementById('GameGeneric').checked = true;
         }
     }
 </script>
