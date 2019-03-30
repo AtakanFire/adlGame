@@ -12,60 +12,6 @@ adlEntity_editor::~adlEntity_editor() {
 
 void adlEntity_editor::update(std::vector<adlEntity_shared_ptr>& entities)
 {
-	
-	/*
-	bool *p = NULL;
-	uniqueId_ = 0;
-
-	ImGui::Begin("Entity Editor", p, ImGuiWindowFlags_MenuBar);
-
-
-	if (ImGui::BeginMenuBar())
-	{
-		ImGui::Text("Entities");
-
-		ImGui::Text("|");
-
-		if (ImGui::BeginMenu("Show"))
-		{
-			if (ImGui::MenuItem("All", ""))
-			{
-				std::cout << "That isn't added yet" << std::endl;
-			}
-
-		ImGui::EndMenu();
-		}
-
-		ImGui::Text("|");
-
-		if (ImGui::BeginMenu("Settings"))
-		{
-			if (ImGui::BeginMenu("Snap"))
-			{
-				std::string tag = "Snap Unit##snapUnit";
-				ImGui::InputFloat(tag.c_str(), &snapUnit, 0.1);
-
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::MenuItem("Serialize/Deserialize", ""))
-			{
-				serializeAllDatas_ = !serializeAllDatas_;
-			}
-
-			ImGui::EndMenu();
-		}
-		ImGui::EndMenuBar();
-	}
-
-	if (serializeAllDatas_)
-	{
-		serializeEntities(entities);
-	}
-
-	ImGui::End();
-	*/
-
 	adlEntity_factory* fac = &adlEntity_factory::get();
 	std::vector<std::string> component_names = fac->get_all_registered_entities();
 

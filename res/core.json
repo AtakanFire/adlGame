@@ -2,15 +2,23 @@
   "entities": [
     {
       "name": "Construction",
-      "path": "res/entities/Construction.json"
+      "path": "res/entities/Constructions/Construction.json"
     },
     {
-      "name": "tester_entity",
-      "path": "res/entities/tester_entity.json"
+      "name": "HUD",
+      "path": "res/entities/HUD.json"
     },
     {
-      "name": "test_entity",
-      "path": "res/entities/test_entity.json"
+      "name": "Human",
+      "path": "res/entities/Humans/Human.json"
+    },
+    {
+      "name": "Resource",
+      "path": "res/entities/Resources/Resource.json"
+    },
+    {
+      "name": "Sun",
+      "path": "res/entities/Sun.json"
     }
   ],
   "fonts": [
@@ -88,6 +96,10 @@
     }
   ],
   "terrains": [
+    {
+      "name": "FlatTerrain",
+      "height_map": "res/terrains/FlatTerrain.png"
+    },
     {
       "name": "test",
       "height_map": "res/terrains/test/test.png"

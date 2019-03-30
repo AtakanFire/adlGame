@@ -1,0 +1,27 @@
+{
+	"type": "Resource",
+	"components": 
+	[
+		{
+			"type": "adlTransform_component",
+			"position": [0.0, 0.0, 0.0],
+			"rotation": [0.0, 0.0, 0.0],
+			"scale": [1.0, 1.0, 1.0]
+		},
+		{
+			"type": "adlRender_component",
+			"model": "Tree",
+			"material": "silver"
+		},
+		{
+			"type": "ResourceAttributes",
+			"properties": {
+				"name": "Wood",
+				"resource": [100, 100]
+			},
+			"requires": {
+				"minExperience": 0
+			}
+		}
+	]
+}

@@ -1,14 +1,15 @@
-#ifndef ConstructionComponent_h__
-#define ConstructionComponent_h__
+#ifndef HUDComponent_h__
+#define HUDComponent_h__
 
 #include "engine/adl_entities/adlEntity_component.h"
+
 #include "game/GameGeneric/GameGenericTypedef.h"
 
-class ConstructionComponent : public adlEntity_component { 
+class HUDComponent : public adlEntity_component { 
 
 public:
 
-	ConstructionComponent();
+	HUDComponent();
 
 	virtual bool init(const rapidjson::Value& json_object) override;
 	virtual void post_init() override;
@@ -16,8 +17,11 @@ public:
 	virtual void destroy() override;
 	virtual void editor() override;
 
+
 private:
+
+	void MainMenu();
 
 };
 
-#endif //ConstructionComponent_h__
+#endif //HUDComponent_h__

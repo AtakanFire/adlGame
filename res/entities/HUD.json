@@ -1,0 +1,9 @@
+{
+	"type": "HUD",
+	"components": 
+	[
+		{
+			"type": "HUDComponent"
+		}
+	]
+}
