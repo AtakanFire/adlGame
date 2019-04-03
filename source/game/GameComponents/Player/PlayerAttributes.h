@@ -1,21 +1,21 @@
-#ifndef HUDComponent_h__
-#define HUDComponent_h__
+#ifndef PlayerAttributes_h__
+#define PlayerAttributes_h__
 
 #include "engine/adl_entities/adlEntity_component.h"
 
 #include "game/GameGeneric/GameGenericTypedef.h"
 
-class HUDComponent : public adlEntity_component { 
+class PlayerAttributes : public adlEntity_component { 
 
 public:
 
-	static HUDComponent& get()
+	static PlayerAttributes& get()
 	{
-		static HUDComponent instance;
+		static PlayerAttributes instance;
 		return instance;
 	}
 
-	HUDComponent();
+	PlayerAttributes();
 
 	virtual bool init(const rapidjson::Value& json_object) override;
 	virtual void post_init() override;
@@ -23,11 +23,13 @@ public:
 	virtual void destroy() override;
 	virtual void editor() override;
 
+	void setSelection(Entity selected);
 
 private:
 
-	void MainMenu();
+	Entity selection;
+
 
 };
 
-#endif //HUDComponent_h__
+#endif //PlayerAttributes_h__

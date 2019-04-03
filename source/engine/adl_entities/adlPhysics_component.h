@@ -24,10 +24,18 @@ public:
 	void apply_torque(const adlVec3& direction, float newtons);
 	void stop();
 
+	void set_static(bool is_static);
+
+	virtual void on_mouse_hover_start() {}
+	virtual void on_mouse_hover_end() {}
+	virtual void under_mouse() {}
+
 private:
 	std::shared_ptr<adlIPhysics> physics_;
 
 	std::string shape_;
+
+	bool is_static_;
 
 	float acceleration_, anguler_acceleration_;
 	float max_velocity_, max_angular_velocity_;

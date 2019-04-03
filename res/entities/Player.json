@@ -1,0 +1,9 @@
+{
+	"type": "Player",
+	"components": 
+	[
+		{
+			"type": "PlayerAttributes"
+		}
+	]
+}

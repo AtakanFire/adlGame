@@ -11,11 +11,14 @@
 
 #include "game/GameGeneric/GameGenericTypedef.h"
 
+#include "game/GameComponents/Player/PlayerAttributes.h"
 #include "game/GameComponents/Constructions/ConstructionAttributes.h"
 #include "game/GameComponents/Resources/ResourceAttributes.h"
 #include "game/GameComponents/Humans/HumanAttributes.h"	
 
 #include "game/GameComponents/HUD/HUDComponent.h"	
+
+#include "game/GameComponents/Misc/SelectableComponent.h"	
 
 //#include "game/GameComponents/Behaviours/"	
 
@@ -63,11 +66,16 @@ bool Game::init()
 	adl_scene_manager->set_sun(sunEntity);
 
 	// Game Components
+	PlayerAttributes pAtr;
 	ConstructionAttributes cAtr;
 	ResourceAttributes rAtr;
 	HumanAttributes hAtr;
 	HUDComponent hudC;
 
+	SelectableComponent selectC;
+
+
+	Entity player = adl_scene_manager->add_entity_to_scene("Player");
 
 	Entity hud = adl_scene_manager->add_entity_to_scene("HUD");
 

@@ -13,6 +13,10 @@
       "path": "res/entities/Humans/Human.json"
     },
     {
+      "name": "Player",
+      "path": "res/entities/Player.json"
+    },
+    {
       "name": "Resource",
       "path": "res/entities/Resources/Resource.json"
     },

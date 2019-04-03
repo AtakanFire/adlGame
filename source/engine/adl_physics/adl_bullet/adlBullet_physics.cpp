@@ -7,6 +7,7 @@
 #include "../../adl_resource/adlResource_manager.h"
 #include "../../adl_entities/adlTransform_component.h"
 #include "engine/adl_entities/adlEntity.h"
+#include "engine/adl_entities/adlPhysics_component.h"
 
 #pragma warning(push, 0)
 #include "BulletCollision/NarrowPhaseCollision/btRaycastCallback.h"
@@ -181,6 +182,7 @@ void adlBullet_physics::sync_physics_to_rendering()
 void adlBullet_physics::update(float dt)
 {
 	dynamics_world_->stepSimulation(dt / 1000.f, 4);
+	//dynamics_world_->performDiscreteCollisionDetection();
 
 	adlMouse_picker* mouse_picker = &adlMouse_picker::get();
 	adlRay mouse_ray = mouse_picker->get_mouse_ray();
@@ -196,6 +198,7 @@ void adlBullet_physics::update(float dt)
 
 	dynamics_world_->rayTest(from, to, closest_results);
 
+	std::vector<adlEntity_shared_ptr> mouse_ray_collisions_this_frame;
 	if (closest_results.hasHit())
 	{
 		btRigidBody const * const hit_body = static_cast<btRigidBody const *>(closest_results.m_collisionObject);
@@ -210,7 +213,44 @@ void adlBullet_physics::update(float dt)
 				observers_.at(i)->on_terrain_mouse_ray_collision(adl_hit_point);
 			}
 		}
+		else
+		{
+			mouse_ray_collisions_this_frame.push_back(entity);
+			if (std::find(previous_mouse_ray_collisions_.begin(), previous_mouse_ray_collisions_.end(), entity) == previous_mouse_ray_collisions_.end())
+			{
+				for (unsigned int i = 0; i < observers_.size(); i++)
+				{
+					observers_[i]->on_mouse_collision_start(entity);
+				}
+
+				std::shared_ptr<adlPhysics_component> physics_comp = std::shared_ptr(entity->get_component<adlPhysics_component>("adlPhysics_component"));
+				adl_assert(physics_comp);
+				physics_comp->on_mouse_hover_start();
+			}
+			else
+			{
+				std::shared_ptr<adlPhysics_component> physics_comp = std::shared_ptr(entity->get_component<adlPhysics_component>("adlPhysics_component"));
+				adl_assert(physics_comp);
+				physics_comp->under_mouse();
+			}
+		}
 	}
+
+	std::vector<adlEntity_shared_ptr> removed_mouse_ray_collisions_;
+
+	std::set_difference(previous_mouse_ray_collisions_.begin(),
+		previous_mouse_ray_collisions_.end(),
+		mouse_ray_collisions_this_frame.begin(), mouse_ray_collisions_this_frame.end(),
+		std::inserter(removed_mouse_ray_collisions_, removed_mouse_ray_collisions_.begin()));
+
+	for (auto entity : removed_mouse_ray_collisions_)
+	{
+		std::shared_ptr<adlPhysics_component> physics_comp = std::shared_ptr(entity->get_component<adlPhysics_component>("adlPhysics_component"));
+		adl_assert(physics_comp);
+		physics_comp->on_mouse_hover_end();
+	}
+
+	previous_mouse_ray_collisions_ = mouse_ray_collisions_this_frame;
 }
 
 void adlBullet_physics::sync_scene()
@@ -318,12 +358,15 @@ void adlBullet_physics::add_shape(adlEntity_shared_ptr entity, btCollisionShape*
 
 	btVector3 localInertia(0.f, 0.f, 0.f);
 	if (mass > 0.f)
+	{
 		shape->calculateLocalInertia(mass, localInertia);
+	}
 
 	Actor_motion_state* const new_motion_state = ADL_NEW(Actor_motion_state, trans_comp->get_position(), transform.rot, transform.scale);
 	btRigidBody::btRigidBodyConstructionInfo rb_info(mass, new_motion_state, shape, localInertia);
 
 	btRigidBody* const body = ADL_NEW(btRigidBody, rb_info);
+	//body->setCollisionFlags(1);
 
 	dynamics_world_->addRigidBody(body);
 
@@ -485,9 +528,9 @@ void adlBullet_physics::remove_collision_object(btCollisionObject* obj)
 		delete body->getUserPointer();
 		delete body->getUserPointer();
 
-		for (int ii = body->getNumConstraintRefs() - 1; ii >= 0; --ii)
+		for (int i = body->getNumConstraintRefs() - 1; i >= 0; --i)
 		{
-			btTypedConstraint * const constraint = body->getConstraintRef(ii);
+			btTypedConstraint * const constraint = body->getConstraintRef(i);
 			dynamics_world_->removeConstraint(constraint);
 			delete constraint;
 		}
@@ -534,6 +577,22 @@ void adlBullet_physics::kinematic_move(adlTransform transform, adlEntity_shared_
 void adlBullet_physics::stop(adlEntity_shared_ptr entity)
 {
 	set_velocity(entity, adlVec3(0.0f));
+}
+
+void adlBullet_physics::set_static(adlEntity_shared_ptr entity, bool is_static)
+{
+	btRigidBody* rigid_body = get_body(entity);
+	adl_assert(rigid_body);
+
+	if (is_static)
+	{
+		rigid_body->setCollisionFlags(rigid_body->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
+	}
+	else
+	{
+		rigid_body->setCollisionFlags(rigid_body->getCollisionFlags() & ~btCollisionObject::CF_STATIC_OBJECT);
+		rigid_body->activate();
+	}
 }
 
 const adlTransform& adlBullet_physics::get_transform(adlEntity_shared_ptr entity)
