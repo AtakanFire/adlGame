@@ -17,6 +17,8 @@
 
 #include "game/GameComponents/HUD/HUDComponent.h"	
 
+//#include "game/GameComponents/Behaviours/"	
+
 Game::Game()
 {
 
@@ -70,12 +72,14 @@ bool Game::init()
 	Entity hud = adl_scene_manager->add_entity_to_scene("HUD");
 
 
-	for (int i = 0; i < 10; i++)
+	/*for (int i = 0; i < 10; i++)
 	{
 		Entity resource = adl_scene_manager->add_entity_to_scene("Resource");
 		std::shared_ptr<adlTransform_component> resourceTransform = std::shared_ptr(resource->get_component<adlTransform_component>("adlTransform_component"));
 		resourceTransform->set_position(adlVec3(i * 2, 0, 0));
-	}
+	}*/
+
+	Entity resource = adl_scene_manager->add_entity_to_scene("Resource");
 
 	Entity construction = adl_scene_manager->add_entity_to_scene("Construction");
 

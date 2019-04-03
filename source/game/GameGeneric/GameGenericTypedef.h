@@ -3,14 +3,11 @@
 
 #include "engine/adl_entities/adlEntity.h"
 
-//#include "engine/adl_entities/adlEntity_factory.h"
-//#include "engine/adl_entities/adlTransform_component.h"
-//#include "engine/adl_entities/adlRender_component.h"
-//#include "engine/adl_entities/adlPhysics_component.h"
-//#include "engine/adl_entities/adlPoint_light_component.h"
-//#include "engine/adl_entities/adlEntity_component.h"
-
 typedef adlEntity_shared_ptr Entity;
+
+template<typename T>	
+using SharedPointer = std::shared_ptr<T>;
+
 
 //typedef adlEntity_component adlEntityComponent;
 //typedef adlTransform_component adlTransformComponent;

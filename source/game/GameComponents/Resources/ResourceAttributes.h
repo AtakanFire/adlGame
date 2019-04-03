@@ -16,23 +16,32 @@ public:
 	virtual void update(float dt) override;
 	virtual void destroy() override;
 	virtual void editor() override;
-
-	// Resource Attributes
+	
+	// Resource Attributes 
 	struct ResourceProperties {
 		std::string name = "";
-		adlVec2 resource = adlVec2(0,100); // Current/Max
+		std::string type = "";
+		adlVec2 resource = adlVec2(0, 100); // Resource: (Current/Max)
 	};
 
 	struct ResourceRequires {
 		float minExperience = 0;
 	};
 
-	ResourceProperties properties;
-	ResourceRequires requires;
 
+	ResourceProperties getProperties();
+	ResourceRequires getRequires();
+
+	void grow(float growing);
+	void exhaustion(float exhausting);
 
 
 private:
+
+	ResourceProperties properties;
+	ResourceRequires requires;
+
+	void normalizeResource();
 
 };
 
