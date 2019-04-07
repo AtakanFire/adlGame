@@ -4,7 +4,7 @@
 	[
 		{
 			"type": "adlTransform_component",
-			"position": [0.0, 0.0, 10.0],
+			"position": [0.0, 10.0, 10.0],
 			"rotation": [0.0, 0.0, 0.0],
 			"scale": [1.0, 1.0, 1.0]
 		},
@@ -16,7 +16,7 @@
 		{
 			"type": "SelectableComponent",
 			"shape": "box",
-			"static": true
+			"static": false
 		},
 		{
 			"type": "HumanAttributes",

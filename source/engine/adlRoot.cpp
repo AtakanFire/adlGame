@@ -72,7 +72,7 @@ void adlRoot::run()
 		rendering_bounding_boxes_ = !rendering_bounding_boxes_;
 	}
 
-	if (adl_input->get_key(adl_key_right_ctrl) && adl_input->get_key_down(adl_key_p))
+	if (adl_input->get_key(adl_key_right_ctrl) && adl_input->get_key_down(adl_key_p) && onEdit)
 	{
 		rendering_physics_diagnostics_ = !rendering_physics_diagnostics_;
 	}

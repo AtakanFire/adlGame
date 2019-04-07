@@ -87,6 +87,8 @@ void ResourceAttributes::editor() {
 		ImGui::Text("Minimum Experience(0f, 100f)");
 		ImGui::SliderFloat("##minExperience", &requires.minExperience, 0.0f, 100.0f);
 		ImGui::Unindent();
+
+		ImGui::Unindent();
 	}
 
 

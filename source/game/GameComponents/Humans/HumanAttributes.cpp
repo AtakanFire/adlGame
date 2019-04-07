@@ -3,7 +3,8 @@
 #include "engine/adl_entities/adlTransform_component.h"
 
 #include "game/GameComponents/Misc/SelectableComponent.h"
-
+#include "game/GameComponents/Resources/ResourceAttributes.h"
+#include "game/GameComponents/Constructions/ConstructionAttributes.h"
 
 HumanAttributes::HumanAttributes()
 {
@@ -26,7 +27,7 @@ bool HumanAttributes::init(const rapidjson::Value& json_object) {
 }
 
 void HumanAttributes::post_init() {
-
+	sceneManager = &adlScene_manager::get();
 }
 
 void HumanAttributes::update(float dt) {
@@ -36,9 +37,13 @@ void HumanAttributes::update(float dt) {
 	{
 		SharedPointer<adlTransform_component> transCom(owner->get_component<adlTransform_component>("adlTransform_component"));
 		transCom->set_rotation(adlVec3(transCom->get_rotation().x, transCom->get_rotation().y + 1 * dt, transCom->get_rotation().z));
-	}
 	
-
+		if (selectCom->getTarget()->getOwner()->has_component("ResourceAttributes"))
+		{
+			SharedPointer<ResourceAttributes> res(selectCom->getTarget()->getOwner()->get_component<ResourceAttributes>("ResourceAttributes"));
+			res->exhaustion(0.02 * dt);
+		}	
+	}
 }
 
 void HumanAttributes::destroy() {
@@ -106,6 +111,28 @@ void HumanAttributes::editor() {
 	}
 
 	ImGui::Unindent();
+}
+
+void HumanAttributes::gathering()
+{
+
+}
+
+void HumanAttributes::production()
+{
+	//Entity construction = sceneManager->add_entity_to_scene("Construction");
+	//SharedPointer<SelectableComponent> selectCom(construction->get_component<SelectableComponent>("SelectableComponent"));
+	
+	//selectCom->set_position(adlVec3(0, 20, -10));
+
+}
+
+void HumanAttributes::movement(adlVec3 targetPos)
+{
+	SharedPointer<SelectableComponent> selfSelected(owner->get_component<SelectableComponent>("SelectableComponent"));
+	
+	selfSelected->set_static(false);
+	selfSelected->apply_force(targetPos - selfSelected->get_position(), 10);
 }
 
 

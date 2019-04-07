@@ -3,6 +3,8 @@
 
 #include "engine/adl_entities/adlEntity_component.h"
 
+#include "engine/adlScene_manager.h"
+
 #include "game/GameGeneric/GameGenericTypedef.h"
 #include "game/GameGeneric/GameStructures.h"
 
@@ -34,8 +36,15 @@ public:
 	HumanProperties properties;
 	HumanRequires requires;
 
+	void gathering();
+	void production();
+
+	void movement(adlVec3 targetPos);
+
 
 private:
+
+	adlScene_manager* sceneManager;
 
 };
 

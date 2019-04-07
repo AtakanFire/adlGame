@@ -36,6 +36,9 @@ private:
 	void mainMenu();
 	void mainLayout();
 
+	void humanAttributes();
+	void resourceAttributes();
+
 };
 
 #endif //HUDComponent_h__

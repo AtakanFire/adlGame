@@ -59,8 +59,8 @@ bool Game::init()
 	adl_scene_manager->set_camera(scene_camera);
 	scene->set_camera(scene_camera);
 
-	/*adlTerrain_shared_ptr terrain = adl_rm->get_terrain("FlatTerrain");
-	adl_scene_manager->set_terrain(terrain);*/
+	adlTerrain_shared_ptr terrain = adl_rm->get_terrain("FlatTerrain");
+	adl_scene_manager->set_terrain(terrain);
 	
 	sunEntity = adl_scene_manager->add_entity_to_scene("Sun");
 	adl_scene_manager->set_sun(sunEntity);
@@ -74,9 +74,6 @@ bool Game::init()
 
 	SelectableComponent selectC;
 
-	Entity plane = adl_scene_manager->add_entity_to_scene("Plane");
-
-
 	Entity player = adl_scene_manager->add_entity_to_scene("Player");
 
 	Entity hud = adl_scene_manager->add_entity_to_scene("HUD");
@@ -87,9 +84,6 @@ bool Game::init()
 	Entity construction = adl_scene_manager->add_entity_to_scene("Construction");
 
 	Entity human = adl_scene_manager->add_entity_to_scene("Human");
-
-	
-	std::cout << "adl_window: " << adl_window->get_width() << "x" << adl_window->get_height() << std::endl;
 
 
 	return true;

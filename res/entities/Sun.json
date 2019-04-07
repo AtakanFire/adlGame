@@ -10,8 +10,8 @@
 		},
 		{
 			"type": "adlRender_component",
-			"model": "Cube",
-			"material": "obsidian"
+			"model": "Sphere",
+			"material": "gold"
 		},
 		{
 			"type": "adlSun_component",
