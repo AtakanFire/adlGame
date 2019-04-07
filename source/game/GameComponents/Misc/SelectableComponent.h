@@ -23,13 +23,18 @@ public:
 	virtual void under_mouse() override;
 	virtual void on_mouse_hover_end() override;
 
-	bool getSelection();
+	Entity getOwner() {
+		return owner;
+	};
+
+	SelectableComponent* getTarget();
+	void setTarget(SelectableComponent* newTarget);
 
 private:
 
 	PlayerAttributes* player;
 
-	bool isSelected;
+	SelectableComponent* target = nullptr;
 
 };
 

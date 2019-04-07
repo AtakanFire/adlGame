@@ -27,9 +27,14 @@ void PlayerAttributes::editor() {
 	ImGui::Unindent();
 }
 
+Entity PlayerAttributes::getSelection()
+{
+	return selection;
+}
+
 void PlayerAttributes::setSelection(Entity selected)
 {
 	selection = selected;
-	std::cout << "Selected->Name: " << selection->getName() << std::endl;
+	// std::cout << "Selected->Name: " << selection->getName() << std::endl;
 }
 

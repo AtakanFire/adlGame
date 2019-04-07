@@ -54,9 +54,20 @@ void SelectableComponent::under_mouse() {
 	adlInput* input = &adlInput::get();
 	
 	if (input->get_mouse_down(ADL_BUTTON_LEFT)) {
-		isSelected = true;
 		player->setSelection(this->owner);
-		std::cout << "Selected" << std::endl;
+		std::cout << owner->getName() << " Selected!" << std::endl;
+	} else if (input->get_mouse_down(ADL_BUTTON_RIGHT)) {
+		if (player->getSelection() != nullptr && player->getSelection()->has_component("SelectableComponent"))
+		{
+			SharedPointer<SelectableComponent> selected(player->getSelection()->get_component<SelectableComponent>("SelectableComponent"));
+			
+			if (selected->owner->has_component("HumanAttributes"))
+			{
+				selected->setTarget(this);
+				//std::cout << selected->owner->getName() << " -> " << selected->getTarget()->getOwner()->getName() << std::endl;
+			}
+		}
+		std::cout << owner->getName() << " Targeted!" << std::endl;
 	}
 	//std::cout << "Under mouse" << std::endl;
 }
@@ -65,6 +76,12 @@ void SelectableComponent::on_mouse_hover_end() {
 	//std::cout << "Mouse hover end" << std::endl;
 }
 
-bool SelectableComponent::getSelection() {
-	return isSelected;
+SelectableComponent* SelectableComponent::getTarget()
+{
+	return target;
+}
+
+void SelectableComponent::setTarget(SelectableComponent* newTarget)
+{
+	target = newTarget;
 }

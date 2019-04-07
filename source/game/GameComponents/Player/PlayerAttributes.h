@@ -23,6 +23,7 @@ public:
 	virtual void destroy() override;
 	virtual void editor() override;
 
+	Entity getSelection();
 	void setSelection(Entity selected);
 
 private:

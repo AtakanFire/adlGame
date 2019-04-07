@@ -10,7 +10,7 @@
 		},
 		{
 			"type": "adlRender_component",
-			"model": "Tree",
+			"model": "PineTree",
 			"material": "silver"
 		},
 		{

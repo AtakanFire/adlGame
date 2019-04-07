@@ -1,0 +1,22 @@
+{
+	"type": "Plane",
+	"components": 
+	[
+		{
+			"type": "adlTransform_component",
+			"position": [0.0, 0.0, 0.0],
+			"rotation": [0.0, 0.0, 0.0],
+			"scale": [20.0, 1.0, 20.0]
+		},
+		{
+			"type": "adlRender_component",
+			"model": "Plane",
+			"material": "copper"
+		},
+		{
+			"type": "adlPhysics_component",
+			"shape": "box",
+			"static": true
+		}
+	]
+}

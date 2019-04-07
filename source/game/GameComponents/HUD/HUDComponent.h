@@ -3,7 +3,11 @@
 
 #include "engine/adl_entities/adlEntity_component.h"
 
+#include "engine/adl_editor/adlEditor_manager.h"
+#include "engine/adlWindow.h"
+
 #include "game/GameGeneric/GameGenericTypedef.h"
+#include "game/GameComponents/Player/PlayerAttributes.h"
 
 class HUDComponent : public adlEntity_component { 
 
@@ -26,7 +30,11 @@ public:
 
 private:
 
-	void MainMenu();
+	adlEditor_manager* editorMan;
+	PlayerAttributes* player;
+
+	void mainMenu();
+	void mainLayout();
 
 };
 

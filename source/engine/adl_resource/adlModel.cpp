@@ -38,6 +38,7 @@ void adlModel::draw(adlShader_shared_ptr shader, adlMat4 transformation_matrix)
 {
 	for (auto mesh : meshes_)
 	{
+		shader->load_material(mesh->get_material()); // Use Models imported Materials
 		adlMaterial_shared_ptr mtl = mesh->get_material();
 		//shader->load_material(mtl);
 

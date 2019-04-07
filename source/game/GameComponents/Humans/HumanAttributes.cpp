@@ -1,5 +1,10 @@
 #include "HumanAttributes.h"
 
+#include "engine/adl_entities/adlTransform_component.h"
+
+#include "game/GameComponents/Misc/SelectableComponent.h"
+
+
 HumanAttributes::HumanAttributes()
 {
 	REGISTER_COMPONENT(HumanAttributes)
@@ -25,6 +30,14 @@ void HumanAttributes::post_init() {
 }
 
 void HumanAttributes::update(float dt) {
+	SharedPointer<SelectableComponent> selectCom(owner->get_component<SelectableComponent>("SelectableComponent"));
+
+	if (selectCom->getTarget())
+	{
+		SharedPointer<adlTransform_component> transCom(owner->get_component<adlTransform_component>("adlTransform_component"));
+		transCom->set_rotation(adlVec3(transCom->get_rotation().x, transCom->get_rotation().y + 1 * dt, transCom->get_rotation().z));
+	}
+	
 
 }
 
@@ -94,4 +107,5 @@ void HumanAttributes::editor() {
 
 	ImGui::Unindent();
 }
+
 

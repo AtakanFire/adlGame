@@ -13,6 +13,14 @@
       "path": "res/entities/Humans/Human.json"
     },
     {
+      "name": "Empty",
+      "path": "res/entities/Misc/Empty.json"
+    },
+    {
+      "name": "Plane",
+      "path": "res/entities/Misc/Plane.json"
+    },
+    {
       "name": "Player",
       "path": "res/entities/Player.json"
     },
@@ -82,11 +90,11 @@
     },
     {
       "name": "Human",
-      "path": "res/models/Humans/Human/Human.fbx"
+      "path": "res/models/Humans/Human/Human.obj"
     },
     {
-      "name": "Tree",
-      "path": "res/models/Resources/Foliage/Tree/Tree.obj"
+      "name": "PineTree",
+      "path": "res/models/Resources/Trees/PineTree/PineTree.obj"
     }
   ],
   "scenes": [
