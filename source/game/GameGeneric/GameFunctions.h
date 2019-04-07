@@ -3,11 +3,13 @@
 
 #include "game/GameGeneric/GameGenericTypedef.h"
 
-static class GameFunctions { 
+class GameFunctions { 
 
 public:
 
+	static void ImGuiStyler();
 
+	static bool CheckImGuiClicked();
 
 
 private:

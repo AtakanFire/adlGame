@@ -2,6 +2,7 @@
 
 #include "engine/adlInput.h"
 
+#include "game/GameGeneric/GameFunctions.h"
 
 SelectableComponent::SelectableComponent()
 {
@@ -51,7 +52,7 @@ void SelectableComponent::on_mouse_hover_start() {
 }
 
 void SelectableComponent::under_mouse() {
-	if (ImGui::IsAnyWindowHovered() || ImGui::IsAnyItemHovered())
+	if (GameFunctions::CheckImGuiClicked())
 	{
 		return;
 	}

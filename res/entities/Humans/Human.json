@@ -21,7 +21,7 @@
 		{
 			"type": "HumanAttributes",
 			"properties": {
-				"name": "Human",
+				"name": "Individual",
 				"age": 22,
 				"owned": {
 					"food": 0,

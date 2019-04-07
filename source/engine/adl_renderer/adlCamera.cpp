@@ -141,7 +141,7 @@ void adlCamera::update_rts_camera(float dt)
 	}
 
 	int mouse_wheel_dif = input->get_mouse_wheel_dif();
-	if (mouse_wheel_dif != 0)
+	if (mouse_wheel_dif != 0 && !(ImGui::IsAnyWindowHovered() || ImGui::IsAnyItemHovered() || ImGui::IsMouseHoveringAnyWindow()))
 	{ 
 		mouse_wheel_dif *= 2;
 		position_.z -= movement_speed_ * mouse_wheel_dif * std::cos(adlMath::deg_to_rad(yaw_)) * dt * std::cos(adlMath::deg_to_rad(pitch_));

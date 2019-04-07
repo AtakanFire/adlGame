@@ -5,6 +5,8 @@
 #include "engine/adl_resource/adlResource_manager.h"
 #include "engine/adl_entities/adlTransform_component.h"
 
+#include "game/GameGeneric/GameFunctions.h"
+
 #include "game/GameComponents/Misc/SelectableComponent.h"
 #include "game/GameComponents/Player/PlayerAttributes.h"
 #include "game/GameComponents/Humans/HumanAttributes.h"
@@ -34,7 +36,7 @@ public:
 
 	virtual void on_terrain_mouse_ray_collision(const adlVec3& collision_point) 
 	{
-		if (ImGui::IsAnyWindowHovered() || ImGui::IsAnyItemHovered())
+		if (GameFunctions::CheckImGuiClicked())
 		{
 			return;
 		}
