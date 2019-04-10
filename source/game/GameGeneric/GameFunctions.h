@@ -11,6 +11,7 @@ public:
 
 	static bool CheckImGuiClicked();
 
+	static std::vector<std::string> SplitString(std::string mainString, std::string delimiter);
 
 private:
 

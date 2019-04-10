@@ -14,14 +14,23 @@ HumanAttributes::HumanAttributes()
 bool HumanAttributes::init(const rapidjson::Value& json_object) {
 	const rapidjson::Value& propertiesObject = json_object["properties"];
 	const rapidjson::Value& requiresObject = json_object["requires"];
+	const rapidjson::Value& needs = requiresObject["needs"];
 
 	properties.name = propertiesObject["name"].GetString();
 	properties.age = propertiesObject["age"].GetFloat();
+	properties.gender = propertiesObject["gender"].GetFloat();
 
-	properties.owned.load(propertiesObject["owned"]);
-	properties.experiences.load(propertiesObject["experiences"]);
+	rapidjson::Value::ConstValueIterator itr = needs.Begin();
 
-	requires.needs.load(requiresObject["needs"]);
+	const rapidjson::Value& firstNeed = *itr;
+	requires.needs[0] = firstNeed.GetFloat();
+
+	for (int i = 1; i < requires.needsTypes.capacity(); i++)
+	{
+		const rapidjson::Value& needCounter = *++itr;
+		requires.needs[i] = needCounter.GetFloat();
+	}
+
 
 	return true;
 }
@@ -74,24 +83,6 @@ void HumanAttributes::editor() {
 		ImGui::SliderFloat("##age", &properties.age, 0.0f, 100.0f);
 		ImGui::Unindent();
 
-		if (ImGui::CollapsingHeader("Experiences"))
-		{
-			ImGui::Text("Consumable Resources");
-			ImGui::Indent();
-			properties.experiences.editor();
-			ImGui::Unindent();
-		}
-
-
-		if (ImGui::CollapsingHeader("Owned"))
-		{
-			ImGui::Text("Consumable Resources");
-			ImGui::Indent();
-			properties.owned.editor();
-			ImGui::Unindent();
-		}
-
-
 		ImGui::Unindent();
 	}
 
@@ -101,11 +92,30 @@ void HumanAttributes::editor() {
 
 		if (ImGui::CollapsingHeader("Needs"))
 		{
-			ImGui::Text("Consumable Resources");
+			ImGui::Text("Needs");
 			ImGui::Indent();
-			requires.needs.editor();
+
+			for (int i = 0; i < requires.needsTypes.capacity(); i++)
+			{
+				ImGui::Indent();
+
+				ImGui::Text("%s(0f, 100f)", requires.needsTypes[i].c_str());
+				ImGui::SliderFloat(std::string("##" + requires.needsTypes[i]).c_str(), &requires.needs[i], 0.0f, 100.0f);
+
+				ImGui::Unindent();
+			}
+
 			ImGui::Unindent();
 		}
+
+		ImGui::Unindent();
+	}
+
+	if (ImGui::CollapsingHeader("Experiences"))
+	{
+		ImGui::Indent();
+
+		experiences.editor();
 
 		ImGui::Unindent();
 	}

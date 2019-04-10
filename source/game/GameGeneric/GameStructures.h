@@ -3,83 +3,81 @@
 
 #include "game/GameGeneric/GameGenericTypedef.h"
 
-struct ConsumableResources { // Food, Wood, Stone, Metal, Cotton
-	float food = 0;
-	float wood = 0;
-	float stone = 0;
-	float metal = 0;
-	float cotton = 0;
-	float gold = 0;
-	float knowledge = 0;
-	float happy = 0;
 
-	void load(const rapidjson::Value& jsonObject) {
-		food = jsonObject["food"].GetFloat();
-		wood = jsonObject["wood"].GetFloat();
-		stone = jsonObject["stone"].GetFloat();
-		metal = jsonObject["metal"].GetFloat();
-		cotton = jsonObject["cotton"].GetFloat();
-		gold = jsonObject["gold"].GetFloat();
-		knowledge = jsonObject["knowledge"].GetFloat();
-		happy = jsonObject["happy"].GetFloat();
-	}
+enum ConsumableResources { // Food, Wood, Stone, Metal, Cotton
+	ConsumableResourcesFood, 
+	ConsumableResourcesWood, 
+	ConsumableResourcesStone, 
+	ConsumableResourcesMetal, 
+	ConsumableResourcesCotton,
+	ConsumableResourcesCOUNT
+};
+
+enum DerivedResources { // Cloth, Lumber, Gold
+	DerivedResourcesCloth,
+	DerivedResourcesLumber,
+	DerivedResourcesGold,
+	DerivedResourcesCOUNT
+};
+
+enum HumanlyResources { // Happy, Knowledge
+	HumanlyResourcesHappy,
+	HumanlyResourcesKnowledge,
+	HumanlyResourcesCOUNT
+};
+
+struct AllResources {
+	std::vector<std::string> consumableTypes = { "Food", "Wood", "Stone", "Metal", "Cotton" };
+	std::vector<std::string> derivedTypes = { "Cloth", "Lumber", "Gold" };
+	std::vector<std::string> humanlyTypes = { "Happy", "Knowledge" };
+
+	float consumable[ConsumableResources::ConsumableResourcesCOUNT] = { 0 }; // Food, Wood, Stone, Metal, Cotton
+	float derived[DerivedResources::DerivedResourcesCOUNT] = { 0 }; // Cloth, Lumber, Gold
+	float humanly[HumanlyResources::HumanlyResourcesCOUNT] = { 0 }; // Happy, Knowledge
 
 	void editor() {
-
+		ImGui::Text("Consumable Resources");
 		ImGui::Indent();
-		ImGui::Text("Food(0f, 100f)");
-		ImGui::SliderFloat("##food", &food, 0.0f, 100.0f);
+
+		for (int i = 0; i < consumableTypes.capacity(); i++)
+		{
+			ImGui::Indent();
+
+			ImGui::Text("%s(0f, 100f)", consumableTypes[i].c_str());
+			ImGui::SliderFloat(std::string("##" + consumableTypes[i]).c_str(), &consumable[i], 0.0f, 100.0f);
+
+			ImGui::Unindent();
+		}
 		ImGui::Unindent();
 
+		ImGui::Text("Derived Resources");
 		ImGui::Indent();
-		ImGui::Text("Wood(0f, 100f)");
-		ImGui::SliderFloat("##wood", &wood, 0.0f, 100.0f);
+
+		for (int i = 0; i < derivedTypes.capacity(); i++)
+		{
+			ImGui::Indent();
+
+			ImGui::Text("%s(0f, 100f)", derivedTypes[i].c_str());
+			ImGui::SliderFloat(std::string("##" + derivedTypes[i]).c_str(), &derived[i], 0.0f, 100.0f);
+
+			ImGui::Unindent();
+		}
 		ImGui::Unindent();
 
+		ImGui::Text("Humanly Resources");
 		ImGui::Indent();
-		ImGui::Text("Stone(0f, 100f)");
-		ImGui::SliderFloat("##stone", &stone, 0.0f, 100.0f);
-		ImGui::Unindent();
 
-		ImGui::Indent();
-		ImGui::Text("Metal(0f, 100f)");
-		ImGui::SliderFloat("##metal", &metal, 0.0f, 100.0f);
-		ImGui::Unindent();
+		for (int i = 0; i < humanlyTypes.capacity(); i++)
+		{
+			ImGui::Indent();
 
-		ImGui::Indent();
-		ImGui::Text("Cotton(0f, 100f)");
-		ImGui::SliderFloat("##cotton", &cotton, 0.0f, 100.0f);
-		ImGui::Unindent();
+			ImGui::Text("%s(0f, 100f)", humanlyTypes[i].c_str());
+			ImGui::SliderFloat(std::string("##" + humanlyTypes[i]).c_str(), &humanly[i], 0.0f, 100.0f);
 
-		ImGui::Indent();
-		ImGui::Text("Gold(0f, 100f)");
-		ImGui::SliderFloat("##gold", &gold, 0.0f, 100.0f);
-		ImGui::Unindent();
-
-		ImGui::Indent();
-		ImGui::Text("Knowledge(0f, 100f)");
-		ImGui::SliderFloat("##knowledge", &knowledge, 0.0f, 100.0f);
-		ImGui::Unindent();
-
-		ImGui::Indent();
-		ImGui::Text("Happy(0f, 100f)");
-		ImGui::SliderFloat("##happy", &happy, 0.0f, 100.0f);
+			ImGui::Unindent();
+		}
 		ImGui::Unindent();
 	}
 };
-
-
-struct DerivedResources { // Cloth, Lumber, Gold
-	float cloth = 0;
-	float lumber = 0;
-	float gold = 0;
-};
-
-
-struct HumanlyResources { // Happy, Knowledge
-	float Happy = 0;
-	float Knowledge = 0;
-};
-
 
 #endif //GameStructures_h__

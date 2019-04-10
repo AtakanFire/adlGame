@@ -27,7 +27,6 @@ void HUDComponent::post_init() {
 }
 
 void HUDComponent::update(float dt) {
-
 	if (!editorMan->onEdit())
 	{
 		mainMenu();
@@ -116,8 +115,14 @@ void HUDComponent::humanAttributes()
 {
 	SharedPointer<HumanAttributes> human(player->getSelection()->get_component<HumanAttributes>("HumanAttributes"));
 	SharedPointer<SelectableComponent> selected(player->getSelection()->get_component<SelectableComponent>("SelectableComponent"));
+	
+	HumanAttributes::HumanProperties& pro = human->getProperties();
+	HumanAttributes::HumanRequires& req = human->getRequires();
+	AllResources& exp = human->getExperiences();
+	//HumanAttributes::HumanExperiences& has = human->getHas();
+	
 
-	std::string title("Human : " + human->properties.name + (selected->getTarget() ? "->" : " ") + (selected->getTarget() ? selected->getTarget()->getOwner()->getName() : " "));
+	std::string title("Human : " + pro.name + (selected->getTarget() ? " -> " : " ") + (selected->getTarget() ? selected->getTarget()->getOwner()->getName() : " "));
 
 	if (ImGui::Begin(title.c_str(), NULL, ImGuiWindowFlags_NoResize /*| ImGuiWindowFlags_NoScrollWithMouse*/ | ImGuiWindowFlags_NoScrollbar |
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus /*| ImGuiWindowFlags_NoTitleBar*/))
@@ -126,36 +131,73 @@ void HUDComponent::humanAttributes()
 		ImGui::Indent();
 
 		ImGui::Separator();
-		//ImGui::Text("Human : %s %s %s", human->properties.name.c_str(), selected->getTarget() ? "->" : " ", selected->getTarget() ? selected->getTarget()->getOwner()->getName().c_str() : " ");
+		//ImGui::Text("Human : %s %s %s", pro.name.c_str(), selected->getTarget() ? "->" : " ", selected->getTarget() ? selected->getTarget()->getOwner()->getName().c_str() : " ");
 
 		ImGui::Columns(4, "Columns", true);
 		{
-			ImGui::Text("%s", "Properties");
+			ImGui::Text("%s", "General Properties");
 
 			if (ImGui::CollapsingHeader("Properties"))
 			{
 				ImGui::Indent();
 
-				ImGui::Text("Name: %s", human->properties.name.c_str());
+				ImGui::Text("Name: %s", pro.name.c_str());
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Change Name with 'Right Click'");
 				if (ImGui::BeginPopupContextItem("Change Name"))
 				{
+
+
 					char humanName[64] = "";
 					if (ImGui::InputText("Human Name", humanName, 64, ImGuiInputTextFlags_EnterReturnsTrue))
 					{
-						human->properties.name = humanName;
+						pro.name = humanName;
 					}
 
 					ImGui::EndPopup();
 				}
 
-				ImGui::Text("Age: %.0f", human->properties.age);
+				std::string age = (pro.age < 18) ? "Child" : (pro.age < 30) ? "Teenager" : (pro.age < 50) ? "Adult" : "Elderly";
+				ImGui::Text("Age: %.0f", pro.age);
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("People die when they get old.");
+					ImGui::SetTooltip("%s\n%s", age.c_str(), "People die when they get old.");
+
+				std::string gender = (pro.gender == 0) ? "Female" : "Male";
+				ImGui::Text("Gender: %s", gender.c_str());
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Gender");
 
 				ImGui::Unindent();
 			}
+
+			/*if (ImGui::CollapsingHeader("Has(Owned)"))
+			{
+				ImGui::Indent();
+
+				if (ImGui::CollapsingHeader("Consumable"))
+				{
+					ImGui::Indent();
+					//has.consumable.hud();
+
+					ImGui::Unindent();
+				}
+
+				if (ImGui::CollapsingHeader("Derived"))
+				{
+					ImGui::Indent();
+					//has.derived.hud();
+					ImGui::Unindent();
+				}
+
+				if (ImGui::CollapsingHeader("Humanly"))
+				{
+					ImGui::Indent();
+					//has.humanly.hud();
+					ImGui::Unindent();
+				}
+
+				ImGui::Unindent();
+			}*/
 
 			ImGui::NextColumn();
 			ImGui::Text("%s", "Requires");
@@ -164,6 +206,7 @@ void HUDComponent::humanAttributes()
 			{
 				ImGui::Indent();
 
+				progressBarGenerator(req.needsTypes, req.needs);
 
 				ImGui::Unindent();
 			}
@@ -184,12 +227,39 @@ void HUDComponent::humanAttributes()
 
 			ImGui::NextColumn();
 			ImGui::Text("%s", "Experiences");
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("If there is time, human can learn everything.\n");
 
 			if (ImGui::CollapsingHeader("Experiences"))
 			{
 				ImGui::Indent();
 
-				human->properties.experiences.editor();
+				if (ImGui::CollapsingHeader("Consumable"))
+				{
+					ImGui::Indent();
+
+					progressBarGenerator(exp.consumableTypes, exp.consumable);
+
+					ImGui::Unindent();
+				}
+
+				if (ImGui::CollapsingHeader("Derived"))
+				{
+					ImGui::Indent();
+					
+					progressBarGenerator(exp.derivedTypes, exp.derived);
+
+					ImGui::Unindent();
+				}
+
+				if (ImGui::CollapsingHeader("Humanly"))
+				{
+					ImGui::Indent();
+					
+					progressBarGenerator(exp.humanlyTypes, exp.humanly);
+
+					ImGui::Unindent();
+				}	
 
 				ImGui::Unindent();
 			}
@@ -281,7 +351,10 @@ void HUDComponent::constructionAttributes()
 	SharedPointer<ConstructionAttributes> con(player->getSelection()->get_component<ConstructionAttributes>("ConstructionAttributes"));
 	SharedPointer<SelectableComponent> selected(player->getSelection()->get_component<SelectableComponent>("SelectableComponent"));
 
-	std::string title("Construction : " + con->properties.name);
+	ConstructionAttributes::ConstructionProperties& pro = con->getProperties();
+	ConstructionAttributes::ConstructionRequires& req = con->getRequires();
+
+	std::string title("Construction : " + pro.name);
 
 	if (ImGui::Begin(title.c_str(), NULL, ImGuiWindowFlags_NoResize /*| ImGuiWindowFlags_NoScrollWithMouse*/ | ImGuiWindowFlags_NoScrollbar |
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus /*| ImGuiWindowFlags_NoTitleBar*/))
@@ -289,7 +362,7 @@ void HUDComponent::constructionAttributes()
 		ImGui::Indent();
 
 		ImGui::Separator();
-		//ImGui::Text("Construction: %s", con->properties.name.c_str());
+		//ImGui::Text("Construction: %s", pro.name.c_str());
 
 		ImGui::Columns(3, "Columns", true);
 		{
@@ -299,11 +372,11 @@ void HUDComponent::constructionAttributes()
 			{
 				ImGui::Indent();
 
-				ImGui::Text("Name: %s", con->properties.name.c_str());
+				ImGui::Text("Name: %s", pro.name.c_str());
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Construction Name");
 
-				ImGui::Text("Age: %.0f", con->properties.durability);
+				ImGui::Text("Durability: %.0f", pro.durability);
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Construction Durability");
 
@@ -317,6 +390,38 @@ void HUDComponent::constructionAttributes()
 			{
 				ImGui::Indent();
 
+				if (ImGui::CollapsingHeader("Minimum Experiences Needs"))
+				{
+					ImGui::Indent();
+
+					ImGui::Text("%s", "Consumable");
+					progressBarGenerator(req.experiences.consumableTypes, req.experiences.consumable);
+
+					ImGui::Text("%s", "Derived");
+					progressBarGenerator(req.experiences.derivedTypes, req.experiences.derived);
+
+					ImGui::Text("%s", "Humanly");
+					progressBarGenerator(req.experiences.humanlyTypes, req.experiences.humanly);
+
+
+					ImGui::Unindent();
+				}
+				if (ImGui::CollapsingHeader("Minimum Resource Needs"))
+				{
+					ImGui::Indent();
+
+
+					ImGui::Text("%s", "Consumable");
+					progressBarGenerator(req.resources.consumableTypes, req.resources.consumable);
+
+					ImGui::Text("%s", "Derived");
+					progressBarGenerator(req.resources.derivedTypes, req.resources.derived);
+
+					ImGui::Text("%s", "Humanly");
+					progressBarGenerator(req.resources.humanlyTypes, req.resources.humanly);
+
+					ImGui::Unindent();
+				}
 
 
 				ImGui::Unindent();
@@ -329,12 +434,13 @@ void HUDComponent::constructionAttributes()
 			{
 				ImGui::Indent();
 
+
 				char buf[32];
-				sprintf(buf, "%.0f/%.0f", 0, 1);
+				sprintf(buf, "%.0f/%.0f", 1.0f, 1.0f);
 
 				ImGui::Text("Construction: ");
 				ImGui::SameLine(0.0f, ImGui::GetStyle().ItemInnerSpacing.x);
-				ImGui::ProgressBar(0 / 1, ImVec2(0.f, 0.f), buf);
+				ImGui::ProgressBar(1 / 1, ImVec2(0.f, 0.f), buf);
 
 				ImGui::Unindent();
 			}
@@ -344,7 +450,22 @@ void HUDComponent::constructionAttributes()
 
 		ImGui::Unindent();
 
-
 		ImGui::End();
+	}
+}
+
+void HUDComponent::progressBarGenerator(std::vector<std::string> text, float value[])
+{
+	for (int i = 0; i < text.capacity(); i++)
+	{
+		ImGui::Indent();
+
+		char buf[32];
+		sprintf(buf, "%s: %.0f/%.0f", text[i].c_str(), value[i], 100.0f);
+		ImGui::ProgressBar(value[i] / 100.0f, ImVec2(-1.f, 0.f), buf);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("%s(Current/Max)", text[i].c_str());
+
+		ImGui::Unindent();
 	}
 }

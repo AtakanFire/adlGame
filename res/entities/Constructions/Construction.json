@@ -26,24 +26,10 @@
 			},
 			"requires": {
 				"minExperience": {
-					"food": 0,
-					"wood": 0,
-					"stone": 0,
-					"metal": 0,
-					"cotton": 0,
-					"gold": 0,
-					"knowledge": 0,
-					"happy": 0
+					"_comment":  "Default Value: 0"
 				},
 				"minResources": {
-					"food": 0,
-					"wood": 0,
-					"stone": 0,
-					"metal": 0,
-					"cotton": 0,
-					"gold": 0,
-					"knowledge": 0,
-					"happy": 0
+					"_comment":  "Default Value: 0"
 				}
 			}
 		}

@@ -23,38 +23,14 @@
 			"properties": {
 				"name": "Individual",
 				"age": 22,
-				"owned": {
-					"food": 0,
-					"wood": 0,
-					"stone": 0,
-					"metal": 0,
-					"cotton": 0,
-					"gold": 0,
-					"knowledge": 0,
-					"happy": 0
-				},
-				"experiences": {
-					"food": 0,
-					"wood": 0,
-					"stone": 0,
-					"metal": 0,
-					"cotton": 0,
-					"gold": 0,
-					"knowledge": 0,
-					"happy": 0
-				}
+				"gender": 1
 			},
 			"requires": {
-				"needs": {
-					"food": 0,
-					"wood": 0,
-					"stone": 0,
-					"metal": 0,
-					"cotton": 0,
-					"gold": 0,
-					"knowledge": 0,
-					"happy": 0
-				}
+				"AllTypes": "Food Cloth Happy",
+				"needs": [ 10, 5, 45 ]
+			},
+			"experiences": {
+				"_comment":  "Default Value: 0"				
 			}
 		}
 	]

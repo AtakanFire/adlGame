@@ -12,10 +12,6 @@ bool ConstructionAttributes::init(const rapidjson::Value& json_object) {
 	properties.name = propertiesObject["name"].GetString();
 	properties.durability = propertiesObject["durability"].GetFloat();
 
-
-	requires.minExperiences.load(requiresObject["minExperience"]);
-	requires.minResources.load(requiresObject["minResources"]);
-
 	return true;
 }
 
@@ -65,17 +61,19 @@ void ConstructionAttributes::editor() {
 
 		if (ImGui::CollapsingHeader("Minimum Experiences"))
 		{
-			ImGui::Text("Consumable Resources");
 			ImGui::Indent();
-			requires.minExperiences.editor();
+
+			requires.experiences.editor();
+
 			ImGui::Unindent();
 		}
 
 		if (ImGui::CollapsingHeader("Minimum Resources"))
 		{
-			ImGui::Text("Consumable Resources");
 			ImGui::Indent();
-			requires.minResources.editor();
+			
+			requires.resources.editor();
+
 			ImGui::Unindent();
 		}
 

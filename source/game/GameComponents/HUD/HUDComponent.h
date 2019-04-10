@@ -41,6 +41,9 @@ private:
 	void resourceAttributes();
 	void constructionAttributes();
 
+	void progressBarGenerator(std::vector<std::string> text, float value[]);
+
+
 };
 
 #endif //HUDComponent_h__

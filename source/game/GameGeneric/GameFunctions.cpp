@@ -46,4 +46,17 @@ bool GameFunctions::CheckImGuiClicked()
 	return ImGui::IsAnyWindowHovered() || ImGui::IsAnyItemHovered() || ImGui::IsMouseHoveringAnyWindow();
 }
 
+std::vector<std::string> GameFunctions::SplitString(std::string mainString, std::string delimiter)
+{
+	size_t pos = 0;
+	std::string token;
+	std::vector<std::string> newString;
+	while ((pos = mainString.find(delimiter)) != std::string::npos) {
+		token = mainString.substr(0, pos);
+		std::cout << token << std::endl;
+		newString.push_back(token);
+		mainString.erase(0, pos + delimiter.length());
+	}
+	return newString;
+}
 

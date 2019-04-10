@@ -7,6 +7,7 @@
 
 #include "game/GameGeneric/GameGenericTypedef.h"
 #include "game/GameGeneric/GameStructures.h"
+#include "game/GameGeneric/GameFunctions.h"
 
 class HumanAttributes : public adlEntity_component { 
 
@@ -24,27 +25,32 @@ public:
 	struct HumanProperties {
 		std::string name = "";
 		float age = 18; // Child(<18), Teenager(18<30), Adult(30<50), Elderly(50<)
-
-		// Gender, Parents, House ~ ->  Spouse, Childs
-
-		ConsumableResources owned; // Remove
-		ConsumableResources experiences; // Remove
+		int gender = 1; // Female, Male 
+		
+		// Parents, House ~ ->  Spouse, Childs, Health
 	};
 
 	struct HumanRequires { // Needs: Food, Cloth, Happy, ~ -> House, Spouse
-		ConsumableResources needs; // ~ Basic Game Version of "Maslow's Hierarchy of Needs" ~
+		// ~ Basic Game Version of "Maslow's Hierarchy of Needs" ~
+		std::vector<std::string> needsTypes = { "Food", "Cloth", "Happy" };
+
+		float needs[3] = { 0 }; // Food, Cloth, Happy
 	};
 
 	struct HumanExperiences { // If there is time, human can learn everything.
-		ConsumableResources cr;
-		DerivedResources dr;
-		HumanlyResources hr;
+		std::vector<std::string> consumableTypes = { "Food", "Wood", "Stone", "Metal", "Cotton" };
+		std::vector<std::string> derivedTypes = { "Cloth", "Lumber", "Gold" };
+		std::vector<std::string> humanlyTypes = { "Happy", "Knowledge"};
+
+		float consumable[ConsumableResources::ConsumableResourcesCOUNT] = { 0 }; // Food, Wood, Stone, Metal, Cotton
+		float derived[DerivedResources::DerivedResourcesCOUNT] = { 0 }; // Cloth, Lumber, Gold
+		float humanly[HumanlyResources::HumanlyResourcesCOUNT] = { 0 }; // Happy, Knowledge
 	};
 
-
-	HumanProperties properties;
-	HumanRequires requires;
-	//HumanExperiences experiences;
+	HumanProperties &getProperties() { return properties; };
+	HumanRequires &getRequires() { return requires; };
+	AllResources &getExperiences() { return experiences; };
+	//HumanExperiences &getHas() { return has; };
 
 	void gathering();
 	void production();
@@ -55,6 +61,11 @@ public:
 private:
 
 	adlScene_manager* sceneManager;
+
+	HumanProperties properties;
+	HumanRequires requires;
+	AllResources experiences;
+	//HumanExperiences has; //Owned, has, existing
 
 };
 

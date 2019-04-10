@@ -25,15 +25,19 @@ public:
 	};
 
 	struct ConstructionRequires {
-		ConsumableResources minExperiences;
-		ConsumableResources minResources;
+		AllResources experiences; // Min Experience Needs
+		AllResources resources; // Min Resource Needs
 	};
+
+
+	ConstructionProperties &getProperties() { return properties; };
+	ConstructionRequires &getRequires() { return requires; };
+
+private:
 
 	ConstructionProperties properties;
 	ConstructionRequires requires;
 
-
-private:
 
 };
 
