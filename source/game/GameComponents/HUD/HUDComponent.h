@@ -30,6 +30,7 @@ public:
 
 private:
 
+	ImGuiStyle defaultStyle;	
 	adlEditor_manager* editorMan;
 	PlayerAttributes* player;
 
@@ -38,6 +39,7 @@ private:
 
 	void humanAttributes();
 	void resourceAttributes();
+	void constructionAttributes();
 
 };
 

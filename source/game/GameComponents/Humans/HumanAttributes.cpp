@@ -120,11 +120,11 @@ void HumanAttributes::gathering()
 
 void HumanAttributes::production()
 {
-	//Entity construction = sceneManager->add_entity_to_scene("Construction");
-	//SharedPointer<SelectableComponent> selectCom(construction->get_component<SelectableComponent>("SelectableComponent"));
-	
-	//selectCom->set_position(adlVec3(0, 20, -10));
-
+	Entity construction = sceneManager->add_entity_to_scene("Construction");
+	SharedPointer<SelectableComponent> selectCom(construction->get_component<SelectableComponent>("SelectableComponent"));
+	SharedPointer<adlTransform_component> transCom(construction->get_component<adlTransform_component>("adlTransform_component"));
+	selectCom->set_position(adlVec3(0, 0, -10));
+	transCom->set_position(adlVec3(0, 0, -10));
 }
 
 void HumanAttributes::movement(adlVec3 targetPos)

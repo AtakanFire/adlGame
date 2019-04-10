@@ -125,7 +125,7 @@ void adlCamera::update_rts_camera(float dt)
 	int screen_height = window->get_height();
 
 	adlVec2_i32 mousePos = input->get_mouse_pos();
-	float tolerance = 25;
+	float tolerance = 2;
 
 	if (input->get_key(adl_key_plus))
 	{

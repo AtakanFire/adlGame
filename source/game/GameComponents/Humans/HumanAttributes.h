@@ -23,18 +23,28 @@ public:
 	// Human Attributes
 	struct HumanProperties {
 		std::string name = "";
-		float age = 18;
+		float age = 18; // Child(<18), Teenager(18<30), Adult(30<50), Elderly(50<)
 
-		ConsumableResources owned;
-		ConsumableResources experiences;
+		// Gender, Parents, House ~ ->  Spouse, Childs
+
+		ConsumableResources owned; // Remove
+		ConsumableResources experiences; // Remove
 	};
 
-	struct HumanRequires { 
+	struct HumanRequires { // Needs: Food, Cloth, Happy, ~ -> House, Spouse
 		ConsumableResources needs; // ~ Basic Game Version of "Maslow's Hierarchy of Needs" ~
 	};
 
+	struct HumanExperiences { // If there is time, human can learn everything.
+		ConsumableResources cr;
+		DerivedResources dr;
+		HumanlyResources hr;
+	};
+
+
 	HumanProperties properties;
 	HumanRequires requires;
+	//HumanExperiences experiences;
 
 	void gathering();
 	void production();

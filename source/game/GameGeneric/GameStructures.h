@@ -3,7 +3,7 @@
 
 #include "game/GameGeneric/GameGenericTypedef.h"
 
-struct ConsumableResources {
+struct ConsumableResources { // Food, Wood, Stone, Metal, Cotton
 	float food = 0;
 	float wood = 0;
 	float stone = 0;
@@ -69,9 +69,17 @@ struct ConsumableResources {
 };
 
 
+struct DerivedResources { // Cloth, Lumber, Gold
+	float cloth = 0;
+	float lumber = 0;
+	float gold = 0;
+};
 
 
-
+struct HumanlyResources { // Happy, Knowledge
+	float Happy = 0;
+	float Knowledge = 0;
+};
 
 
 #endif //GameStructures_h__
