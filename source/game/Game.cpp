@@ -19,6 +19,7 @@
 #include "game/GameComponents/HUD/HUDComponent.h"	
 
 #include "game/GameComponents/Misc/SelectableComponent.h"	
+#include "game/GameComponents/Misc/MovementComponent.h"	
 
 //#include "game/GameComponents/Behaviours/"	
 
@@ -73,6 +74,7 @@ bool Game::init()
 	HUDComponent hudC;
 
 	SelectableComponent selectC;
+	MovementComponent moveC;
 
 	Entity player = adl_scene_manager->add_entity_to_scene("Player");
 

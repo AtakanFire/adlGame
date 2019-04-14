@@ -4,6 +4,7 @@
 #include "engine/adl_entities/adlEntity_component.h"
 
 #include "game/GameGeneric/GameGenericTypedef.h"
+#include "game/GameGeneric/GameStructures.h"
 
 class PlayerAttributes : public adlEntity_component { 
 
@@ -23,12 +24,17 @@ public:
 	virtual void destroy() override;
 	virtual void editor() override;
 
+	AllResources &getStored() { return stored; };
+
+
 	Entity getSelection();
 	void setSelection(Entity selected);
 
 private:
 
 	Entity selection;
+
+	AllResources stored;
 
 
 };

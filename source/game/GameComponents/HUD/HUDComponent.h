@@ -13,12 +13,6 @@ class HUDComponent : public adlEntity_component {
 
 public:
 
-	static HUDComponent& get()
-	{
-		static HUDComponent instance;
-		return instance;
-	}
-
 	HUDComponent();
 
 	virtual bool init(const rapidjson::Value& json_object) override;
@@ -41,7 +35,7 @@ private:
 	void resourceAttributes();
 	void constructionAttributes();
 
-	void progressBarGenerator(std::vector<std::string> text, float value[]);
+	void progressBarGenerator(std::vector<std::string> text, float value[], float limit = 100.0f, bool indent = true);
 
 
 };

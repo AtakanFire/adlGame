@@ -17,10 +17,6 @@
       "path": "res/entities/Misc/Empty.json"
     },
     {
-      "name": "Plane",
-      "path": "res/entities/Misc/Plane.json"
-    },
-    {
       "name": "Player",
       "path": "res/entities/Player.json"
     },

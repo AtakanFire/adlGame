@@ -27,6 +27,8 @@ public:
 		float age = 18; // Child(<18), Teenager(18<30), Adult(30<50), Elderly(50<)
 		int gender = 1; // Female, Male 
 		
+		std::vector<std::string> parents = { "", "" }; // Mother, Father -> Life -> Copulate -> Assign, EntityName(EntityId) 
+
 		// Parents, House ~ ->  Spouse, Childs, Health
 	};
 
@@ -47,16 +49,19 @@ public:
 		float humanly[HumanlyResources::HumanlyResourcesCOUNT] = { 0 }; // Happy, Knowledge
 	};
 
+	struct HumanCarry { 
+		std::string carriedType = "";
+
+		float carried = 0; 
+	};
+
 	HumanProperties &getProperties() { return properties; };
 	HumanRequires &getRequires() { return requires; };
 	AllResources &getExperiences() { return experiences; };
-	//HumanExperiences &getHas() { return has; };
+	HumanCarry &getCarried() { return carrying; };
 
-	void gathering();
-	void production();
-
-	void movement(adlVec3 targetPos);
-
+	void gathering(Entity &entity, float cost);
+	void production(std::string entityName);
 
 private:
 
@@ -65,8 +70,7 @@ private:
 	HumanProperties properties;
 	HumanRequires requires;
 	AllResources experiences;
-	//HumanExperiences has; //Owned, has, existing
-
+	HumanCarry carrying;
 };
 
 #endif //HumanAttributes_h__

@@ -118,6 +118,11 @@ void adlCamera::look_at(adlVec3 target, adlVec3 up_vector)
 
 void adlCamera::update_rts_camera(float dt)
 {
+	if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused())
+	{
+		return;
+	}
+
 	adlInput* input = &adlInput::get();
 	adlWindow* window = adlWindow::get();
 	window->set_mouse_visible(true);

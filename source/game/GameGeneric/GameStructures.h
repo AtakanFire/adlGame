@@ -35,11 +35,28 @@ struct AllResources {
 	float derived[DerivedResources::DerivedResourcesCOUNT] = { 0 }; // Cloth, Lumber, Gold
 	float humanly[HumanlyResources::HumanlyResourcesCOUNT] = { 0 }; // Happy, Knowledge
 
+	float &find(std::string type) {
+
+		std::vector<std::string>::iterator c = std::find(consumableTypes.begin(), consumableTypes.end(), type);
+		std::vector<std::string>::iterator d = std::find(derivedTypes.begin(), derivedTypes.end(), type);
+		std::vector<std::string>::iterator h = std::find(humanlyTypes.begin(), humanlyTypes.end(), type);
+
+		if (c != consumableTypes.cend()) {
+			return consumable[std::distance(consumableTypes.begin(), c)];
+		} else if (d != derivedTypes.cend()) {
+			return derived[std::distance(derivedTypes.begin(), d)];
+		} else if (h != humanlyTypes.cend()) {
+			return humanly[std::distance(humanlyTypes.begin(), h)];
+		} else {
+			std::cout << "Undefined Type" << std::endl;
+		}			
+	}
+
 	void editor() {
 		ImGui::Text("Consumable Resources");
 		ImGui::Indent();
 
-		for (int i = 0; i < consumableTypes.capacity(); i++)
+		for (size_t i = 0; i < consumableTypes.capacity(); i++)
 		{
 			ImGui::Indent();
 
@@ -53,7 +70,7 @@ struct AllResources {
 		ImGui::Text("Derived Resources");
 		ImGui::Indent();
 
-		for (int i = 0; i < derivedTypes.capacity(); i++)
+		for (size_t i = 0; i < derivedTypes.capacity(); i++)
 		{
 			ImGui::Indent();
 
@@ -67,7 +84,7 @@ struct AllResources {
 		ImGui::Text("Humanly Resources");
 		ImGui::Indent();
 
-		for (int i = 0; i < humanlyTypes.capacity(); i++)
+		for (size_t i = 0; i < humanlyTypes.capacity(); i++)
 		{
 			ImGui::Indent();
 

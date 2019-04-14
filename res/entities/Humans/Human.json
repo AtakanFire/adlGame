@@ -19,10 +19,14 @@
 			"static": false
 		},
 		{
+			"type": "MovementComponent"
+		},
+		{
 			"type": "HumanAttributes",
 			"properties": {
 				"name": "Individual",
 				"age": 22,
+				"GenderTypes": "Female(0) Male(1)",
 				"gender": 1
 			},
 			"requires": {

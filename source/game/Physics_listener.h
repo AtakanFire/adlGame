@@ -11,6 +11,8 @@
 #include "game/GameComponents/Player/PlayerAttributes.h"
 #include "game/GameComponents/Humans/HumanAttributes.h"
 
+#include "game/GameComponents/Misc/MovementComponent.h"
+
 class Physics_listener : public adlPhysics_observer
 {
 public:
@@ -51,10 +53,11 @@ public:
 		{
 			SharedPointer<SelectableComponent> selected(player->getSelection()->get_component<SelectableComponent>("SelectableComponent"));
 			selected->setTarget(nullptr);
-			if (selected->getOwner()->has_component("HumanAttributes"))
+
+			if (selected->getOwner()->has_component("MovementComponent"))
 			{
-				SharedPointer<HumanAttributes> human(selected->getOwner()->get_component<HumanAttributes>("HumanAttributes"));
-				human->movement(collision_point);
+				SharedPointer<MovementComponent> movement(selected->getOwner()->get_component<MovementComponent>("MovementComponent"));
+				movement->move(collision_point);
 			}
 		}
 	}

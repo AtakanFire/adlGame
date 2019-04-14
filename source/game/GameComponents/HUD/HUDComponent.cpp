@@ -55,9 +55,28 @@ void HUDComponent::editor() {
 
 void HUDComponent::mainMenu()
 {
+	AllResources& stored = player->getStored();
+
 	if (ImGui::BeginMainMenuBar())
 	{
-		ImGui::Text("adlGame");
+		if (ImGui::BeginMenu("Total Stats"))
+		{
+			//std::cout << stored.consumable[0] << std::endl;
+
+			ImGui::TextColored(ImVec4(0.5, 0.8, 0.4, 1.0),"Consumable Resources");
+			progressBarGenerator(stored.consumableTypes, stored.consumable, 100, false);
+			ImGui::Separator();
+
+			ImGui::TextColored(ImVec4(0.5, 0.8, 0.4, 1.0), "Derived Resources");
+			progressBarGenerator(stored.derivedTypes, stored.derived, 100, false);
+			ImGui::Separator();
+
+
+			ImGui::TextColored(ImVec4(0.5, 0.8, 0.4, 1.0), "Humanly Resources");
+			progressBarGenerator(stored.humanlyTypes, stored.humanly, 100, false);
+
+			ImGui::EndMenu();
+		}
 
 		ImGui::Text("|");
 
@@ -73,8 +92,25 @@ void HUDComponent::mainMenu()
 				ImGui::Text(selected->getTarget()->getOwner()->getName().c_str());
 			}
 
+			//ImGui::Text("|");
+
 		}
-		
+
+		//ImGui::Text("|");
+
+		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - ImGui::CalcTextSize("| adlGame").x);
+		ImGui::Text("| adlGame");
+
+		// ImGui::Checkbox("Good View", &showAll);
+
+		// Total Resources, Human Count etc.
+
+		// Individuals' Needs -> on a window
+
+		// ~Science Tree, Reputation(Dignity) House
+
+		// Settings etc.
+
 		ImGui::EndMainMenuBar();
 	}
 }
@@ -119,7 +155,7 @@ void HUDComponent::humanAttributes()
 	HumanAttributes::HumanProperties& pro = human->getProperties();
 	HumanAttributes::HumanRequires& req = human->getRequires();
 	AllResources& exp = human->getExperiences();
-	//HumanAttributes::HumanExperiences& has = human->getHas();
+	HumanAttributes::HumanCarry& carrying = human->getCarried();
 	
 
 	std::string title("Human : " + pro.name + (selected->getTarget() ? " -> " : " ") + (selected->getTarget() ? selected->getTarget()->getOwner()->getName() : " "));
@@ -146,8 +182,7 @@ void HUDComponent::humanAttributes()
 					ImGui::SetTooltip("Change Name with 'Right Click'");
 				if (ImGui::BeginPopupContextItem("Change Name"))
 				{
-
-
+					ImGui::SetKeyboardFocusHere();
 					char humanName[64] = "";
 					if (ImGui::InputText("Human Name", humanName, 64, ImGuiInputTextFlags_EnterReturnsTrue))
 					{
@@ -170,34 +205,10 @@ void HUDComponent::humanAttributes()
 				ImGui::Unindent();
 			}
 
-			/*if (ImGui::CollapsingHeader("Has(Owned)"))
+			if (carrying.carriedType != "")
 			{
-				ImGui::Indent();
-
-				if (ImGui::CollapsingHeader("Consumable"))
-				{
-					ImGui::Indent();
-					//has.consumable.hud();
-
-					ImGui::Unindent();
-				}
-
-				if (ImGui::CollapsingHeader("Derived"))
-				{
-					ImGui::Indent();
-					//has.derived.hud();
-					ImGui::Unindent();
-				}
-
-				if (ImGui::CollapsingHeader("Humanly"))
-				{
-					ImGui::Indent();
-					//has.humanly.hud();
-					ImGui::Unindent();
-				}
-
-				ImGui::Unindent();
-			}*/
+				ImGui::Text("Carried: %s(%.0f)", carrying.carriedType.c_str(), carrying.carried);
+			}
 
 			ImGui::NextColumn();
 			ImGui::Text("%s", "Requires");
@@ -219,7 +230,7 @@ void HUDComponent::humanAttributes()
 				ImGui::Indent();
 
 				if (ImGui::Button("Build Construction", ImVec2(-1, 40))) {
-					human->production();
+					human->production("Construction");
 				}
 
 				ImGui::Unindent();
@@ -454,18 +465,42 @@ void HUDComponent::constructionAttributes()
 	}
 }
 
-void HUDComponent::progressBarGenerator(std::vector<std::string> text, float value[])
+void HUDComponent::progressBarGenerator(std::vector<std::string> text, float value[], float limit, bool indent)
 {
 	for (int i = 0; i < text.capacity(); i++)
 	{
-		ImGui::Indent();
+		if (indent)
+			ImGui::Indent();
+		
+		if (limit == -1) // Unlimited
+		{
+			char buf[32];
+			sprintf(buf, "%s: %.0f", text[i].c_str(), value[i]);
+			ImGui::ProgressBar(value[i], ImVec2(-1.f, 0.f), buf);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("%s", text[i].c_str());
+		}
+		else
+		{
+			char buf[32];
+			sprintf(buf, "%s", text[i].c_str(), value[i], limit);
+			ImGui::ProgressBar(value[i] / limit, ImVec2(-1.f, 0.f), buf);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("%s: %.0f/%.0f(Current/Max)", text[i].c_str(), value[i], limit);
 
-		char buf[32];
-		sprintf(buf, "%s: %.0f/%.0f", text[i].c_str(), value[i], 100.0f);
-		ImGui::ProgressBar(value[i] / 100.0f, ImVec2(-1.f, 0.f), buf);
-		if (ImGui::IsItemHovered())
+			/*
+			char buf[32];
+			sprintf(buf, "%s: %.0f/%.0f", text[i].c_str(), value[i], limit);
+			ImGui::ProgressBar(value[i] / limit, ImVec2(-1.f, 0.f), buf);
+			if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("%s(Current/Max)", text[i].c_str());
+			*/
+		}
 
-		ImGui::Unindent();
+		//ImGui::TextDisabled("%s: %.0f/%.0f", text[i].c_str(), value[i], 100.0f);
+		
+
+		if (indent)
+			ImGui::Unindent();
 	}
 }

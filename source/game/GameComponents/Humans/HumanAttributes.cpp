@@ -47,11 +47,7 @@ void HumanAttributes::update(float dt) {
 		SharedPointer<adlTransform_component> transCom(owner->get_component<adlTransform_component>("adlTransform_component"));
 		transCom->set_rotation(adlVec3(transCom->get_rotation().x, transCom->get_rotation().y + 1 * dt, transCom->get_rotation().z));
 	
-		if (selectCom->getTarget()->getOwner()->has_component("ResourceAttributes"))
-		{
-			SharedPointer<ResourceAttributes> res(selectCom->getTarget()->getOwner()->get_component<ResourceAttributes>("ResourceAttributes"));
-			res->exhaustion(0.02 * dt);
-		}	
+		gathering(selectCom->getTarget()->getOwner(), 0.02 * dt);
 	}
 }
 
@@ -123,26 +119,37 @@ void HumanAttributes::editor() {
 	ImGui::Unindent();
 }
 
-void HumanAttributes::gathering()
+void HumanAttributes::gathering(Entity &entity, float cost)
 {
+	if (entity->has_component("ResourceAttributes"))
+	{
+		SharedPointer<ResourceAttributes> res(entity->get_component<ResourceAttributes>("ResourceAttributes"));
+		res->exhaustion(cost);
 
+		if (res->getProperties().type != carrying.carriedType)
+		{
+			carrying.carriedType = res->getProperties().type;
+			carrying.carried = 0;
+		}
+
+		carrying.carried += cost;
+
+		PlayerAttributes* player = &PlayerAttributes::get();
+
+		AllResources* stored = &player->getStored();
+
+		stored->find(res->getProperties().type) += cost;
+
+
+
+	}
 }
 
-void HumanAttributes::production()
+void HumanAttributes::production(std::string entityName)
 {
-	Entity construction = sceneManager->add_entity_to_scene("Construction");
+	Entity construction = sceneManager->add_entity_to_scene(entityName);
 	SharedPointer<SelectableComponent> selectCom(construction->get_component<SelectableComponent>("SelectableComponent"));
 	SharedPointer<adlTransform_component> transCom(construction->get_component<adlTransform_component>("adlTransform_component"));
 	selectCom->set_position(adlVec3(0, 0, -10));
 	transCom->set_position(adlVec3(0, 0, -10));
 }
-
-void HumanAttributes::movement(adlVec3 targetPos)
-{
-	SharedPointer<SelectableComponent> selfSelected(owner->get_component<SelectableComponent>("SelectableComponent"));
-	
-	selfSelected->set_static(false);
-	selfSelected->apply_force(targetPos - selfSelected->get_position(), 10);
-}
-
-

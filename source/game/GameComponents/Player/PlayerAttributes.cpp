@@ -24,6 +24,19 @@ void PlayerAttributes::destroy() {
 void PlayerAttributes::editor() {
 	ImGui::Indent();
 
+	PlayerAttributes* player = &PlayerAttributes::get();
+	player->getStored().editor();
+
+	/*
+	// Singleton + Component = Duplicate Data
+	// Use Singleton Datas
+	if (ImGui::CollapsingHeader("getStored()"))
+		getStored().editor();
+	if (ImGui::CollapsingHeader("stored"))
+		stored.editor();
+	*/
+
+
 	ImGui::Unindent();
 }
 
