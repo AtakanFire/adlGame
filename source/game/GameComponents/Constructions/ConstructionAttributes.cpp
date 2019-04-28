@@ -1,5 +1,8 @@
 #include "ConstructionAttributes.h"
 
+#include "game/GameComponents/Player/PlayerAttributes.h"
+
+
 ConstructionAttributes::ConstructionAttributes()
 {
 	REGISTER_COMPONENT(ConstructionAttributes)
@@ -83,4 +86,15 @@ void ConstructionAttributes::editor() {
 
 	ImGui::Unindent();
 }
+
+void ConstructionAttributes::gathering(Entity& entity, std::string takenObject, float taken)
+{
+	if (takenObject != "")
+	{
+		PlayerAttributes* player = &PlayerAttributes::get(); // to home
+		AllResources* stored = &player->getStored();
+		stored->find(takenObject) += taken;
+	}
+}
+
 

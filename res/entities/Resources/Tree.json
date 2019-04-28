@@ -1,16 +1,16 @@
 {
-	"type": "Resource",
+	"type": "Tree",
 	"components": 
 	[
 		{
 			"type": "adlTransform_component",
-			"position": [10.0, 0.0, 0.0],
+			"position": [-10.0, 0.0, 0.0],
 			"rotation": [0.0, 0.0, 0.0],
 			"scale": [1.0, 1.0, 1.0]
 		},
 		{
 			"type": "adlRender_component",
-			"model": "StoneMine",
+			"model": "PineTree",
 			"material": "silver"
 		},
 		{
@@ -21,8 +21,8 @@
 		{
 			"type": "ResourceAttributes",
 			"properties": {
-				"name": "Stone Mine",
-				"type": "Stone",
+				"name": "Tree",
+				"type": "Wood",
 				"resource": [50, 100]
 			},
 			"requires": {

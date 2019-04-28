@@ -61,7 +61,7 @@ void SelectableComponent::under_mouse() {
 	
 	if (input->get_mouse_down(ADL_BUTTON_LEFT)) {
 		player->setSelection(this->owner);
-		std::cout << owner->getName() << " Selected!" << std::endl;
+		//std::cout << owner->getName() << " Selected!" << std::endl;
 	} else if (input->get_mouse_down(ADL_BUTTON_RIGHT)) {
 		if (player->getSelection() != nullptr && player->getSelection()->has_component("SelectableComponent"))
 		{

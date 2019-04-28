@@ -3,7 +3,6 @@
 #include "engine/adl_entities/adlTransform_component.h"
 
 #include "game/GameComponents/Misc/SelectableComponent.h"
-#include "game/GameComponents/Resources/ResourceAttributes.h"
 #include "game/GameComponents/Constructions/ConstructionAttributes.h"
 
 HumanAttributes::HumanAttributes()
@@ -46,8 +45,21 @@ void HumanAttributes::update(float dt) {
 	{
 		SharedPointer<adlTransform_component> transCom(owner->get_component<adlTransform_component>("adlTransform_component"));
 		transCom->set_rotation(adlVec3(transCom->get_rotation().x, transCom->get_rotation().y + 1 * dt, transCom->get_rotation().z));
-	
-		gathering(selectCom->getTarget()->getOwner(), 0.02 * dt);
+
+		Entity entity = selectCom->getTarget()->getOwner();
+
+		if (entity->has_component("ResourceAttributes"))
+		{
+			SharedPointer<ResourceAttributes> res(entity->get_component<ResourceAttributes>("ResourceAttributes"));
+			gathering(res, 0.02 * dt);
+		}
+		else if (entity->has_component("ConstructionAttributes"))
+		{
+			SharedPointer<ConstructionAttributes> construction(entity->get_component<ConstructionAttributes>("ConstructionAttributes"));
+			construction->gathering(owner, carrying.takenObject, carrying.taken);
+			dropped();
+		}
+
 	}
 }
 
@@ -119,29 +131,35 @@ void HumanAttributes::editor() {
 	ImGui::Unindent();
 }
 
-void HumanAttributes::gathering(Entity &entity, float cost)
+void HumanAttributes::took(std::string taken, float weight)
 {
-	if (entity->has_component("ResourceAttributes"))
+	if (taken != carrying.takenObject || carrying.takenObject == "")
 	{
-		SharedPointer<ResourceAttributes> res(entity->get_component<ResourceAttributes>("ResourceAttributes"));
-		res->exhaustion(cost);
+		carrying.taken = 0;
+		carrying.takenObject = taken;
+	} 
+	
+	if (carrying.taken + weight <= carrying.maxCarry)
+	{
+		carrying.taken += weight;
+		gainExperience(taken, weight/10); // experienceRate = weight/10 for now
+	}
+	else {
+		carrying.taken = carrying.maxCarry;
+	}
+}
 
-		if (res->getProperties().type != carrying.carriedType)
-		{
-			carrying.carriedType = res->getProperties().type;
-			carrying.carried = 0;
-		}
+void HumanAttributes::dropped()
+{
+	carrying.takenObject = "";
+	carrying.taken = 0;
+}
 
-		carrying.carried += cost;
-
-		PlayerAttributes* player = &PlayerAttributes::get();
-
-		AllResources* stored = &player->getStored();
-
-		stored->find(res->getProperties().type) += cost;
-
-
-
+void HumanAttributes::gathering(SharedPointer<ResourceAttributes> res, float cost)
+{
+	if (carrying.taken < carrying.maxCarry && !res->exhaustion(cost))
+	{
+		took(res->getProperties().type, cost);
 	}
 }
 
@@ -152,4 +170,9 @@ void HumanAttributes::production(std::string entityName)
 	SharedPointer<adlTransform_component> transCom(construction->get_component<adlTransform_component>("adlTransform_component"));
 	selectCom->set_position(adlVec3(0, 0, -10));
 	transCom->set_position(adlVec3(0, 0, -10));
+}
+
+void HumanAttributes::gainExperience(std::string type, float exp)
+{
+	experiences.find(type) += exp;
 }

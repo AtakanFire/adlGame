@@ -33,6 +33,9 @@ public:
 	ConstructionProperties &getProperties() { return properties; };
 	ConstructionRequires &getRequires() { return requires; };
 
+	void gathering(Entity &entity, std::string takenObject, float taken);
+	void production(std::string entityName);
+
 private:
 
 	ConstructionProperties properties;

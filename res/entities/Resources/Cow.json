@@ -1,16 +1,16 @@
 {
-	"type": "Resource",
+	"type": "Cow",
 	"components": 
 	[
 		{
 			"type": "adlTransform_component",
-			"position": [10.0, 0.0, 0.0],
-			"rotation": [0.0, 0.0, 0.0],
+			"position": [12.0, 0.0, 24.0],
+			"rotation": [0.0, 60.0, 0.0],
 			"scale": [1.0, 1.0, 1.0]
 		},
 		{
 			"type": "adlRender_component",
-			"model": "StoneMine",
+			"model": "Cow",
 			"material": "silver"
 		},
 		{
@@ -21,9 +21,9 @@
 		{
 			"type": "ResourceAttributes",
 			"properties": {
-				"name": "Stone Mine",
-				"type": "Stone",
-				"resource": [50, 100]
+				"name": "Cow",
+				"type": "Food",
+				"resource": [400, 400]
 			},
 			"requires": {
 				"minExperience": 0

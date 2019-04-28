@@ -21,8 +21,24 @@
       "path": "res/entities/Player.json"
     },
     {
+      "name": "Cow",
+      "path": "res/entities/Resources/Cow.json"
+    },
+    {
       "name": "Resource",
       "path": "res/entities/Resources/Resource.json"
+    },
+    {
+      "name": "Sheep",
+      "path": "res/entities/Resources/Sheep.json"
+    },
+    {
+      "name": "StoneMine",
+      "path": "res/entities/Resources/StoneMine.json"
+    },
+    {
+      "name": "Tree",
+      "path": "res/entities/Resources/Tree.json"
     },
     {
       "name": "Sun",
@@ -77,6 +93,10 @@
       "path": "res/models/adl/Debugs/AxisArrows/AxisArrowOBJ/AxisArrowOBJ.obj"
     },
     {
+      "name": "Blacksmith",
+      "path": "res/models/Constructions/Blacksmith/Blacksmith.obj"
+    },
+    {
       "name": "House",
       "path": "res/models/Constructions/Houses/House/House.obj"
     },
@@ -85,8 +105,60 @@
       "path": "res/models/Constructions/Houses/PlaceHouse/PlaceHouse.obj"
     },
     {
+      "name": "PlaceHouseBase",
+      "path": "res/models/Constructions/Houses/PlaceHouseBase/PlaceHouseBase.obj"
+    },
+    {
       "name": "Human",
       "path": "res/models/Humans/Human/Human.obj"
+    },
+    {
+      "name": "Horse",
+      "path": "res/models/Misc/Animals/Farm/Horse.obj"
+    },
+    {
+      "name": "Llama",
+      "path": "res/models/Misc/Animals/Farm/Llama.obj"
+    },
+    {
+      "name": "Pig",
+      "path": "res/models/Misc/Animals/Farm/Pig.obj"
+    },
+    {
+      "name": "Pug",
+      "path": "res/models/Misc/Animals/Farm/Pug.obj"
+    },
+    {
+      "name": "Zebra",
+      "path": "res/models/Misc/Animals/Farm/Zebra.obj"
+    },
+    {
+      "name": "Cat",
+      "path": "res/models/Misc/Animals/Other/Cat.obj"
+    },
+    {
+      "name": "Dog",
+      "path": "res/models/Misc/Animals/Other/Dog.obj"
+    },
+    {
+      "name": "Eagle",
+      "path": "res/models/Misc/Animals/Other/Eagle.obj"
+    },
+    {
+      "name": "Wolf",
+      "path": "res/models/Misc/Animals/Other/Wolf.obj"
+    },
+    {
+      "name": "Cow",
+      "path": "res/models/Resources/Animals/Cow.obj"
+    },
+    {
+      "name": "Sheep",
+      "path": "res/models/Resources/Animals/Sheep.obj"
+    },
+    {
+      "name": "StoneMine",
+      "path": "res/models/Resources/Mines/Stone/StoneMine.obj"
     },
     {
       "name": "PineTree",

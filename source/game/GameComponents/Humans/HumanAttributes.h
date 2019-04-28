@@ -5,6 +5,7 @@
 
 #include "engine/adlScene_manager.h"
 
+#include "game/GameComponents/Resources/ResourceAttributes.h"
 #include "game/GameGeneric/GameGenericTypedef.h"
 #include "game/GameGeneric/GameStructures.h"
 #include "game/GameGeneric/GameFunctions.h"
@@ -29,6 +30,7 @@ public:
 		
 		std::vector<std::string> parents = { "", "" }; // Mother, Father -> Life -> Copulate -> Assign, EntityName(EntityId) 
 
+
 		// Parents, House ~ ->  Spouse, Childs, Health
 	};
 
@@ -50,9 +52,10 @@ public:
 	};
 
 	struct HumanCarry { 
-		std::string carriedType = "";
+		std::string takenObject = "";
 
-		float carried = 0; 
+		float taken = 0;
+		float maxCarry = 20;
 	};
 
 	HumanProperties &getProperties() { return properties; };
@@ -60,8 +63,13 @@ public:
 	AllResources &getExperiences() { return experiences; };
 	HumanCarry &getCarried() { return carrying; };
 
-	void gathering(Entity &entity, float cost);
+	void took(std::string taken, float weight);
+	void dropped();
+
+	void gathering(SharedPointer<ResourceAttributes> res, float cost);
 	void production(std::string entityName);
+
+	void gainExperience(std::string type, float exp);
 
 private:
 

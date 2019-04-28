@@ -10,7 +10,7 @@
 		},
 		{
 			"type": "adlRender_component",
-			"model": "House",
+			"model": "PlaceHouseBase",
 			"material": "silver"
 		},
 		{

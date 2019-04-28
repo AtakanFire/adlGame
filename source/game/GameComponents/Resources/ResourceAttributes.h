@@ -33,7 +33,7 @@ public:
 	ResourceRequires getRequires();
 
 	void grow(float growing);
-	void exhaustion(float exhausting);
+	bool exhaustion(float exhausting);
 
 
 private:

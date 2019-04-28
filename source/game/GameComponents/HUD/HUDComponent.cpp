@@ -64,16 +64,16 @@ void HUDComponent::mainMenu()
 			//std::cout << stored.consumable[0] << std::endl;
 
 			ImGui::TextColored(ImVec4(0.5, 0.8, 0.4, 1.0),"Consumable Resources");
-			progressBarGenerator(stored.consumableTypes, stored.consumable, 100, false);
+			progressBarGenerator(stored.consumableTypes, stored.consumable, 800, false);
 			ImGui::Separator();
 
 			ImGui::TextColored(ImVec4(0.5, 0.8, 0.4, 1.0), "Derived Resources");
-			progressBarGenerator(stored.derivedTypes, stored.derived, 100, false);
+			progressBarGenerator(stored.derivedTypes, stored.derived, 800, false);
 			ImGui::Separator();
 
 
 			ImGui::TextColored(ImVec4(0.5, 0.8, 0.4, 1.0), "Humanly Resources");
-			progressBarGenerator(stored.humanlyTypes, stored.humanly, 100, false);
+			progressBarGenerator(stored.humanlyTypes, stored.humanly, 800, false);
 
 			ImGui::EndMenu();
 		}
@@ -205,9 +205,9 @@ void HUDComponent::humanAttributes()
 				ImGui::Unindent();
 			}
 
-			if (carrying.carriedType != "")
+			if (carrying.takenObject != "")
 			{
-				ImGui::Text("Carried: %s(%.0f)", carrying.carriedType.c_str(), carrying.carried);
+				ImGui::Text("Carried: %s(%.0f)", carrying.takenObject.c_str(), carrying.taken);
 			}
 
 			ImGui::NextColumn();

@@ -32,7 +32,13 @@ void ResourceAttributes::post_init() {
 }
 
 void ResourceAttributes::update(float dt) {
-	grow(0.01 * dt);
+	//grow(0.01 * dt);
+
+	if (owner->has_component("adlTransform_component")) // Resize by resource
+	{
+		SharedPointer<adlTransform_component> transCom(owner->get_component<adlTransform_component>("adlTransform_component"));
+		transCom->set_scale((properties.resource.x / properties.resource.y) + 0.2f);
+	}
 }
 
 void ResourceAttributes::destroy() {
@@ -109,27 +115,17 @@ void ResourceAttributes::grow(float growing)
 {
 	properties.resource.x += growing;
 	normalizeResource();
-
-	if (owner->has_component("adlTransform_component"))
-	{
-		SharedPointer<adlTransform_component> transCom(owner->get_component<adlTransform_component>("adlTransform_component"));
-		transCom->set_scale(properties.resource.x/properties.resource.y);
-	}
 }
 
-void ResourceAttributes::exhaustion(float exhausting)
+bool ResourceAttributes::exhaustion(float exhausting)
 {
 	properties.resource.x -= exhausting;
 	normalizeResource();
+	return properties.resource.x == 0.0f;
 }
 
 void ResourceAttributes::normalizeResource()
 {
-	//if (properties.resource.x < properties.resource.y)
-	//{
-	//	// properties.resource.x += 0.01; // Grow Rate
-	//}
-	//else 
 	if (properties.resource.x > properties.resource.y)
 	{
 		properties.resource.x = properties.resource.y;

@@ -81,7 +81,12 @@ bool Game::init()
 	Entity hud = adl_scene_manager->add_entity_to_scene("HUD");
 
 
-	Entity resource = adl_scene_manager->add_entity_to_scene("Resource");
+	Entity tree = adl_scene_manager->add_entity_to_scene("Tree");
+
+	Entity stoneMine = adl_scene_manager->add_entity_to_scene("StoneMine");
+
+	Entity sheep = adl_scene_manager->add_entity_to_scene("Sheep");
+	Entity cow = adl_scene_manager->add_entity_to_scene("Cow");
 	
 	Entity construction = adl_scene_manager->add_entity_to_scene("Construction");
 
