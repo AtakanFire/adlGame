@@ -1,0 +1,33 @@
+{
+	"type": "Cotton",
+	"components": 
+	[
+		{
+			"type": "adlTransform_component",
+			"position": [-10.0, 0.0, -10.0],
+			"rotation": [0.0, 60.0, 0.0],
+			"scale": [1.0, 1.0, 1.0]
+		},
+		{
+			"type": "adlRender_component",
+			"model": "Cotton",
+			"material": "silver"
+		},
+		{
+			"type": "SelectableComponent",
+			"shape": "box",
+			"static": true
+		},
+		{
+			"type": "ResourceAttributes",
+			"properties": {
+				"name": "Cotton",
+				"type": "Cotton",
+				"resource": [200, 200]
+			},
+			"requires": {
+				"minExperience": 0
+			}
+		}
+	]
+}

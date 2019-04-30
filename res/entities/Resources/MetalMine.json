@@ -1,0 +1,33 @@
+{
+	"type": "MetalMine",
+	"components": 
+	[
+		{
+			"type": "adlTransform_component",
+			"position": [20.0, 0.0, -10.0],
+			"rotation": [0.0, 0.0, 0.0],
+			"scale": [1.0, 1.0, 1.0]
+		},
+		{
+			"type": "adlRender_component",
+			"model": "MetalMine",
+			"material": "silver"
+		},
+		{
+			"type": "SelectableComponent",
+			"shape": "box",
+			"static": true
+		},
+		{
+			"type": "ResourceAttributes",
+			"properties": {
+				"name": "Metal Mine",
+				"type": "Metal",
+				"resource": [1000, 1500]
+			},
+			"requires": {
+				"minExperience": 0
+			}
+		}
+	]
+}

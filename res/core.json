@@ -21,8 +21,16 @@
       "path": "res/entities/Player.json"
     },
     {
+      "name": "Cotton",
+      "path": "res/entities/Resources/Cotton.json"
+    },
+    {
       "name": "Cow",
       "path": "res/entities/Resources/Cow.json"
+    },
+    {
+      "name": "MetalMine",
+      "path": "res/entities/Resources/MetalMine.json"
     },
     {
       "name": "Resource",
@@ -155,6 +163,14 @@
     {
       "name": "Sheep",
       "path": "res/models/Resources/Animals/Sheep.obj"
+    },
+    {
+      "name": "Cotton",
+      "path": "res/models/Resources/Cotton/Cotton.obj"
+    },
+    {
+      "name": "MetalMine",
+      "path": "res/models/Resources/Mines/Metal/MetalMine.obj"
     },
     {
       "name": "StoneMine",
