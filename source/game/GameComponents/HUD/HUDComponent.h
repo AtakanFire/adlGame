@@ -26,7 +26,7 @@ private:
 
 	ImGuiStyle defaultStyle;	
 	adlEditor_manager* editorMan;
-	PlayerAttributes* player;
+	SharedPointer<PlayerAttributes> player;
 
 	void mainMenu();
 	void mainLayout();
@@ -35,7 +35,7 @@ private:
 	void resourceAttributes();
 	void constructionAttributes();
 
-	void progressBarGenerator(std::vector<std::string> text, float value[], float limit = 100.0f, bool indent = true);
+	void progressBarGenerator(std::vector<std::string> text, float value[], float limit = 100.0f, bool indent = true, bool showAll = true);
 
 
 };

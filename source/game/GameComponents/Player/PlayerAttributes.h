@@ -5,16 +5,11 @@
 
 #include "game/GameGeneric/GameGenericTypedef.h"
 #include "game/GameGeneric/GameStructures.h"
+#include "game/GameGeneric/GameManager.h"
 
 class PlayerAttributes : public adlEntity_component { 
 
 public:
-
-	static PlayerAttributes& get()
-	{
-		static PlayerAttributes instance;
-		return instance;
-	}
 
 	PlayerAttributes();
 

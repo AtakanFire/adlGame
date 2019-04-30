@@ -44,7 +44,8 @@ public:
 		}
 
 		adlInput* input = &adlInput::get();
-		PlayerAttributes* player = &PlayerAttributes::get();
+		GameManager* gameMan = &GameManager::get();
+		SharedPointer<PlayerAttributes> player = (gameMan->getTaggedEntity("Player")->get_component<PlayerAttributes>("PlayerAttributes")).lock();
 
 		if (input->get_mouse_down(ADL_BUTTON_LEFT)) {
 			player->setSelection(nullptr);

@@ -91,7 +91,9 @@ void ConstructionAttributes::gathering(Entity& entity, std::string takenObject, 
 {
 	if (takenObject != "")
 	{
-		PlayerAttributes* player = &PlayerAttributes::get(); // to home
+
+		GameManager* gameMan = &GameManager::get();
+		SharedPointer<PlayerAttributes> player = (gameMan->getTaggedEntity("Player")->get_component<PlayerAttributes>("PlayerAttributes")).lock();
 		AllResources* stored = &player->getStored();
 		stored->find(takenObject) += taken;
 	}

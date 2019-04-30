@@ -32,7 +32,7 @@ public:
 
 private:
 
-	PlayerAttributes* player;
+	SharedPointer<PlayerAttributes> player;
 
 	SelectableComponent* target = nullptr;
 

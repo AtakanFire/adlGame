@@ -19,7 +19,9 @@ bool HUDComponent::init(const rapidjson::Value& json_object) {
 
 void HUDComponent::post_init() {
 	editorMan = &adlEditor_manager::get();
-	player = &PlayerAttributes::get();
+	//player = &PlayerAttributes::get();
+	GameManager* gameMan = &GameManager::get();
+	player = (gameMan->getTaggedEntity("Player")->get_component<PlayerAttributes>("PlayerAttributes")).lock();
 
 	ImGuiStyle& style = ImGui::GetStyle();
 	defaultStyle = style;
@@ -56,6 +58,7 @@ void HUDComponent::editor() {
 void HUDComponent::mainMenu()
 {
 	AllResources& stored = player->getStored();
+
 
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -232,6 +235,15 @@ void HUDComponent::humanAttributes()
 				if (ImGui::Button("Build Construction", ImVec2(-1, 40))) {
 					human->production("Construction");
 				}
+				if (ImGui::IsItemHovered()) {
+					char buf[128] = "";
+					for (int i = 0; i < req.needsTypes.capacity(); i++)
+					{
+						sprintf(buf, "%s%s: %.0f\n", buf, req.needsTypes[i].c_str(), req.needs[i]); // Construction Attributes not added!
+					}
+					ImGui::SetTooltip("%s", buf);
+				}
+					
 
 				ImGui::Unindent();
 			}
@@ -338,7 +350,7 @@ void HUDComponent::resourceAttributes() {
 				char buf[32];
 				sprintf(buf, "%.0f/%.0f", res->getProperties().resource.x, res->getProperties().resource.y);
 
-				ImGui::Text("Resources: ");
+				ImGui::Text("%s: ", res->getProperties().type.c_str());
 				ImGui::SameLine(0.0f, ImGui::GetStyle().ItemInnerSpacing.x);
 				ImGui::ProgressBar(res->getProperties().resource.x / res->getProperties().resource.y, ImVec2(0.f, 0.f), buf);
 				if (ImGui::IsItemHovered())
@@ -465,10 +477,15 @@ void HUDComponent::constructionAttributes()
 	}
 }
 
-void HUDComponent::progressBarGenerator(std::vector<std::string> text, float value[], float limit, bool indent)
+void HUDComponent::progressBarGenerator(std::vector<std::string> text, float value[], float limit, bool indent, bool showAll)
 {
 	for (int i = 0; i < text.capacity(); i++)
 	{
+		if (!showAll && value[i] == 0)
+		{
+			continue;
+		}
+
 		if (indent)
 			ImGui::Indent();
 		

@@ -10,7 +10,8 @@ bool PlayerAttributes::init(const rapidjson::Value& json_object) {
 }
 
 void PlayerAttributes::post_init() {
-
+	GameManager* gameMan = &GameManager::get();
+	gameMan->setTaggedEntity("Player", owner);
 }
 
 void PlayerAttributes::update(float dt) {
@@ -24,19 +25,9 @@ void PlayerAttributes::destroy() {
 void PlayerAttributes::editor() {
 	ImGui::Indent();
 
-	PlayerAttributes* player = &PlayerAttributes::get();
-	player->getStored().editor();
-
-	/*
-	// Singleton + Component = Duplicate Data
-	// Use Singleton Datas
-	if (ImGui::CollapsingHeader("getStored()"))
-		getStored().editor();
-	if (ImGui::CollapsingHeader("stored"))
+	if (ImGui::CollapsingHeader("Stored"))
 		stored.editor();
-	*/
-
-
+	
 	ImGui::Unindent();
 }
 

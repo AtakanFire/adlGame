@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/src/style.css" />
     <title>adl Tool Manager</title>
+    <link rel="stylesheet" href="./lib/tabulator/tabulator.min.css">
+    <script src="./lib/tabulator/tabulator.min.js"></script>
 </head>
 <body>
     <h2>adl Tool Manager</h2>
@@ -17,6 +19,7 @@
         <button class="TabLink" onclick="TabManager('dirMan')">Directory Manager</button>
         <button class="TabLink" onclick="TabManager('resMan')">Resource Manager</button>
         <button class="TabLink" onclick="TabManager('classor')">Class Creator</button>
+        <button class="TabLink" onclick="TabManager('table');table.setPage(1);">Data Table</button>
     </div>
     <div  id="Console" class="TabContent">
         <p>
@@ -51,6 +54,9 @@
         Parent: <input id="ClassParent" type="text" name="commandInput" placeholder="ClassParent" value="adlEntity_component" /><br>
         <input id="ClassName" type="text" name="commandInput" placeholder="ClassName" value="GameComponents/" />
         <button onclick="Classor()">Create Class</button>        
+    </div>
+    <div id="table" class="TabContent">
+        <div id="example-table"></div>
     </div>
     <br>
     <br>
@@ -122,38 +128,6 @@
             console.log("args:");            
             console.log(args);
             console.log("----------------------------------------");            
-        }
-    }
-
-    function Classor() {
-        var options = 
-            document.getElementById('ClassFormat').value + "," // settings[0]
-            + document.getElementById('ClassRegister').checked + "," // settings[1]
-            + document.getElementById('ClassParent').value; // settings[2]
-            + document.getElementById('GameGeneric').checked + "," // settings[3]
-        
-        var cPath = document.getElementById("pathGame").checked?'game/':'engine/';
-        console.log(cPath);
-
-
-        var commands = 'Classor:../../source/' + cPath + document.getElementById('ClassName').value + ':' + options
-        console.log(commands);
-        
-        SendData(commands);
-    }
-
-    //Display
-    function ClassOptionsController() {
-        var cFormat = document.getElementById('ClassFormat');
-        if(cFormat.value == 'isCpp'){
-            document.getElementById('ClassOptions').hidden = true;
-            document.getElementById('ClassRegister').checked = false;
-            document.getElementById('GameGeneric').checked = false;
-            document.getElementById('ClassParent').value = "";            
-        }else{
-            document.getElementById('ClassOptions').hidden = false;
-            document.getElementById('ClassRegister').checked = true;
-            document.getElementById('GameGeneric').checked = true;
         }
     }
 </script>

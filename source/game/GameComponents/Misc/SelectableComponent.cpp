@@ -17,8 +17,8 @@ bool SelectableComponent::init(const rapidjson::Value& json_object) {
 
 void SelectableComponent::post_init() {
 	adlPhysics_component::post_init();
-	player = &PlayerAttributes::get();
-
+	GameManager* gameMan = &GameManager::get();
+	player = (gameMan->getTaggedEntity("Player")->get_component<PlayerAttributes>("PlayerAttributes")).lock();
 }
 
 void SelectableComponent::update(float dt) {
