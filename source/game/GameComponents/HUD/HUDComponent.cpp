@@ -161,7 +161,7 @@ void HUDComponent::humanAttributes()
 	HumanAttributes::HumanCarry& carrying = human->getCarried();
 	
 
-	std::string title("Human : " + pro.name + (selected->getTarget() ? " -> " : " ") + (selected->getTarget() ? selected->getTarget()->getOwner()->getName() : " "));
+	std::string title("" + pro.name + "(Human)" + (selected->getTarget() ? " -> " : " ") + (selected->getTarget() ? selected->getTarget()->getOwner()->getName() : " "));
 
 	if (ImGui::Begin(title.c_str(), NULL, ImGuiWindowFlags_NoResize /*| ImGuiWindowFlags_NoScrollWithMouse*/ | ImGuiWindowFlags_NoScrollbar |
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus /*| ImGuiWindowFlags_NoTitleBar*/))
@@ -299,7 +299,7 @@ void HUDComponent::resourceAttributes() {
 	SharedPointer<ResourceAttributes> res(player->getSelection()->get_component<ResourceAttributes>("ResourceAttributes"));
 	SharedPointer<SelectableComponent> selected(player->getSelection()->get_component<SelectableComponent>("SelectableComponent"));
 
-	std::string title("Resource : " + res->getProperties().name);
+	std::string title("" + res->getProperties().name + "(Resource)");
 
 	if (ImGui::Begin(title.c_str(), NULL, ImGuiWindowFlags_NoResize /*| ImGuiWindowFlags_NoScrollWithMouse*/ | ImGuiWindowFlags_NoScrollbar |
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus /*| ImGuiWindowFlags_NoTitleBar*/))
@@ -377,7 +377,7 @@ void HUDComponent::constructionAttributes()
 	ConstructionAttributes::ConstructionProperties& pro = con->getProperties();
 	ConstructionAttributes::ConstructionRequires& req = con->getRequires();
 
-	std::string title("Construction : " + pro.name);
+	std::string title("" + pro.name + "(Construction)");
 
 	if (ImGui::Begin(title.c_str(), NULL, ImGuiWindowFlags_NoResize /*| ImGuiWindowFlags_NoScrollWithMouse*/ | ImGuiWindowFlags_NoScrollbar |
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus /*| ImGuiWindowFlags_NoTitleBar*/))

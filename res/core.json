@@ -1,8 +1,20 @@
 {
   "entities": [
     {
+      "name": "Blacksmith",
+      "path": "res/entities/Constructions/Blacksmith.json"
+    },
+    {
       "name": "Construction",
       "path": "res/entities/Constructions/Construction.json"
+    },
+    {
+      "name": "House",
+      "path": "res/entities/Constructions/House.json"
+    },
+    {
+      "name": "Inn",
+      "path": "res/entities/Constructions/Inn.json"
     },
     {
       "name": "HUD",
@@ -109,12 +121,12 @@
       "path": "res/models/Constructions/Houses/House/House.obj"
     },
     {
-      "name": "PlaceHouse",
-      "path": "res/models/Constructions/Houses/PlaceHouse/PlaceHouse.obj"
+      "name": "InnBase",
+      "path": "res/models/Constructions/Houses/Inn/Base/InnBase.obj"
     },
     {
-      "name": "PlaceHouseBase",
-      "path": "res/models/Constructions/Houses/PlaceHouseBase/PlaceHouseBase.obj"
+      "name": "PlaceHouse",
+      "path": "res/models/Constructions/Houses/PlaceHouse/PlaceHouse.obj"
     },
     {
       "name": "Human",

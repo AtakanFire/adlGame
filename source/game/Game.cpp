@@ -91,7 +91,10 @@ bool Game::init()
 
 	Entity cotton = adl_scene_manager->add_entity_to_scene("Cotton");
 	
-	Entity construction = adl_scene_manager->add_entity_to_scene("Construction");
+	Entity inn = adl_scene_manager->add_entity_to_scene("Inn");
+	Entity house = adl_scene_manager->add_entity_to_scene("House");
+	Entity blacksmith = adl_scene_manager->add_entity_to_scene("Blacksmith");
+
 
 	Entity human = adl_scene_manager->add_entity_to_scene("Human");
 

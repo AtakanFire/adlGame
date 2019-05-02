@@ -1,5 +1,5 @@
 {
-	"type": "Construction",
+	"type": "Inn",
 	"components": 
 	[
 		{
@@ -21,7 +21,7 @@
 		{
 			"type": "ConstructionAttributes",
 			"properties": {
-				"name": "Construction",
+				"name": "Inn",
 				"durability": 100
 			},
 			"requires": {
