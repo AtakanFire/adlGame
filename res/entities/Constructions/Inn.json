@@ -11,7 +11,7 @@
 		{
 			"type": "adlRender_component",
 			"model": "InnBase",
-			"material": "silver"
+			"material": "InnBase"
 		},
 		{
 			"type": "SelectableComponent",

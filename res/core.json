@@ -219,29 +219,49 @@
   ],
   "textures": [
     {
-      "name": "blank_texture",
-      "path": "res/textures/blank_texture.png",
-      "specular_map_path": "res/textures/blank_texture_Specular.png"
+      "name": "black",
+      "path": "res/textures/black.jpg",
+      "specular_map_path": ""
     },
     {
-      "name": "Default",
-      "path": "res/textures/Default.png",
-      "specular_map_path": "res/textures/Default_Specular.png"
+      "name": "blank",
+      "path": "res/textures/blank.png",
+      "specular_map_path": ""
+    },
+    {
+      "name": "blank_texture",
+      "path": "res/textures/blank_texture.png",
+      "specular_map_path": ""
+    },
+    {
+      "name": "dirt",
+      "path": "res/textures/dirt.jpg",
+      "specular_map_path": ""
     },
     {
       "name": "grass",
       "path": "res/textures/grass.jpg",
-      "specular_map_path": "res/textures/grass_Specular.jpg"
+      "specular_map_path": ""
     },
     {
       "name": "missing_resource",
       "path": "res/textures/missing_resource.png",
-      "specular_map_path": "res/textures/missing_resource_Specular.png"
+      "specular_map_path": ""
     },
     {
       "name": "PlaceHouse",
       "path": "res/textures/PlaceHouse.png",
-      "specular_map_path": "res/textures/PlaceHouse_Specular.png"
+      "specular_map_path": ""
+    },
+    {
+      "name": "snow",
+      "path": "res/textures/snow.jpg",
+      "specular_map_path": ""
+    },
+    {
+      "name": "stone",
+      "path": "res/textures/stone.png",
+      "specular_map_path": ""
     }
   ],
   "shaders": [
@@ -284,6 +304,11 @@
       "name": "skybox_shader",
       "vertex_shader_path": "res/shaders/skybox_shader.vert",
       "fragment_shader_path": "res/shaders/skybox_shader.frag"
+    },
+    {
+      "name": "terrain_shader",
+      "vertex_shader_path": "res/shaders/terrain_shader.vert",
+      "fragment_shader_path": "res/shaders/terrain_shader.frag"
     }
   ],
   "cube_maps": [
@@ -295,6 +320,15 @@
       "bottom": "default/bottom.png",
       "back": "default/back.png",
       "front": "default/front.png"
+    }
+  ],
+  "terrain_texture_packs": [
+    {
+      "name": "default",
+      "tex1": "grass",
+      "tex2": "dirt",
+      "tex3": "snow",
+      "tex4": "stone"
     }
   ]
 }

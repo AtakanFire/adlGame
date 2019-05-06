@@ -11,7 +11,7 @@
 		{
 			"type": "adlRender_component",
 			"model": "Sheep",
-			"material": "silver"
+			"material": "Sheep"
 		},
 		{
 			"type": "SelectableComponent",

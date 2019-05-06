@@ -66,6 +66,11 @@ public:
 	virtual void on_mouse_collision_start(adlEntity_shared_ptr  entity)
 	{
 	}
+
+private:
+	bool selection_state_ = false;
+	adlVec3 selection_start_;
+	adlVec3 selection_current_;
 };
 
 #endif //physics_listener_h__

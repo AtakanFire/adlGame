@@ -95,8 +95,8 @@ PropertyParser = function (data, baseDirectory) { // Edit for different needs
         } else {
             data = undefined;
         }
-    } else if (baseDirectory === "textures") {
-        data.specular_map_path = data.path.replace(/\.[^/.]+$/g, "") + "_Specular" + path.extname(data.path);        
+    } else if (baseDirectory === "textures") { // Specular ignored!
+        data.specular_map_path = ""; // data.path.replace(/\.[^/.]+$/g, "") + "_Specular" + path.extname(data.path);        
     } else if (baseDirectory === "terrains") {
         // console.log(path.basename(data.name, path.extname(data.name)));
         data.height_map = data.path;
@@ -118,6 +118,7 @@ WriteJSONFile = function (pathName, content = {}) {
     var others = JSON.parse(fs.readFileSync(pathName + "/shaders.json", 'utf8'));
     content.shaders = others.shaders;
     content.cube_maps = others.cube_maps;
+    content.terrain_texture_packs = others.terrain_texture_packs;
 
     data = JSON.stringify(content, RootReplacer, 2);
 

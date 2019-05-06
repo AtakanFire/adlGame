@@ -11,7 +11,7 @@
 		{
 			"type": "adlRender_component",
 			"model": "PineTree",
-			"material": "silver"
+			"material": "PineTree"
 		},
 		{
 			"type": "SelectableComponent",

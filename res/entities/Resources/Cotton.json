@@ -11,7 +11,7 @@
 		{
 			"type": "adlRender_component",
 			"model": "Cotton",
-			"material": "silver"
+			"material": "Cotton"
 		},
 		{
 			"type": "SelectableComponent",

@@ -11,7 +11,7 @@
 		{
 			"type": "adlRender_component",
 			"model": "MetalMine",
-			"material": "silver"
+			"material": "MetalMine"
 		},
 		{
 			"type": "SelectableComponent",

@@ -11,7 +11,7 @@
 		{
 			"type": "adlRender_component",
 			"model": "House",
-			"material": "silver"
+			"material": "House"
 		},
 		{
 			"type": "SelectableComponent",

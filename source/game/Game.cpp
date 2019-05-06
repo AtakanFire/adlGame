@@ -8,6 +8,7 @@
 #include "engine/adl_entities/adlPhysics_component.h"
 #include "engine/adl_entities/adlPoint_light_component.h"
 #include "engine/adl_entities/adlSun_component.h"
+#include "engine/adl_resource/adlTerrain.h"
 
 #include "game/GameGeneric/GameGenericTypedef.h"
 
@@ -61,8 +62,11 @@ bool Game::init()
 	scene->set_camera(scene_camera);
 
 	adlTerrain_shared_ptr terrain = adl_rm->get_terrain("FlatTerrain");
+	terrain->set_blend_map(adl_rm->get_texture("black"));
+	terrain->set_texture_pack(adl_rm->get_texture_pack("default"));
 	adl_scene_manager->set_terrain(terrain);
-	
+
+
 	sunEntity = adl_scene_manager->add_entity_to_scene("Sun");
 	adl_scene_manager->set_sun(sunEntity);
 
@@ -97,6 +101,8 @@ bool Game::init()
 
 
 	Entity human = adl_scene_manager->add_entity_to_scene("Human");
+
+
 
 
 	return true;
