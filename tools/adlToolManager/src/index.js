@@ -100,31 +100,56 @@ function ClassOptionsController() {
         document.getElementById('GameGeneric').checked = true;
     }
 }
+// EntityManager
+function EntityManager(command) {
+    if (command == 'EtI') {
+        SendData('Entity:../../res/entities/' + ':EtI')/*Change in ModuleManager*/        
+    } else if (command == 'GetInfo') {
+        SendData('Entity:../../res/entities/' + ':GetInfo');
+    } else if (command == 'SetInfo') {
+        console.log(table.getData());
+        SendData('Entity:../../res/entities/' + ':SetInfo'+ ':' + JSON.stringify(table.getData()));
+    }
+
+}
 
 // Data Table
-var tabledata = [{name: "FirstName",age:18, progress:80}, {name: "SecondName"}]
+var table;
+function CreateTablor(createInfo) {
+    table = new Tabulator("#Tablor", {
+        data:createInfo.tableData, 
+        layout:"fitDataFill",
+        tooltips:true,  
+        addRowPos:"top",          //when adding a new row, add it to the top of the table
+        history:true,             //allow undo and redo actions on the table
+        pagination:"local",       //paginate the data
+        paginationSize:7,         //allow 7 rows per page of data
+        movableColumns:true,      //allow column order to be changed
+        resizableRows:true,       //allow row order to be changed
+        columns: createInfo.cols,
+    });
+}
 
-var table = new Tabulator("#example-table", {
-    data:tabledata, 
-    layout:"fitDataFill",
-    tooltips:true,  
-    addRowPos:"top",          //when adding a new row, add it to the top of the table
-    history:true,             //allow undo and redo actions on the table
-    pagination:"local",       //paginate the data
-    paginationSize:7,         //allow 7 rows per page of data
-    movableColumns:true,      //allow column order to be changed
-    resizableRows:true,       //allow row order to be changed
-    initialSort:[             //set the initial sort order of the data
-        {column:"name", dir:"asc"},
-    ],
-    columns:[                 //define the table columns
-        {title:"Name", field:"name", width:90, editor:"input"},
-        {title:"Task Progress", field:"progress", width:130, align:"left", formatter:"progress", editor:true},
-        {title:"Gender", field:"gender", width:95, editor:"select", editorParams:{values:["Male", "Female"]}},
-        {title:"Age", field:"age", width:80, sorter:"number", align:"center", editor:true},
-        {title:"Happy", field:"happy", formatter:"star", align:"center", width:100, editor:true},
-        // {title:"Color", field:"col", width:130, editor:"input"},
-        // {title:"Date Of Birth", field:"dob", width:130, sorter:"date", align:"center"},
-        // {title:"Driver", field:"car", width:90,  align:"center", formatter:"tickCross", sorter:"boolean", editor:true},
-    ],
-});
+function UpdateTablor(entityInfo) {
+    var eReq = entityInfo.components[0].requires; // For Game side
+
+    var cols = [
+        {title:"Name", field:"Name", width:130, editor:"input"},
+        {title:"Type", field:"Type", width:130, align:"center", editor:true},
+        {title:"Value", field:"Value", width:130, sorter:"number", align:"center", editor:true},
+    ]
+    var parsed = []
+
+    for (const folders in eReq) {
+        if (eReq.hasOwnProperty(folders)) {
+            const folder = eReq[folders];
+            for (let i = 0; i < folder.length; i++) {
+                const req = folder[i];
+                parsed.push(req);
+            }
+        }
+    }
+    
+    CreateTablor({tableData: parsed, cols: cols});
+}
+

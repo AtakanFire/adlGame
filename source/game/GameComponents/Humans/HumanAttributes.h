@@ -65,9 +65,10 @@ public:
 
 	void took(std::string taken, float weight);
 	void dropped();
+	void bring();
 
 	void gathering(SharedPointer<ResourceAttributes> res, float cost);
-	void production(std::string entityName);
+	void production(std::string entityName, adlVec3 location = adlVec3(0, 0, 0));
 
 	void gainExperience(std::string type, float exp);
 

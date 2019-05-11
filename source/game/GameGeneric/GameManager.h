@@ -3,6 +3,7 @@
 
 #include "game/GameGeneric/GameGenericTypedef.h"
 
+
 class GameManager { 
 
 public:
@@ -21,7 +22,6 @@ private:
 
 	std::vector<std::string> taggedEntityNames = {};
 	std::vector<Entity> taggedEntities = {};
-
 
 };
 

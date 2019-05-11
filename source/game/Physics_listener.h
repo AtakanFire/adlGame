@@ -6,6 +6,7 @@
 #include "engine/adl_entities/adlTransform_component.h"
 
 #include "game/GameGeneric/GameFunctions.h"
+#include "game/GameGeneric/GameManager.h"
 
 #include "game/GameComponents/Misc/SelectableComponent.h"
 #include "game/GameComponents/Player/PlayerAttributes.h"
@@ -47,18 +48,36 @@ public:
 		GameManager* gameMan = &GameManager::get();
 		SharedPointer<PlayerAttributes> player = (gameMan->getTaggedEntity("Player")->get_component<PlayerAttributes>("PlayerAttributes")).lock();
 
-		if (input->get_mouse_down(ADL_BUTTON_LEFT)) {
-			player->setSelection(nullptr);
-		}
-		else if (player->getSelection() != nullptr && input->get_mouse_down(ADL_BUTTON_RIGHT))
-		{
-			SharedPointer<SelectableComponent> selected(player->getSelection()->get_component<SelectableComponent>("SelectableComponent"));
-			selected->setTarget(nullptr);
 
-			if (selected->getOwner()->has_component("MovementComponent"))
+		if (player->getSelection() != nullptr) // Something selected
+		{
+			if (input->get_mouse_down(ADL_BUTTON_LEFT)) {
+
+				if (player->onConstruct != "" && player->getSelection()->has_component("HumanAttributes")) // Selection: Human
+				{
+					SharedPointer<HumanAttributes> selected(player->getSelection()->get_component<HumanAttributes>("HumanAttributes"));
+					selected->production(player->onConstruct, collision_point);
+				}
+				player->onConstruct = "";
+			}
+			else if (input->get_mouse_down(ADL_BUTTON_RIGHT))
 			{
-				SharedPointer<MovementComponent> movement(selected->getOwner()->get_component<MovementComponent>("MovementComponent"));
-				movement->move(collision_point);
+				SharedPointer<SelectableComponent> selected(player->getSelection()->get_component<SelectableComponent>("SelectableComponent"));
+				selected->setTarget(nullptr);
+
+				if (selected->getOwner()->has_component("MovementComponent"))
+				{
+					SharedPointer<MovementComponent> movement(selected->getOwner()->get_component<MovementComponent>("MovementComponent"));
+					movement->move(collision_point);
+				}
+				player->onConstruct = "";
+			}
+		}
+		else
+		{
+			if (input->get_mouse_down(ADL_BUTTON_LEFT)) {
+				player->setSelection(nullptr);
+				player->onConstruct = "";
 			}
 		}
 	}
@@ -71,6 +90,7 @@ private:
 	bool selection_state_ = false;
 	adlVec3 selection_start_;
 	adlVec3 selection_current_;
+
 };
 
 #endif //physics_listener_h__

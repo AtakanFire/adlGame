@@ -25,6 +25,8 @@ public:
 	Entity getSelection();
 	void setSelection(Entity selected);
 
+	std::string onConstruct = "";
+
 private:
 
 	Entity selection;

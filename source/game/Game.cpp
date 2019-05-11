@@ -102,9 +102,6 @@ bool Game::init()
 
 	Entity human = adl_scene_manager->add_entity_to_scene("Human");
 
-
-
-
 	return true;
 }
 

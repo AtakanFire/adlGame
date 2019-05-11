@@ -25,6 +25,10 @@
       "path": "res/entities/Humans/Human.json"
     },
     {
+      "name": "Informer",
+      "path": "res/entities/Informer.json"
+    },
+    {
       "name": "Empty",
       "path": "res/entities/Misc/Empty.json"
     },

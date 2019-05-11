@@ -2,6 +2,7 @@ var util = require('util');
 var dirMan = require('./modules/DirectoryManager');
 var resMan = require('./modules/ResourceManager');
 var classor = require('./modules/ClassCreator');
+var entMan = require('./modules/EntityManager');
 
 module.exports = {
     PostManager: function (arg) {
@@ -56,7 +57,23 @@ module.exports = {
             }
 
             return counter;
-        } else {
+        } else if (commands[0] == "Entity") {
+            //var entity = entMan.CreateInformer(commands[1]); // Entites to Informer -> disabled
+            var entity;
+            if (commands[2] == 'GetInfo') {
+                entity = entMan.GetInformer(commands[1]);                
+            } else if (commands[2] == 'SetInfo') {
+                var fName = commands[1];
+                commands.shift();
+                commands.shift();
+                commands.shift();
+                var fData = JSON.parse(commands.join(':'));
+
+                entity = entMan.SetInformer(fName, fData);                
+            }
+
+            return entity;
+        }  else {
             console.log("Command can't found!");
             return "Commmand can't found!";
         }

@@ -43,6 +43,11 @@ CountLinesSync = function (filePath, ) {
     return count;
 };
 
+ReadFileSync = function (fileName) {
+    var file = fs.readFileSync(fileName, 'utf8');
+    return file;
+};
+
 
 module.exports = {
     walkSync: function (dir, filelist = []) {
@@ -60,5 +65,6 @@ module.exports = {
     },
     TreeBuilder: TreeBuilder,
     CountLines: CountLines,
-    CountLinesSync: CountLinesSync
+    CountLinesSync: CountLinesSync,
+    ReadFileSync: ReadFileSync
 };

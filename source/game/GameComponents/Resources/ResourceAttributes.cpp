@@ -38,6 +38,7 @@ void ResourceAttributes::update(float dt) {
 	{
 		SharedPointer<adlTransform_component> transCom(owner->get_component<adlTransform_component>("adlTransform_component"));
 		transCom->set_scale((properties.resource.x / properties.resource.y) + 0.2f);
+
 	}
 }
 

@@ -97,6 +97,7 @@ void adlPhysics_component::update(float fps)
 			float angular_acc_this_frame = anguler_acceleration_ / 1000.f * fps;
 			physics_->apply_torque(adlVec3(0, 1, 0), angular_acc_this_frame, owner);
 		}
+		trans_comp->set_position(get_position());
 	}
 	else
 	{

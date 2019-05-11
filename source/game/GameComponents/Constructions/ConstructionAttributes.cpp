@@ -19,7 +19,8 @@ bool ConstructionAttributes::init(const rapidjson::Value& json_object) {
 }
 
 void ConstructionAttributes::post_init() {
-
+	GameManager* gameMan = &GameManager::get();
+	gameMan->setTaggedEntity("Construction", owner);
 }
 
 void ConstructionAttributes::update(float dt) {

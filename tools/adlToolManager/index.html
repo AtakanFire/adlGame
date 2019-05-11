@@ -19,7 +19,7 @@
         <button class="TabLink" onclick="TabManager('dirMan')">Directory Manager</button>
         <button class="TabLink" onclick="TabManager('resMan')">Resource Manager</button>
         <button class="TabLink" onclick="TabManager('classor')">Class Creator</button>
-        <button class="TabLink" onclick="TabManager('table');table.setPage(1);">Data Table</button>
+        <button class="TabLink" onclick="TabManager('entity')">Entity Manager</button>
     </div>
     <div  id="Console" class="TabContent">
         <p>
@@ -55,8 +55,11 @@
         <input id="ClassName" type="text" name="commandInput" placeholder="ClassName" value="GameComponents/" />
         <button onclick="Classor()">Create Class</button>        
     </div>
-    <div id="table" class="TabContent">
-        <div id="example-table"></div>
+    <div id="entity" class="TabContent">
+        <button onclick="EntityManager('EtI');" disabled>Entites to Informer</button>
+        <button onclick="EntityManager('GetInfo');">Get Informer</button>
+        <!-- <button onclick="EntityManager('SetInfo');">Set Informer</button> -->
+        <div id="Tablor"></div>
     </div>
     <br>
     <br>
@@ -101,7 +104,7 @@
             document.getElementById("res").innerHTML = "";           
             document.getElementById("res").innerHTML += "C++(.cpp): <br> <pre>" + commands.res.cpp + "</pre><br>";           
             document.getElementById("res").innerHTML += "Header(.h): <br> <pre>" + commands.res.h + "</pre><br>";           
-        }else if(commands.command == "LineCount"){ 
+        } else if(commands.command == "LineCount"){ 
             delete commands.command;
 
             var files = commands.res;
@@ -123,6 +126,14 @@
             document.getElementById("res").innerHTML += "Total Line(without imgui): " + totalLine;
 
             console.log(JSON.stringify(files, RootReplacer, 2));      
+        } else if(commands.command == "Entity"){ 
+            delete commands.command;
+
+            console.log(commands.res); 
+            UpdateTablor(commands.res);
+            
+            document.getElementById("res").innerHTML = "";           
+            document.getElementById("res").innerHTML = JSON.stringify(commands.res);           
         } else {
             console.log("----------------------------------------");            
             console.log("args:");            

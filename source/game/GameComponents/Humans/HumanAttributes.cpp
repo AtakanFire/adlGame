@@ -155,21 +155,31 @@ void HumanAttributes::dropped()
 	carrying.taken = 0;
 }
 
+void HumanAttributes::bring()
+{
+	GameManager* gameMan = &GameManager::get();
+	SharedPointer<ConstructionAttributes> construction = (gameMan->getTaggedEntity("Construction")->get_component<ConstructionAttributes>("ConstructionAttributes")).lock();
+	construction->gathering(owner, carrying.takenObject, carrying.taken);
+	dropped();
+}
+
 void HumanAttributes::gathering(SharedPointer<ResourceAttributes> res, float cost)
 {
 	if (carrying.taken < carrying.maxCarry && !res->exhaustion(cost))
 	{
 		took(res->getProperties().type, cost);
 	}
+	else 
+	{
+		bring();
+	}
 }
 
-void HumanAttributes::production(std::string entityName)
+void HumanAttributes::production(std::string entityName, adlVec3 location)
 {
 	Entity construction = sceneManager->add_entity_to_scene(entityName);
 	SharedPointer<SelectableComponent> selectCom(construction->get_component<SelectableComponent>("SelectableComponent"));
-	SharedPointer<adlTransform_component> transCom(construction->get_component<adlTransform_component>("adlTransform_component"));
-	selectCom->set_position(adlVec3(0, 0, -10));
-	transCom->set_position(adlVec3(0, 0, -10));
+	selectCom->set_position(location);
 }
 
 void HumanAttributes::gainExperience(std::string type, float exp)

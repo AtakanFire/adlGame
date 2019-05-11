@@ -19,7 +19,6 @@ bool HUDComponent::init(const rapidjson::Value& json_object) {
 
 void HUDComponent::post_init() {
 	editorMan = &adlEditor_manager::get();
-	//player = &PlayerAttributes::get();
 	GameManager* gameMan = &GameManager::get();
 	player = (gameMan->getTaggedEntity("Player")->get_component<PlayerAttributes>("PlayerAttributes")).lock();
 
@@ -232,14 +231,26 @@ void HUDComponent::humanAttributes()
 			{
 				ImGui::Indent();
 
-				if (ImGui::Button("Build Construction", ImVec2(-1, 40))) {
-					human->production("Construction");
+				if (ImGui::Button("Build House", ImVec2(-1, 40))) {
+					player->onConstruct = "House";
 				}
 				if (ImGui::IsItemHovered()) {
 					char buf[128] = "";
 					for (int i = 0; i < req.needsTypes.capacity(); i++)
 					{
-						sprintf(buf, "%s%s: %.0f\n", buf, req.needsTypes[i].c_str(), req.needs[i]); // Construction Attributes not added!
+						sprintf(buf, "%s%s: %.0f\n", buf, req.needsTypes[i].c_str(), req.needs[i]); // House Attributes not added!
+					}
+					ImGui::SetTooltip("%s", buf);
+				}
+
+				if (ImGui::Button("Build Blacksmith", ImVec2(-1, 40))) {
+					player->onConstruct = "Blacksmith";
+				}
+				if (ImGui::IsItemHovered()) {
+					char buf[128] = "";
+					for (int i = 0; i < req.needsTypes.capacity(); i++)
+					{
+						sprintf(buf, "%s%s: %.0f\n", buf, req.needsTypes[i].c_str(), req.needs[i]); // Blacksmith Attributes not added!
 					}
 					ImGui::SetTooltip("%s", buf);
 				}

@@ -1,0 +1,124 @@
+{
+  "type": "Informer",
+  "components": [
+    {
+      "type": "Informer",
+      "requires": {
+        "Constructions": [
+          {
+            "Name": "Blacksmith",
+            "Type": [
+              "Wood", "Food"
+            ],
+            "Value": [
+              10, 15
+            ]
+          },
+          {
+            "Name": "Construction",
+            "Type": [
+              ""
+            ],
+            "Value": [
+              0
+            ]
+          },
+          {
+            "Name": "House",
+            "Type": [
+              ""
+            ],
+            "Value": [
+              0
+            ]
+          },
+          {
+            "Name": "Inn",
+            "Type": [
+              ""
+            ],
+            "Value": [
+              0
+            ]
+          }
+        ],
+        "Humans": [
+          {
+            "Name": "Human",
+            "Type": [
+              ""
+            ],
+            "Value": [
+              0
+            ]
+          }
+        ],
+        "Resources": [
+          {
+            "Name": "Cotton",
+            "Type": [
+              ""
+            ],
+            "Value": [
+              0
+            ]
+          },
+          {
+            "Name": "Cow",
+            "Type": [
+              ""
+            ],
+            "Value": [
+              0
+            ]
+          },
+          {
+            "Name": "MetalMine",
+            "Type": [
+              ""
+            ],
+            "Value": [
+              0
+            ]
+          },
+          {
+            "Name": "Resource",
+            "Type": [
+              ""
+            ],
+            "Value": [
+              0
+            ]
+          },
+          {
+            "Name": "Sheep",
+            "Type": [
+              ""
+            ],
+            "Value": [
+              0
+            ]
+          },
+          {
+            "Name": "StoneMine",
+            "Type": [
+              ""
+            ],
+            "Value": [
+              0
+            ]
+          },
+          {
+            "Name": "Tree",
+            "Type": [
+              ""
+            ],
+            "Value": [
+              0
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
