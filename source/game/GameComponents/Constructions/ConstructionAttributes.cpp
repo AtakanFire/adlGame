@@ -1,8 +1,5 @@
 #include "ConstructionAttributes.h"
 
-#include "game/GameComponents/Player/PlayerAttributes.h"
-
-
 ConstructionAttributes::ConstructionAttributes()
 {
 	REGISTER_COMPONENT(ConstructionAttributes)
@@ -11,7 +8,7 @@ ConstructionAttributes::ConstructionAttributes()
 bool ConstructionAttributes::init(const rapidjson::Value& json_object) {
 	const rapidjson::Value& propertiesObject = json_object["properties"];
 	const rapidjson::Value& requiresObject = json_object["requires"];
-
+	
 	properties.name = propertiesObject["name"].GetString();
 	properties.durability = propertiesObject["durability"].GetFloat();
 
@@ -19,8 +16,7 @@ bool ConstructionAttributes::init(const rapidjson::Value& json_object) {
 }
 
 void ConstructionAttributes::post_init() {
-	GameManager* gameMan = &GameManager::get();
-	gameMan->setTaggedEntity("Construction", owner);
+
 }
 
 void ConstructionAttributes::update(float dt) {
@@ -87,17 +83,4 @@ void ConstructionAttributes::editor() {
 
 	ImGui::Unindent();
 }
-
-void ConstructionAttributes::gathering(Entity& entity, std::string takenObject, float taken)
-{
-	if (takenObject != "")
-	{
-
-		GameManager* gameMan = &GameManager::get();
-		SharedPointer<PlayerAttributes> player = (gameMan->getTaggedEntity("Player")->get_component<PlayerAttributes>("PlayerAttributes")).lock();
-		AllResources* stored = &player->getStored();
-		stored->find(takenObject) += taken;
-	}
-}
-
 

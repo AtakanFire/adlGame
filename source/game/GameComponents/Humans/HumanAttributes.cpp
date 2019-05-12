@@ -3,7 +3,7 @@
 #include "engine/adl_entities/adlTransform_component.h"
 
 #include "game/GameComponents/Misc/SelectableComponent.h"
-#include "game/GameComponents/Constructions/ConstructionAttributes.h"
+#include "game/GameComponents/Constructions/StorageConstruction.h"
 
 HumanAttributes::HumanAttributes()
 {
@@ -55,8 +55,8 @@ void HumanAttributes::update(float dt) {
 		}
 		else if (entity->has_component("ConstructionAttributes"))
 		{
-			SharedPointer<ConstructionAttributes> construction(entity->get_component<ConstructionAttributes>("ConstructionAttributes"));
-			construction->gathering(owner, carrying.takenObject, carrying.taken);
+			SharedPointer<StorageConstruction> construction(entity->get_component<StorageConstruction>("StorageConstruction"));
+			construction->storing(owner, carrying.takenObject, carrying.taken);
 			dropped();
 		}
 
@@ -158,8 +158,8 @@ void HumanAttributes::dropped()
 void HumanAttributes::bring()
 {
 	GameManager* gameMan = &GameManager::get();
-	SharedPointer<ConstructionAttributes> construction = (gameMan->getTaggedEntity("Construction")->get_component<ConstructionAttributes>("ConstructionAttributes")).lock();
-	construction->gathering(owner, carrying.takenObject, carrying.taken);
+	SharedPointer<StorageConstruction> storage = (gameMan->getTaggedEntity("StorageConstruction")->get_component<StorageConstruction>("StorageConstruction")).lock();
+	storage->storing(owner, carrying.takenObject, carrying.taken);
 	dropped();
 }
 

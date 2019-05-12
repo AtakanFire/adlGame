@@ -58,7 +58,6 @@ module.exports = {
 
             return counter;
         } else if (commands[0] == "Entity") {
-            //var entity = entMan.CreateInformer(commands[1]); // Entites to Informer -> disabled
             var entity;
             if (commands[2] == 'GetInfo') {
                 entity = entMan.GetInformer(commands[1]);                

@@ -58,7 +58,11 @@ public:
 					SharedPointer<HumanAttributes> selected(player->getSelection()->get_component<HumanAttributes>("HumanAttributes"));
 					selected->production(player->onConstruct, collision_point);
 				}
-				player->onConstruct = "";
+				else
+				{
+					player->setSelection(nullptr);
+					player->onConstruct = "";
+				}
 			}
 			else if (input->get_mouse_down(ADL_BUTTON_RIGHT))
 			{

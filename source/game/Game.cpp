@@ -16,8 +16,11 @@
 #include "game/GameComponents/Constructions/ConstructionAttributes.h"
 #include "game/GameComponents/Resources/ResourceAttributes.h"
 #include "game/GameComponents/Humans/HumanAttributes.h"	
-
 #include "game/GameComponents/HUD/HUDComponent.h"	
+#include "game/GameComponents/Player/Informer.h"	
+
+#include "game/GameComponents/Constructions/StorageConstruction.h"
+
 
 #include "game/GameComponents/Misc/SelectableComponent.h"	
 #include "game/GameComponents/Misc/MovementComponent.h"	
@@ -76,11 +79,15 @@ bool Game::init()
 	ResourceAttributes rAtr;
 	HumanAttributes hAtr;
 	HUDComponent hudC;
+	Informer inf;
 
+	StorageConstruction strCon;
+	
 	SelectableComponent selectC;
 	MovementComponent moveC;
 
 	Entity player = adl_scene_manager->add_entity_to_scene("Player");
+	Entity informer = adl_scene_manager->add_entity_to_scene("Informer");
 
 	Entity hud = adl_scene_manager->add_entity_to_scene("HUD");
 

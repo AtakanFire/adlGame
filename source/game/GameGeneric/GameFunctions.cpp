@@ -57,6 +57,8 @@ std::vector<std::string> GameFunctions::SplitString(std::string mainString, std:
 		newString.push_back(token);
 		mainString.erase(0, pos + delimiter.length());
 	}
+	if (mainString != "")
+		newString.push_back(mainString);
 	return newString;
 }
 

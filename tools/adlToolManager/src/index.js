@@ -131,25 +131,15 @@ function CreateTablor(createInfo) {
 }
 
 function UpdateTablor(entityInfo) {
-    var eReq = entityInfo.components[0].requires; // For Game side
+    var req = entityInfo.components[0].requires; // For Game side
+    var cols = [];
 
-    var cols = [
-        {title:"Name", field:"Name", width:130, editor:"input"},
-        {title:"Type", field:"Type", width:130, align:"center", editor:true},
-        {title:"Value", field:"Value", width:130, sorter:"number", align:"center", editor:true},
-    ]
-    var parsed = []
-
-    for (const folders in eReq) {
-        if (eReq.hasOwnProperty(folders)) {
-            const folder = eReq[folders];
-            for (let i = 0; i < folder.length; i++) {
-                const req = folder[i];
-                parsed.push(req);
-            }
+    for (const key in req[0]) {
+        if (req[0].hasOwnProperty(key)) {
+            cols.push({title:key, field:key, width:180, align:"center", editor:true},)
         }
     }
-    
-    CreateTablor({tableData: parsed, cols: cols});
+
+    CreateTablor({tableData: req, cols: cols});
 }
 

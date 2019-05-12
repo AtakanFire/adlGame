@@ -17,8 +17,22 @@ public:
 	virtual void destroy() override;
 	virtual void editor() override;
 
-private:
+	struct GameObjectInfo {//Name, Type, Value
+		std::string name = "";
+		std::vector<std::string> types = { };
+		std::vector<float> values = { };
 
+		GameObjectInfo(std::string n, std::vector<std::string> t, std::vector<float> v) {
+			name = n;
+			types = t;
+			values = v;
+		}
+	};
+
+	GameObjectInfo getGameObjectInfo(std::string name);
+
+private:
+	std::vector<GameObjectInfo> gameObjectsInfo;
 };
 
 #endif //Informer_h__

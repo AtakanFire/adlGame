@@ -6,6 +6,7 @@
 #include "game/GameComponents/Humans/HumanAttributes.h"
 #include "game/GameComponents/Resources/ResourceAttributes.h"
 #include "game/GameComponents/Constructions/ConstructionAttributes.h"
+#include "game/GameComponents/Player/Informer.h"
 
 
 HUDComponent::HUDComponent()
@@ -231,30 +232,8 @@ void HUDComponent::humanAttributes()
 			{
 				ImGui::Indent();
 
-				if (ImGui::Button("Build House", ImVec2(-1, 40))) {
-					player->onConstruct = "House";
-				}
-				if (ImGui::IsItemHovered()) {
-					char buf[128] = "";
-					for (int i = 0; i < req.needsTypes.capacity(); i++)
-					{
-						sprintf(buf, "%s%s: %.0f\n", buf, req.needsTypes[i].c_str(), req.needs[i]); // House Attributes not added!
-					}
-					ImGui::SetTooltip("%s", buf);
-				}
-
-				if (ImGui::Button("Build Blacksmith", ImVec2(-1, 40))) {
-					player->onConstruct = "Blacksmith";
-				}
-				if (ImGui::IsItemHovered()) {
-					char buf[128] = "";
-					for (int i = 0; i < req.needsTypes.capacity(); i++)
-					{
-						sprintf(buf, "%s%s: %.0f\n", buf, req.needsTypes[i].c_str(), req.needs[i]); // Blacksmith Attributes not added!
-					}
-					ImGui::SetTooltip("%s", buf);
-				}
-					
+				buildConstructionTool("House");
+				buildConstructionTool("Blacksmith");						
 
 				ImGui::Unindent();
 			}
@@ -266,34 +245,16 @@ void HUDComponent::humanAttributes()
 
 			if (ImGui::CollapsingHeader("Experiences"))
 			{
-				ImGui::Indent();
+				ImGui::Indent();		
 
-				if (ImGui::CollapsingHeader("Consumable"))
-				{
-					ImGui::Indent();
+				ImGui::TextColored(ImVec4(0, 102, 0, 1.0), "Consumable Resources");
+				progressBarGenerator(exp.consumableTypes, exp.consumable);
 
-					progressBarGenerator(exp.consumableTypes, exp.consumable);
+				ImGui::TextColored(ImVec4(0, 102, 0, 1.0), "Derived Resources");
+				progressBarGenerator(exp.derivedTypes, exp.derived);
 
-					ImGui::Unindent();
-				}
-
-				if (ImGui::CollapsingHeader("Derived"))
-				{
-					ImGui::Indent();
-					
-					progressBarGenerator(exp.derivedTypes, exp.derived);
-
-					ImGui::Unindent();
-				}
-
-				if (ImGui::CollapsingHeader("Humanly"))
-				{
-					ImGui::Indent();
-					
-					progressBarGenerator(exp.humanlyTypes, exp.humanly);
-
-					ImGui::Unindent();
-				}	
+				ImGui::TextColored(ImVec4(0, 102, 0, 1.0), "Humanly Resources");
+				progressBarGenerator(exp.humanlyTypes, exp.humanly);
 
 				ImGui::Unindent();
 			}
@@ -531,4 +492,26 @@ void HUDComponent::progressBarGenerator(std::vector<std::string> text, float val
 		if (indent)
 			ImGui::Unindent();
 	}
+}
+
+void HUDComponent::buildConstructionTool(std::string name)
+{
+	GameManager* gameMan = &GameManager::get();
+	SharedPointer<Informer> informer = (gameMan->getTaggedEntity("Informer")->get_component<Informer>("Informer")).lock();
+
+	if (ImGui::Button(("Build " + name).c_str(), ImVec2(-1, 40))) {
+		player->onConstruct = name;
+	}
+	if (ImGui::IsItemHovered()) {
+		char buf[128] = "";
+		Informer::GameObjectInfo info = informer->getGameObjectInfo(name);
+
+		sprintf(buf, "  %s  \n", info.name.c_str());
+		for (int i = 0; i < info.types.capacity(); i++)
+		{
+			sprintf(buf, "%s%s: %.0f\n", buf, info.types[i].c_str(), info.values[i]);
+		}
+		ImGui::SetTooltip("%s", buf);
+	}
+
 }

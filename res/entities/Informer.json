@@ -3,122 +3,68 @@
   "components": [
     {
       "type": "Informer",
-      "requires": {
-        "Constructions": [
-          {
-            "Name": "Blacksmith",
-            "Type": [
-              "Wood", "Food"
-            ],
-            "Value": [
-              10, 15
-            ]
-          },
-          {
-            "Name": "Construction",
-            "Type": [
-              ""
-            ],
-            "Value": [
-              0
-            ]
-          },
-          {
-            "Name": "House",
-            "Type": [
-              ""
-            ],
-            "Value": [
-              0
-            ]
-          },
-          {
-            "Name": "Inn",
-            "Type": [
-              ""
-            ],
-            "Value": [
-              0
-            ]
-          }
-        ],
-        "Humans": [
-          {
-            "Name": "Human",
-            "Type": [
-              ""
-            ],
-            "Value": [
-              0
-            ]
-          }
-        ],
-        "Resources": [
-          {
-            "Name": "Cotton",
-            "Type": [
-              ""
-            ],
-            "Value": [
-              0
-            ]
-          },
-          {
-            "Name": "Cow",
-            "Type": [
-              ""
-            ],
-            "Value": [
-              0
-            ]
-          },
-          {
-            "Name": "MetalMine",
-            "Type": [
-              ""
-            ],
-            "Value": [
-              0
-            ]
-          },
-          {
-            "Name": "Resource",
-            "Type": [
-              ""
-            ],
-            "Value": [
-              0
-            ]
-          },
-          {
-            "Name": "Sheep",
-            "Type": [
-              ""
-            ],
-            "Value": [
-              0
-            ]
-          },
-          {
-            "Name": "StoneMine",
-            "Type": [
-              ""
-            ],
-            "Value": [
-              0
-            ]
-          },
-          {
-            "Name": "Tree",
-            "Type": [
-              ""
-            ],
-            "Value": [
-              0
-            ]
-          }
-        ]
-      }
+      "requires": [
+        {
+          "Name": "Blacksmith",
+          "Type": "Wood,Stone,Metal",
+          "Value": "10,20,5"
+        },
+        {
+          "Name": "Construction",
+          "Type": "Wood",
+          "Value": "40"
+        },
+        {
+          "Name": "House",
+          "Type": "Wood,Metal",
+          "Value": "30,5"
+        },
+        {
+          "Name": "Inn",
+          "Type": "Food,Wood,Metal,Cotton",
+          "Value": "120,600,40,240"
+        },
+        {
+          "Name": "Human",
+          "Type": "",
+          "Value": ""
+        },
+        {
+          "Name": "Cotton",
+          "Type": "",
+          "Value": ""
+        },
+        {
+          "Name": "Cow",
+          "Type": "",
+          "Value": ""
+        },
+        {
+          "Name": "MetalMine",
+          "Type": "",
+          "Value": ""
+        },
+        {
+          "Name": "Resource",
+          "Type": "",
+          "Value": ""
+        },
+        {
+          "Name": "Sheep",
+          "Type": "",
+          "Value": ""
+        },
+        {
+          "Name": "StoneMine",
+          "Type": "",
+          "Value": ""
+        },
+        {
+          "Name": "Tree",
+          "Type": "",
+          "Value": ""
+        }
+      ]
     }
   ]
 }
