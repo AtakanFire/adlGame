@@ -59,7 +59,9 @@
         <button onclick="EntityManager('GetInfo');">Get Informer</button>
         <button onclick="EntityManager('SetInfo');">Set Informer</button>
         <div id="Tablor"></div>
-        <button onclick="table.addData([{'Name': '','Type': '','Value': ''}], true);">Add Row</button>
+        <button onclick="table.addData([{'Name': '','Types': '','Values': '','Require': ''}], true);">Add Row</button>
+        <button onclick="table.setGroupBy('Require')">Group By Require</button>
+        <button onclick="table.setGroupBy('Name')">Group By Name</button>
     </div>
     <br>
     <br>

@@ -17,19 +17,22 @@ public:
 	virtual void destroy() override;
 	virtual void editor() override;
 
-	struct GameObjectInfo {//Name, Type, Value
+	struct GameObjectInfo {//Name, Require, Type, Value
 		std::string name = "";
+		std::string require = "";
 		std::vector<std::string> types = { };
 		std::vector<float> values = { };
 
-		GameObjectInfo(std::string n, std::vector<std::string> t, std::vector<float> v) {
+		GameObjectInfo() {}
+		GameObjectInfo(std::string n, std::string r, std::vector<std::string> t, std::vector<float> v) {
 			name = n;
+			require = r;
 			types = t;
 			values = v;
 		}
 	};
 
-	GameObjectInfo getGameObjectInfo(std::string name);
+	GameObjectInfo getGameObjectInfo(std::string name, std::string require = "Resource");
 
 private:
 	std::vector<GameObjectInfo> gameObjectsInfo;

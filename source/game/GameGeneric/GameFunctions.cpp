@@ -26,19 +26,6 @@ void GameFunctions::ImGuiStyler()
 	colors[ImGuiCol_TitleBg] = ImVec4(0.06f, 0.06f, 0.06f, 0.40f);
 	colors[ImGuiCol_TitleBgActive] = ImVec4(0.06f, 0.06f, 0.06f, 0.40f);
 
-
-
-
-
-
-	/*colors[ImGuiCol_HeaderHovered] = ImVec4(0.29f, 0.25f, 0.09f, 1.00f);
-	colors[ImGuiCol_HeaderActive] = ImVec4(0.65f, 0.48f, 0.18f, 0.80f);*/
-
-
-
-
-
-
 }
 
 bool GameFunctions::CheckImGuiClicked()

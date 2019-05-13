@@ -4,6 +4,7 @@
 
 #include "game/GameComponents/Misc/SelectableComponent.h"
 #include "game/GameComponents/Constructions/StorageConstruction.h"
+#include "game/GameComponents/Player/Informer.h"
 
 HumanAttributes::HumanAttributes()
 {
@@ -53,7 +54,7 @@ void HumanAttributes::update(float dt) {
 			SharedPointer<ResourceAttributes> res(entity->get_component<ResourceAttributes>("ResourceAttributes"));
 			gathering(res, 0.02 * dt);
 		}
-		else if (entity->has_component("ConstructionAttributes"))
+		else if (entity->has_component("StorageConstruction"))
 		{
 			SharedPointer<StorageConstruction> construction(entity->get_component<StorageConstruction>("StorageConstruction"));
 			construction->storing(owner, carrying.takenObject, carrying.taken);
@@ -176,10 +177,28 @@ void HumanAttributes::gathering(SharedPointer<ResourceAttributes> res, float cos
 }
 
 void HumanAttributes::production(std::string entityName, adlVec3 location)
+{	
+	if (checkExperience(entityName))
+	{
+		Entity construction = sceneManager->add_entity_to_scene(entityName);
+		SharedPointer<SelectableComponent> selectCom(construction->get_component<SelectableComponent>("SelectableComponent"));
+		selectCom->set_position(location);
+	}
+}
+
+bool HumanAttributes::checkExperience(std::string entityName)
 {
-	Entity construction = sceneManager->add_entity_to_scene(entityName);
-	SharedPointer<SelectableComponent> selectCom(construction->get_component<SelectableComponent>("SelectableComponent"));
-	selectCom->set_position(location);
+	GameManager* gameMan = &GameManager::get();
+	SharedPointer<Informer> informer = (gameMan->getTaggedEntity("Informer")->get_component<Informer>("Informer")).lock();
+
+	for (int i = 0; i < informer->getGameObjectInfo(entityName, "Experience").types.size(); i++)
+	{
+		if (experiences.find(informer->getGameObjectInfo(entityName, "Experience").types[i]) < informer->getGameObjectInfo(entityName, "Experience").values[i])
+		{
+			return false;
+		}		
+	}
+	return true;
 }
 
 void HumanAttributes::gainExperience(std::string type, float exp)

@@ -1,6 +1,7 @@
 #include "ResourceAttributes.h"
 
 #include "engine/adl_entities/adlTransform_component.h"
+#include "game/GameGeneric/EasingFunctions.h"
 
 ResourceAttributes::ResourceAttributes()
 {
@@ -37,10 +38,11 @@ void ResourceAttributes::update(float dt) {
 	if (owner->has_component("adlTransform_component")) // Resize by resource
 	{
 		SharedPointer<adlTransform_component> transCom(owner->get_component<adlTransform_component>("adlTransform_component"));
-		transCom->set_scale((properties.resource.x / properties.resource.y) + 0.2f);
+		transCom->set_scale(EasingFunctions::easeInElastic(properties.resource.x / properties.resource.y) + 0.2f);
+	}	
 
-	}
 }
+
 
 void ResourceAttributes::destroy() {
 

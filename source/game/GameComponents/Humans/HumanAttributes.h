@@ -70,6 +70,7 @@ public:
 	void gathering(SharedPointer<ResourceAttributes> res, float cost);
 	void production(std::string entityName, adlVec3 location = adlVec3(0, 0, 0));
 
+	bool checkExperience(std::string entityName);
 	void gainExperience(std::string type, float exp);
 
 private:

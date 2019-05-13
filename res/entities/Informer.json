@@ -5,64 +5,82 @@
       "type": "Informer",
       "requires": [
         {
+          "Name": "House",
+          "Types": "Wood,Metal",
+          "Values": "4,8",
+          "Require": "Experience"
+        },
+        {
           "Name": "Blacksmith",
-          "Type": "Wood,Stone,Metal",
-          "Value": "10,20,5"
+          "Types": "Wood,Stone,Metal",
+          "Values": "10,20,40",
+          "Require": "Resource"
         },
         {
           "Name": "Construction",
-          "Type": "Wood",
-          "Value": "40"
+          "Types": "Wood",
+          "Values": "40",
+          "Require": "Resource"
         },
         {
           "Name": "House",
-          "Type": "Wood,Metal",
-          "Value": "30,5"
+          "Types": "Wood,Food",
+          "Values": "30,10",
+          "Require": "Resource"
         },
         {
           "Name": "Inn",
-          "Type": "Food,Wood,Metal,Cotton",
-          "Value": "120,600,40,240"
+          "Types": "Food,Wood,Metal,Cotton",
+          "Values": "120,600,40,240",
+          "Require": "Resource"
         },
         {
           "Name": "Human",
-          "Type": "",
-          "Value": ""
+          "Types": "",
+          "Values": "",
+          "Require": "Resource"
         },
         {
           "Name": "Cotton",
-          "Type": "",
-          "Value": ""
+          "Types": "",
+          "Values": "",
+          "Require": "Resource"
         },
         {
           "Name": "Cow",
-          "Type": "",
-          "Value": ""
+          "Types": "",
+          "Values": "",
+          "Require": "Resource"
         },
         {
           "Name": "MetalMine",
-          "Type": "",
-          "Value": ""
+          "Types": "",
+          "Values": "",
+          "Require": "Resource"
         },
         {
           "Name": "Resource",
-          "Type": "",
-          "Value": ""
+          "Types": "",
+          "Values": "",
+          "Require": "Resource"
         },
         {
           "Name": "Sheep",
-          "Type": "",
-          "Value": ""
+          "Types": "",
+          "Values": "",
+          "Require": "Resource"
         },
         {
           "Name": "StoneMine",
-          "Type": "",
-          "Value": ""
+          "Types": "",
+          "Values": "",
+          "Require": "Resource"
         },
         {
           "Name": "Tree",
-          "Type": "",
-          "Value": ""
+          "Types": "",
+          "Values": "",
+          "Require": "Resource"
         }
       ]
     }

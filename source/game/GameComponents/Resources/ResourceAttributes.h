@@ -35,7 +35,6 @@ public:
 	void grow(float growing);
 	bool exhaustion(float exhausting);
 
-
 private:
 
 	ResourceProperties properties;

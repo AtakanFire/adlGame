@@ -13,8 +13,9 @@ bool Informer::init(const rapidjson::Value& json_object) {
 	
 	for (rapidjson::Value::ConstValueIterator itr = req.Begin(); itr != req.End(); ++itr) {
 		std::string name = (*itr)["Name"].GetString();
-		std::string t = (*itr)["Type"].GetString();
-		std::string v = (*itr)["Value"].GetString();
+		std::string require = (*itr)["Require"].GetString();
+		std::string t = (*itr)["Types"].GetString();
+		std::string v = (*itr)["Values"].GetString();
 
 		std::vector<std::string> types(GameFunctions::SplitString(t, ","));
 
@@ -25,7 +26,7 @@ bool Informer::init(const rapidjson::Value& json_object) {
 			values.push_back(std::stof(valuesString[i]));
 		}
 
-		GameObjectInfo objectInfo(name, types, values);
+		GameObjectInfo objectInfo(name, require, types, values);
 		gameObjectsInfo.push_back(objectInfo);
 	}
 
@@ -59,6 +60,9 @@ void Informer::editor() {
 			{
 				ImGui::Indent();
 
+				ImGui::Text("%s", gameObjectsInfo[i].require.c_str());
+
+
 				for (size_t j = 0; j < gameObjectsInfo[i].types.size(); j++)
 				{
 					ImGui::Text("%s: %.2f", gameObjectsInfo[i].types[j].c_str(), gameObjectsInfo[i].values[j]);
@@ -75,15 +79,16 @@ void Informer::editor() {
 	ImGui::Unindent();
 }
 
-Informer::GameObjectInfo Informer::getGameObjectInfo(std::string name)
+Informer::GameObjectInfo Informer::getGameObjectInfo(std::string name, std::string require)
 {
 	
 	for (int i = 0; i < gameObjectsInfo.size(); i++)
 	{
-		if (gameObjectsInfo[i].name == name)
+		if (gameObjectsInfo[i].name == name && gameObjectsInfo[i].require == require)
 		{
 			return gameObjectsInfo[i];
 		}
 	}
+	return Informer::GameObjectInfo();
 }
 

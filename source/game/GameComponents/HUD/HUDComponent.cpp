@@ -95,16 +95,11 @@ void HUDComponent::mainMenu()
 				ImGui::Text(selected->getTarget()->getOwner()->getName().c_str());
 			}
 
-			//ImGui::Text("|");
-
 		}
 
-		//ImGui::Text("|");
 
 		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - ImGui::CalcTextSize("| adlGame").x);
 		ImGui::Text("| adlGame");
-
-		// ImGui::Checkbox("Good View", &showAll);
 
 		// Total Resources, Human Count etc.
 
@@ -145,7 +140,7 @@ void HUDComponent::mainLayout()
 		if (ImGui::Begin(title.c_str(), NULL, ImGuiWindowFlags_NoResize /*| ImGuiWindowFlags_NoScrollWithMouse*/ | ImGuiWindowFlags_NoScrollbar |
 			ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus /*| ImGuiWindowFlags_NoTitleBar*/))
 		{
-
+			ImGui::Text("Unknown Game Object Selected!");
 		}
 	}
 }
@@ -451,7 +446,7 @@ void HUDComponent::constructionAttributes()
 
 void HUDComponent::progressBarGenerator(std::vector<std::string> text, float value[], float limit, bool indent, bool showAll)
 {
-	for (int i = 0; i < text.capacity(); i++)
+	for (int i = 0; i < text.size(); i++)
 	{
 		if (!showAll && value[i] == 0)
 		{
@@ -476,18 +471,7 @@ void HUDComponent::progressBarGenerator(std::vector<std::string> text, float val
 			ImGui::ProgressBar(value[i] / limit, ImVec2(-1.f, 0.f), buf);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("%s: %.0f/%.0f(Current/Max)", text[i].c_str(), value[i], limit);
-
-			/*
-			char buf[32];
-			sprintf(buf, "%s: %.0f/%.0f", text[i].c_str(), value[i], limit);
-			ImGui::ProgressBar(value[i] / limit, ImVec2(-1.f, 0.f), buf);
-			if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("%s(Current/Max)", text[i].c_str());
-			*/
-		}
-
-		//ImGui::TextDisabled("%s: %.0f/%.0f", text[i].c_str(), value[i], 100.0f);
-		
+		}	
 
 		if (indent)
 			ImGui::Unindent();
@@ -498,20 +482,82 @@ void HUDComponent::buildConstructionTool(std::string name)
 {
 	GameManager* gameMan = &GameManager::get();
 	SharedPointer<Informer> informer = (gameMan->getTaggedEntity("Informer")->get_component<Informer>("Informer")).lock();
+	SharedPointer<HumanAttributes> human(player->getSelection()->get_component<HumanAttributes>("HumanAttributes"));
+
 
 	if (ImGui::Button(("Build " + name).c_str(), ImVec2(-1, 40))) {
 		player->onConstruct = name;
 	}
 	if (ImGui::IsItemHovered()) {
-		char buf[128] = "";
-		Informer::GameObjectInfo info = informer->getGameObjectInfo(name);
+		ImGui::BeginTooltip();
 
-		sprintf(buf, "  %s  \n", info.name.c_str());
-		for (int i = 0; i < info.types.capacity(); i++)
+		Informer::GameObjectInfo info = informer->getGameObjectInfo(name);
+		Informer::GameObjectInfo infoExp = informer->getGameObjectInfo(name, "Experience");
+		std::vector<std::string> informations = {};
+
+		std::vector<std::string> inf(info.types);
+		inf.insert(inf.end(), infoExp.types.begin(), infoExp.types.end());
+		std::sort(inf.begin(), inf.end());
+		inf.erase(std::unique(inf.begin(), inf.end()), inf.end());
+
+		ImGui::PushItemWidth(-1);
+		ImGui::TextColored(ImVec4(1.0, 0.2, 0.2, 1.0),"\t\t  %s  \t\t", info.name.c_str());
+
+		ImGui::Columns(3, "ToolTipTypeColumns", true);
 		{
-			sprintf(buf, "%s%s: %.0f\n", buf, info.types[i].c_str(), info.values[i]);
+			ImGui::PushItemWidth(-1);
+			ImGui::Text("Req:  ");
+			ImGui::NextColumn();
+			ImGui::PushItemWidth(-1);
+			ImGui::Text(" Res ");
+			ImGui::NextColumn();
+			ImGui::PushItemWidth(-1);
+			ImGui::Text(" Exp ");
 		}
-		ImGui::SetTooltip("%s", buf);
+		ImGui::Columns(1);
+		
+		for (int i = 0; i < inf.size(); i++)
+		{
+
+			ImGui::Columns(3, "ToolTipColumns", true);
+			{
+				ImGui::PushItemWidth(-1);
+				ImGui::Text("%s: ", inf[i].c_str()); // Type: 
+				ImGui::NextColumn();
+
+				ImGui::PushItemWidth(-1);
+				std::vector<std::string>::iterator itr = std::find(info.types.begin(), info.types.end(), inf[i]);
+				int index = -1;
+				if (itr != info.types.end())
+					index = std::distance(info.types.begin(), itr);
+
+				if (index != -1 && player->getStored().find(inf[i]) > info.values[index])
+				{
+					ImGui::TextColored(ImVec4(0.0, 1.0, 0.0, 1.0), " %.0f\t", info.values[index]); // Res 
+				}
+				else if(index != -1)
+				{
+					ImGui::TextColored(ImVec4(1.0, 0.0, 0.0, 1.0), " %.0f\t", info.values[index]); // Res 
+				}
+				ImGui::NextColumn();
+				std::vector<std::string>::iterator itrExp = std::find(infoExp.types.begin(), infoExp.types.end(), inf[i]);
+				int indexExp = -1;
+				if (itrExp != infoExp.types.end())
+					indexExp = std::distance(infoExp.types.begin(), itrExp);
+
+				if (indexExp != -1 && human->getExperiences().find(inf[i]) > infoExp.values[indexExp])
+				{
+					ImGui::TextColored(ImVec4(0.0, 1.0, 0.0, 1.0), " %.0f\t", infoExp.values[indexExp]); // Exp 
+				}
+				else if (indexExp != -1)
+				{
+					ImGui::TextColored(ImVec4(1.0, 0.0, 0.0, 1.0), " %.0f\t", infoExp.values[indexExp]); // Exp 
+				}
+			}
+			ImGui::Columns(1);
+		}
+
+		ImGui::EndTooltip();
 	}
 
 }

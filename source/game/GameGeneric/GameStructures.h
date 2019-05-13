@@ -56,7 +56,7 @@ struct AllResources {
 		ImGui::Text("Consumable Resources");
 		ImGui::Indent();
 
-		for (size_t i = 0; i < consumableTypes.capacity(); i++)
+		for (size_t i = 0; i < consumableTypes.size(); i++)
 		{
 			ImGui::Indent();
 
@@ -70,7 +70,7 @@ struct AllResources {
 		ImGui::Text("Derived Resources");
 		ImGui::Indent();
 
-		for (size_t i = 0; i < derivedTypes.capacity(); i++)
+		for (size_t i = 0; i < derivedTypes.size(); i++)
 		{
 			ImGui::Indent();
 
@@ -84,7 +84,7 @@ struct AllResources {
 		ImGui::Text("Humanly Resources");
 		ImGui::Indent();
 
-		for (size_t i = 0; i < humanlyTypes.capacity(); i++)
+		for (size_t i = 0; i < humanlyTypes.size(); i++)
 		{
 			ImGui::Indent();
 
