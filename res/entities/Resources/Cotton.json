@@ -24,9 +24,6 @@
 				"name": "Cotton",
 				"type": "Cotton",
 				"resource": [200, 200]
-			},
-			"requires": {
-				"minExperience": 0
 			}
 		}
 	]

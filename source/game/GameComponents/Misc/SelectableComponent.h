@@ -7,6 +7,10 @@
 #include "game/GameGeneric/GameGenericTypedef.h"
 #include "game/GameComponents/Player/PlayerAttributes.h"
 
+#include "game/GameComponents/Humans/HumanAttributes.h"
+#include "game/GameComponents/Resources/ResourceAttributes.h"
+#include "game/GameComponents/Constructions/ConstructionAttributes.h"
+
 class SelectableComponent : public adlPhysics_component { 
 
 public:
@@ -29,6 +33,25 @@ public:
 
 	SelectableComponent* getTarget();
 	void setTarget(SelectableComponent* newTarget);
+
+	template<typename T> SharedPointer<T> getAttributes();
+	template<> SharedPointer<HumanAttributes> getAttributes<HumanAttributes>() { return (this->owner->get_component<HumanAttributes>("HumanAttributes")).lock(); }
+	template<> SharedPointer<ResourceAttributes> getAttributes<ResourceAttributes>() { return (this->owner->get_component<ResourceAttributes>("ResourceAttributes")).lock(); }
+	template<> SharedPointer<ConstructionAttributes> getAttributes<ConstructionAttributes>() { return (this->owner->get_component<ConstructionAttributes>("ConstructionAttributes")).lock(); }
+
+	std::string getNameFromAttributes() {
+		if (this->owner->has_component("HumanAttributes"))
+		{
+			return (this->owner->get_component<HumanAttributes>("HumanAttributes")).lock()->getProperties().name;
+		} else if (this->owner->has_component("ResourceAttributes"))
+		{
+			return (this->owner->get_component<ResourceAttributes>("ResourceAttributes")).lock()->getProperties().name;
+		} else if (this->owner->has_component("ConstructionAttributes"))
+		{
+			return (this->owner->get_component<ConstructionAttributes>("ConstructionAttributes")).lock()->getProperties().name;
+		}
+	};
+
 
 private:
 

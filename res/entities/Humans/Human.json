@@ -31,7 +31,7 @@
 			},
 			"requires": {
 				"AllTypes": "Food Cloth Happy",
-				"needs": [ 10, 5, 45 ]
+				"needs": [ 100, 20, 100 ]
 			},
 			"experiences": {
 				"_comment":  "Default Value: 0"				

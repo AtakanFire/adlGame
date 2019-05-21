@@ -24,13 +24,7 @@ public:
 		adlVec2 resource = adlVec2(0, 100); // Resource: (Current/Max)
 	};
 
-	struct ResourceRequires {
-		float minExperience = 0;
-	};
-
-
 	ResourceProperties getProperties();
-	ResourceRequires getRequires();
 
 	void grow(float growing);
 	bool exhaustion(float exhausting);
@@ -38,7 +32,6 @@ public:
 private:
 
 	ResourceProperties properties;
-	ResourceRequires requires;
 
 	void normalizeResource();
 

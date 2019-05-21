@@ -6,6 +6,8 @@
 #include "game/GameComponents/Constructions/StorageConstruction.h"
 #include "game/GameComponents/Player/Informer.h"
 
+#include "game/GameComponents/HUD/HUDComponent.h"
+
 HumanAttributes::HumanAttributes()
 {
 	REGISTER_COMPONENT(HumanAttributes)
@@ -62,6 +64,8 @@ void HumanAttributes::update(float dt) {
 		}
 
 	}
+
+	live();
 }
 
 void HumanAttributes::destroy() {
@@ -178,11 +182,16 @@ void HumanAttributes::gathering(SharedPointer<ResourceAttributes> res, float cos
 
 void HumanAttributes::production(std::string entityName, adlVec3 location)
 {	
-	if (checkExperience(entityName))
+	GameManager* gameMan = &GameManager::get();
+	SharedPointer<PlayerAttributes> player = (gameMan->getTaggedEntity("Player")->get_component<PlayerAttributes>("PlayerAttributes")).lock();
+
+	if (checkExperience(entityName) && player->checkStoredResources(entityName))
 	{
 		Entity construction = sceneManager->add_entity_to_scene(entityName);
 		SharedPointer<SelectableComponent> selectCom(construction->get_component<SelectableComponent>("SelectableComponent"));
 		selectCom->set_position(location);
+		player->useStoredResources(entityName);
+		gainExperience("Knowledge", 4);
 	}
 }
 
@@ -204,4 +213,52 @@ bool HumanAttributes::checkExperience(std::string entityName)
 void HumanAttributes::gainExperience(std::string type, float exp)
 {
 	experiences.find(type) += exp;
+}
+
+void HumanAttributes::live()
+{
+	for (int i = 0; i < requires.needsTypes.size(); i++)
+	{
+		if (requires.needs[i] > 0)
+		{
+			requires.needs[i] -= requires.needRates[i];
+		}
+		else
+		{
+			if (!died)
+			{
+				die();
+			}
+		}
+
+		if (requires.needs[i] < 25)
+		{
+			satisfy(requires.needsTypes[i], 100 - requires.needs[i]);
+		}
+	}
+}
+
+void HumanAttributes::satisfy(std::string type, float val)
+{
+	GameManager* gameMan = &GameManager::get();
+	SharedPointer<PlayerAttributes> player = (gameMan->getTaggedEntity("Player")->get_component<PlayerAttributes>("PlayerAttributes")).lock();
+	SharedPointer<HUDComponent> hud = (gameMan->getTaggedEntity("HUD")->get_component<HUDComponent>("HUDComponent")).lock();
+
+	if (player->useStoredResource(type, val))
+	{
+		requires.find(type) += val;
+	}
+	else {
+		//std::cout << "There is no stored resource" << type << std::endl;	
+		//hud->gameLog.AddLog("There is no %s on stored resource!", type.c_str());
+	}
+}
+
+void HumanAttributes::die()
+{
+	died = true;
+	GameManager* gameMan = &GameManager::get();
+	SharedPointer<HUDComponent> hud = (gameMan->getTaggedEntity("HUD")->get_component<HUDComponent>("HUDComponent")).lock();
+	hud->gameLog.AddLog("%s died!", properties.name.c_str());
+	//std::cout << "Human Died!" << std::endl;
 }

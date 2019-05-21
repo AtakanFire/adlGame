@@ -39,6 +39,15 @@ public:
 		std::vector<std::string> needsTypes = { "Food", "Cloth", "Happy" };
 
 		float needs[3] = { 0 }; // Food, Cloth, Happy
+
+		float needRates[3] = { 1.06, 0.001, 0.0001 }; // needsTypes
+
+		float &find(std::string type) {
+			std::vector<std::string>::iterator c = std::find(needsTypes.begin(), needsTypes.end(), type);
+			if (c != needsTypes.cend()) {
+				return needs[std::distance(needsTypes.begin(), c)];
+			}
+		}
 	};
 
 	struct HumanExperiences { // If there is time, human can learn everything.
@@ -73,6 +82,10 @@ public:
 	bool checkExperience(std::string entityName);
 	void gainExperience(std::string type, float exp);
 
+	void live(); 
+	void satisfy(std::string type, float val); // Auto Use stored resources
+	void die();
+
 private:
 
 	adlScene_manager* sceneManager;
@@ -81,6 +94,8 @@ private:
 	HumanRequires requires;
 	AllResources experiences;
 	HumanCarry carrying;
+
+	bool died = false;
 };
 
 #endif //HumanAttributes_h__

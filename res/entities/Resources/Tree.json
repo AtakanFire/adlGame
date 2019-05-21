@@ -24,9 +24,6 @@
 				"name": "Tree",
 				"type": "Wood",
 				"resource": [50, 100]
-			},
-			"requires": {
-				"minExperience": 0
 			}
 		}
 	]

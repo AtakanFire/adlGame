@@ -24,9 +24,6 @@
 				"name": "Metal Mine",
 				"type": "Metal",
 				"resource": [1000, 1500]
-			},
-			"requires": {
-				"minExperience": 0
 			}
 		}
 	]

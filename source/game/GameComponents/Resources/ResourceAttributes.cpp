@@ -10,7 +10,6 @@ ResourceAttributes::ResourceAttributes()
 
 bool ResourceAttributes::init(const rapidjson::Value& json_object) {
 	const rapidjson::Value& propertiesObject = json_object["properties"];
-	const rapidjson::Value& requiresObject = json_object["requires"];
 
 	properties.name = propertiesObject["name"].GetString();
 	properties.type = propertiesObject["type"].GetString();
@@ -22,8 +21,6 @@ bool ResourceAttributes::init(const rapidjson::Value& json_object) {
 
 	properties.resource.x = minRes.GetFloat();
 	properties.resource.y = maxRes.GetFloat();
-
-	requires.minExperience = requiresObject["minExperience"].GetFloat();
 
 	return true;
 }
@@ -88,30 +85,12 @@ void ResourceAttributes::editor() {
 		ImGui::Unindent();
 	}
 
-	if (ImGui::CollapsingHeader("Requires"))
-	{
-		ImGui::Indent();
-
-		ImGui::Indent();
-		ImGui::Text("Minimum Experience(0f, 100f)");
-		ImGui::SliderFloat("##minExperience", &requires.minExperience, 0.0f, 100.0f);
-		ImGui::Unindent();
-
-		ImGui::Unindent();
-	}
-
-
 	ImGui::Unindent();
 }
 
 ResourceAttributes::ResourceProperties ResourceAttributes::getProperties()
 {
 	return properties;
-}
-
-ResourceAttributes::ResourceRequires ResourceAttributes::getRequires()
-{
-	return requires;
 }
 
 void ResourceAttributes::grow(float growing)

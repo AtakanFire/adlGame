@@ -75,6 +75,15 @@ void SelectableComponent::under_mouse() {
 		}
 		std::cout << owner->getName() << " Targeted!" << std::endl;
 	}
+	else
+	{
+		ImGui::BeginTooltip();
+
+		ImGui::PushItemWidth(-1);
+		ImGui::Text("  %s  ", getNameFromAttributes().c_str());
+		ImGui::EndTooltip();
+	}
+
 }
 
 void SelectableComponent::on_mouse_hover_end() {

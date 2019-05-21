@@ -21,11 +21,15 @@ public:
 
 	AllResources &getStored() { return stored; };
 
-
 	Entity getSelection();
 	void setSelection(Entity selected);
 
 	std::string onConstruct = "";
+
+	bool checkStoredResources(std::string entityName);
+	void useStoredResources(std::string entityName);
+	void useStoredResources(std::vector<std::string> types, std::vector<float> values);
+	bool useStoredResource(std::string type, float val);
 
 private:
 

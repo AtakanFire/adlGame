@@ -1,4 +1,4 @@
-#include "HUDComponent.h"
+﻿#include "HUDComponent.h"
 
 #include "game/GameGeneric/GameFunctions.h"
 
@@ -21,6 +21,8 @@ bool HUDComponent::init(const rapidjson::Value& json_object) {
 void HUDComponent::post_init() {
 	editorMan = &adlEditor_manager::get();
 	GameManager* gameMan = &GameManager::get();
+	gameMan->setTaggedEntity("HUD", owner);
+
 	player = (gameMan->getTaggedEntity("Player")->get_component<PlayerAttributes>("PlayerAttributes")).lock();
 
 	ImGuiStyle& style = ImGui::GetStyle();
@@ -36,6 +38,7 @@ void HUDComponent::update(float dt) {
 		{
 			mainLayout();
 		}
+		gameLog.Draw();
 	}
 }
 
@@ -58,25 +61,26 @@ void HUDComponent::editor() {
 void HUDComponent::mainMenu()
 {
 	AllResources& stored = player->getStored();
+	float storageCapacity = 800; // player->getStorageCapacity();
 
 
 	if (ImGui::BeginMainMenuBar())
 	{
-		if (ImGui::BeginMenu("Total Stats"))
+		if (ImGui::BeginMenu("Stored Resources"))
 		{
 			//std::cout << stored.consumable[0] << std::endl;
 
 			ImGui::TextColored(ImVec4(0.5, 0.8, 0.4, 1.0),"Consumable Resources");
-			progressBarGenerator(stored.consumableTypes, stored.consumable, 800, false);
+			progressBarGenerator(stored.consumableTypes, stored.consumable, storageCapacity, false);
 			ImGui::Separator();
 
 			ImGui::TextColored(ImVec4(0.5, 0.8, 0.4, 1.0), "Derived Resources");
-			progressBarGenerator(stored.derivedTypes, stored.derived, 800, false);
+			progressBarGenerator(stored.derivedTypes, stored.derived, storageCapacity, false);
 			ImGui::Separator();
 
 
 			ImGui::TextColored(ImVec4(0.5, 0.8, 0.4, 1.0), "Humanly Resources");
-			progressBarGenerator(stored.humanlyTypes, stored.humanly, 800, false);
+			progressBarGenerator(stored.humanlyTypes, stored.humanly, storageCapacity, false);
 
 			ImGui::EndMenu();
 		}
@@ -94,19 +98,27 @@ void HUDComponent::mainMenu()
 				ImGui::Text(" -> ");
 				ImGui::Text(selected->getTarget()->getOwner()->getName().c_str());
 			}
+			ImGui::Text("|");
 
 		}
 
+		//ImGui::Text("Loading %c", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) & 3]);
 
-		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - ImGui::CalcTextSize("| adlGame").x);
-		ImGui::Text("| adlGame");
+		gameLog.MainMenu();
 
-		// Total Resources, Human Count etc.
 
+		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - ImGui::CalcTextSize(" | adlGame ").x);
+
+		ImGui::Text("|");
+		if (ImGui::BeginMenu("adlGame"))
+		{
+			ImGui::MenuItem("Game Actions", NULL, &gameLog.opened);
+			ImGui::EndMenu();
+		}
+
+		// Human Count etc.
 		// Individuals' Needs -> on a window
-
 		// ~Science Tree, Reputation(Dignity) House
-
 		// Settings etc.
 
 		ImGui::EndMainMenuBar();
@@ -167,80 +179,57 @@ void HUDComponent::humanAttributes()
 		ImGui::Separator();
 		//ImGui::Text("Human : %s %s %s", pro.name.c_str(), selected->getTarget() ? "->" : " ", selected->getTarget() ? selected->getTarget()->getOwner()->getName().c_str() : " ");
 
-		ImGui::Columns(4, "Columns", true);
+		ImGui::Columns(3, "Columns", true);
 		{
-			ImGui::Text("%s", "General Properties");
+			ImGui::TextColored(ImVec4(0.0, 120, 0, 1.0), "General Properties");
 
-			if (ImGui::CollapsingHeader("Properties"))
+			ImGui::Indent();
+			ImGui::Text("%s", "Properties");
+
+			ImGui::Indent(); 			
+			ImGui::Text("Name: %s", pro.name.c_str());
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Change Name with 'Right Click'");
+			if (ImGui::BeginPopupContextItem("Change Name"))
 			{
-				ImGui::Indent();
-
-				ImGui::Text("Name: %s", pro.name.c_str());
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Change Name with 'Right Click'");
-				if (ImGui::BeginPopupContextItem("Change Name"))
+				ImGui::SetKeyboardFocusHere();
+				char humanName[64] = "";
+				if (ImGui::InputText("Human Name", humanName, 64, ImGuiInputTextFlags_EnterReturnsTrue))
 				{
-					ImGui::SetKeyboardFocusHere();
-					char humanName[64] = "";
-					if (ImGui::InputText("Human Name", humanName, 64, ImGuiInputTextFlags_EnterReturnsTrue))
-					{
-						pro.name = humanName;
-					}
-
-					ImGui::EndPopup();
+					pro.name = humanName;
 				}
 
-				std::string age = (pro.age < 18) ? "Child" : (pro.age < 30) ? "Teenager" : (pro.age < 50) ? "Adult" : "Elderly";
-				ImGui::Text("Age: %.0f", pro.age);
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("%s\n%s", age.c_str(), "People die when they get old.");
-
-				std::string gender = (pro.gender == 0) ? "Female" : "Male";
-				ImGui::Text("Gender: %s", gender.c_str());
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Gender");
-
-				ImGui::Unindent();
+				ImGui::EndPopup();
 			}
+
+			std::string age = (pro.age < 18) ? "Child" : (pro.age < 30) ? "Teenager" : (pro.age < 50) ? "Adult" : "Elderly";
+			ImGui::Text("Age: %.0f", pro.age);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("%s\n%s", age.c_str(), "People die when they get old.");
+
+			std::string gender = (pro.gender == 0) ? "Female" : "Male";
+			ImGui::Text("Gender: %s", gender.c_str());
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Gender");
 
 			if (carrying.takenObject != "")
 			{
 				ImGui::Text("Carried: %s(%.0f)", carrying.takenObject.c_str(), carrying.taken);
 			}
-
-			ImGui::NextColumn();
-			ImGui::Text("%s", "Requires");
-
-			if (ImGui::CollapsingHeader("Needs"))
-			{
-				ImGui::Indent();
-
-				progressBarGenerator(req.needsTypes, req.needs);
-
-				ImGui::Unindent();
+			else {
+				ImGui::Text("Carried: Empty");
 			}
+					
+			ImGui::Unindent();
 
-			ImGui::NextColumn();
-			ImGui::Text("%s", "Productions");
 
-			if (ImGui::CollapsingHeader("Abilities"))
-			{
-				ImGui::Indent();
-
-				buildConstructionTool("House");
-				buildConstructionTool("Blacksmith");						
-
-				ImGui::Unindent();
-			}
-
-			ImGui::NextColumn();
 			ImGui::Text("%s", "Experiences");
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("If there is time, human can learn everything.\n");
 
 			if (ImGui::CollapsingHeader("Experiences"))
 			{
-				ImGui::Indent();		
+				ImGui::Indent();
 
 				ImGui::TextColored(ImVec4(0, 102, 0, 1.0), "Consumable Resources");
 				progressBarGenerator(exp.consumableTypes, exp.consumable);
@@ -253,6 +242,24 @@ void HUDComponent::humanAttributes()
 
 				ImGui::Unindent();
 			}
+
+			ImGui::Unindent();
+
+			ImGui::NextColumn();
+			ImGui::Text("%s", "Requires");
+			ImGui::Text("%s", "Needs");
+			ImGui::Indent();
+			progressBarGenerator(req.needsTypes, req.needs, 100, true, true, true);
+			ImGui::Unindent();
+
+			ImGui::NextColumn();
+			ImGui::Text("%s", "Productions");
+			ImGui::Text("%s", "Abilities");
+			ImGui::Indent();
+			buildConstructionTool("House");
+			buildConstructionTool("Blacksmith");
+			ImGui::Unindent();
+
 		}
 		ImGui::Columns(1);
 
@@ -280,51 +287,40 @@ void HUDComponent::resourceAttributes() {
 		{
 			ImGui::Text("%s", "Properties");
 
-			if (ImGui::CollapsingHeader("Properties"))
-			{
-				ImGui::Indent();
+			ImGui::Indent();
 
-				ImGui::Text("Name: %s", res->getProperties().name.c_str());
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Resources Name");
+			ImGui::Text("Name: %s", res->getProperties().name.c_str());
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Resources Name");
 
-				ImGui::Text("Type: %s", res->getProperties().type.c_str());
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Resource Type");
+			ImGui::Text("Type: %s", res->getProperties().type.c_str());
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Resource Type");
 
-				ImGui::Unindent();
-			}
+			ImGui::Unindent();
 
 			ImGui::NextColumn();
 			ImGui::Text("%s", "Requires");
 
-			if (ImGui::CollapsingHeader("Requires"))
-			{
-				ImGui::Indent();
+			ImGui::Indent();
 
-
-
-				ImGui::Unindent();
-			}
+			ImGui::Unindent();
 
 			ImGui::NextColumn();
 			ImGui::Text("%s", "Stats");
 
-			if (ImGui::CollapsingHeader("Stats"))
-			{
-				ImGui::Indent();
+			ImGui::Indent();
 
-				char buf[32];
-				sprintf(buf, "%.0f/%.0f", res->getProperties().resource.x, res->getProperties().resource.y);
+			char buf[32];
+			sprintf(buf, "%.0f/%.0f", res->getProperties().resource.x, res->getProperties().resource.y);
 
-				ImGui::Text("%s: ", res->getProperties().type.c_str());
-				ImGui::SameLine(0.0f, ImGui::GetStyle().ItemInnerSpacing.x);
-				ImGui::ProgressBar(res->getProperties().resource.x / res->getProperties().resource.y, ImVec2(0.f, 0.f), buf);
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Resource Percentage\nCurrent/Max");
+			ImGui::Text("%s: ", res->getProperties().type.c_str());
+			ImGui::SameLine(0.0f, ImGui::GetStyle().ItemInnerSpacing.x);
+			ImGui::ProgressBar(res->getProperties().resource.x / res->getProperties().resource.y, ImVec2(0.f, 0.f), buf);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Resource Percentage\nCurrent/Max");
 
-				ImGui::Unindent();
-			}
+			ImGui::Unindent();
 
 		}
 		ImGui::Columns(1);
@@ -352,88 +348,77 @@ void HUDComponent::constructionAttributes()
 		ImGui::Indent();
 
 		ImGui::Separator();
-		//ImGui::Text("Construction: %s", pro.name.c_str());
 
 		ImGui::Columns(3, "Columns", true);
 		{
 			ImGui::Text("%s", "Properties");
 
-			if (ImGui::CollapsingHeader("Properties"))
-			{
-				ImGui::Indent();
+			ImGui::Indent();
 
-				ImGui::Text("Name: %s", pro.name.c_str());
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Construction Name");
+			ImGui::Text("Name: %s", pro.name.c_str());
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Construction Name");
 
-				ImGui::Text("Durability: %.0f", pro.durability);
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Construction Durability");
+			ImGui::Text("Durability: %.0f", pro.durability);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Construction Durability");
 
-				ImGui::Unindent();
-			}
+			ImGui::Unindent();
 
 			ImGui::NextColumn();
 			ImGui::Text("%s", "Requires");
 
-			if (ImGui::CollapsingHeader("Requires"))
+			ImGui::Indent();
+
+			if (ImGui::CollapsingHeader("Minimum Experiences Needs"))
 			{
 				ImGui::Indent();
 
-				if (ImGui::CollapsingHeader("Minimum Experiences Needs"))
-				{
-					ImGui::Indent();
+				ImGui::Text("%s", "Consumable");
+				progressBarGenerator(req.experiences.consumableTypes, req.experiences.consumable);
 
-					ImGui::Text("%s", "Consumable");
-					progressBarGenerator(req.experiences.consumableTypes, req.experiences.consumable);
+				ImGui::Text("%s", "Derived");
+				progressBarGenerator(req.experiences.derivedTypes, req.experiences.derived);
 
-					ImGui::Text("%s", "Derived");
-					progressBarGenerator(req.experiences.derivedTypes, req.experiences.derived);
-
-					ImGui::Text("%s", "Humanly");
-					progressBarGenerator(req.experiences.humanlyTypes, req.experiences.humanly);
-
-
-					ImGui::Unindent();
-				}
-				if (ImGui::CollapsingHeader("Minimum Resource Needs"))
-				{
-					ImGui::Indent();
-
-
-					ImGui::Text("%s", "Consumable");
-					progressBarGenerator(req.resources.consumableTypes, req.resources.consumable);
-
-					ImGui::Text("%s", "Derived");
-					progressBarGenerator(req.resources.derivedTypes, req.resources.derived);
-
-					ImGui::Text("%s", "Humanly");
-					progressBarGenerator(req.resources.humanlyTypes, req.resources.humanly);
-
-					ImGui::Unindent();
-				}
+				ImGui::Text("%s", "Humanly");
+				progressBarGenerator(req.experiences.humanlyTypes, req.experiences.humanly);
 
 
 				ImGui::Unindent();
 			}
+			if (ImGui::CollapsingHeader("Minimum Resource Needs"))
+			{
+				ImGui::Indent();
+
+
+				ImGui::Text("%s", "Consumable");
+				progressBarGenerator(req.resources.consumableTypes, req.resources.consumable);
+
+				ImGui::Text("%s", "Derived");
+				progressBarGenerator(req.resources.derivedTypes, req.resources.derived);
+
+				ImGui::Text("%s", "Humanly");
+				progressBarGenerator(req.resources.humanlyTypes, req.resources.humanly);
+
+				ImGui::Unindent();
+			}
+
+
+			ImGui::Unindent();
 
 			ImGui::NextColumn();
 			ImGui::Text("%s", "Stats");
 
-			if (ImGui::CollapsingHeader("Stats"))
-			{
-				ImGui::Indent();
+			ImGui::Indent();
 
+			char buf[32];
+			sprintf(buf, "%.0f/%.0f", 1.0f, 1.0f);
 
-				char buf[32];
-				sprintf(buf, "%.0f/%.0f", 1.0f, 1.0f);
+			ImGui::Text("Construction: ");
+			ImGui::SameLine(0.0f, ImGui::GetStyle().ItemInnerSpacing.x);
+			ImGui::ProgressBar(1 / 1, ImVec2(0.f, 0.f), buf);
 
-				ImGui::Text("Construction: ");
-				ImGui::SameLine(0.0f, ImGui::GetStyle().ItemInnerSpacing.x);
-				ImGui::ProgressBar(1 / 1, ImVec2(0.f, 0.f), buf);
-
-				ImGui::Unindent();
-			}
+			ImGui::Unindent();
 
 		}
 		ImGui::Columns(1);
@@ -444,7 +429,7 @@ void HUDComponent::constructionAttributes()
 	}
 }
 
-void HUDComponent::progressBarGenerator(std::vector<std::string> text, float value[], float limit, bool indent, bool showAll)
+void HUDComponent::progressBarGenerator(std::vector<std::string> text, float value[], float limit, bool indent, bool showAll, bool valueColor)
 {
 	for (int i = 0; i < text.size(); i++)
 	{
@@ -468,7 +453,22 @@ void HUDComponent::progressBarGenerator(std::vector<std::string> text, float val
 		{
 			char buf[32];
 			sprintf(buf, "%s", text[i].c_str(), value[i], limit);
+
+			if (valueColor)
+			{
+				float c = (value[i] / limit);
+				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(1 - c, c, 0, 1.0));
+				ImGui::Text("%.3f", value[i] / limit);
+			}
+
 			ImGui::ProgressBar(value[i] / limit, ImVec2(-1.f, 0.f), buf);
+
+			if (valueColor)
+			{
+				ImGui::PopStyleColor();
+			}
+
+
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("%s: %.0f/%.0f(Current/Max)", text[i].c_str(), value[i], limit);
 		}	
@@ -501,7 +501,14 @@ void HUDComponent::buildConstructionTool(std::string name)
 		inf.erase(std::unique(inf.begin(), inf.end()), inf.end());
 
 		ImGui::PushItemWidth(-1);
-		ImGui::TextColored(ImVec4(1.0, 0.2, 0.2, 1.0),"\t\t  %s  \t\t", info.name.c_str());
+		if (human->checkExperience(name) && player->checkStoredResources(name))
+		{
+			ImGui::TextColored(ImVec4(0.2, 1.0, 0.2, 1.0), "\t\t  %s  \t\t", info.name.c_str());
+		}
+		else
+		{
+			ImGui::TextColored(ImVec4(1.0, 0.2, 0.2, 1.0), "\t\t  %s  \t\t", info.name.c_str());
+		}
 
 		ImGui::Columns(3, "ToolTipTypeColumns", true);
 		{
@@ -518,7 +525,6 @@ void HUDComponent::buildConstructionTool(std::string name)
 		
 		for (int i = 0; i < inf.size(); i++)
 		{
-
 			ImGui::Columns(3, "ToolTipColumns", true);
 			{
 				ImGui::PushItemWidth(-1);
@@ -560,4 +566,16 @@ void HUDComponent::buildConstructionTool(std::string name)
 		ImGui::EndTooltip();
 	}
 
+}
+void HUDComponent::modal()
+{
+	ImGui::OpenPopup("Modal window");
+	bool open = true;
+	if (ImGui::BeginPopupModal("Modal window", &open, ImGuiWindowFlags_NoResize))
+	{
+		ImGui::Text("Modal");
+		if (ImGui::Button("Close"))
+			ImGui::CloseCurrentPopup();
+		ImGui::EndPopup();
+	}
 }

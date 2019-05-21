@@ -24,9 +24,6 @@
 				"name": "Sheep",
 				"type": "Food",
 				"resource": [50, 100]
-			},
-			"requires": {
-				"minExperience": 0
 			}
 		}
 	]

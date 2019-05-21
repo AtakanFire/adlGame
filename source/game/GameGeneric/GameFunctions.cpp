@@ -26,6 +26,9 @@ void GameFunctions::ImGuiStyler()
 	colors[ImGuiCol_TitleBg] = ImVec4(0.06f, 0.06f, 0.06f, 0.40f);
 	colors[ImGuiCol_TitleBgActive] = ImVec4(0.06f, 0.06f, 0.06f, 0.40f);
 
+	// Font
+	ImGuiIO& io = ImGui::GetIO();
+	io.Fonts->AddFontFromFileTTF("res/fonts/arial.ttf", 16.0f, NULL, io.Fonts->GetGlyphRangesDefault());
 }
 
 bool GameFunctions::CheckImGuiClicked()
@@ -40,7 +43,7 @@ std::vector<std::string> GameFunctions::SplitString(std::string mainString, std:
 	std::vector<std::string> newString;
 	while ((pos = mainString.find(delimiter)) != std::string::npos) {
 		token = mainString.substr(0, pos);
-		std::cout << token << std::endl;
+		//std::cout << token << std::endl;
 		newString.push_back(token);
 		mainString.erase(0, pos + delimiter.length());
 	}
