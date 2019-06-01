@@ -40,7 +40,7 @@ public:
 
 		float needs[3] = { 0 }; // Food, Cloth, Happy
 
-		float needRates[3] = { 1.06, 0.001, 0.0001 }; // needsTypes
+		float needRates[3] = { 0.01, 0.001, 0.0001 }; // needsTypes
 
 		float &find(std::string type) {
 			std::vector<std::string>::iterator c = std::find(needsTypes.begin(), needsTypes.end(), type);

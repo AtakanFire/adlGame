@@ -35,6 +35,22 @@ struct AllResources {
 	float derived[DerivedResources::DerivedResourcesCOUNT] = { 0 }; // Cloth, Lumber, Gold
 	float humanly[HumanlyResources::HumanlyResourcesCOUNT] = { 0 }; // Happy, Knowledge
 
+	std::vector<std::string> allTypes() {
+		std::vector<std::string> all = { };
+		all.insert(std::end(all), std::begin(consumableTypes), std::end(consumableTypes));
+		all.insert(std::end(all), std::begin(derivedTypes), std::end(derivedTypes));
+		all.insert(std::end(all), std::begin(humanlyTypes), std::end(humanlyTypes));
+		return all;
+	}
+
+	std::vector<float> allValues() {
+		std::vector<float> all = { };
+		all.insert(std::end(all), std::begin(consumable), std::end(consumable));
+		all.insert(std::end(all), std::begin(derived), std::end(derived));
+		all.insert(std::end(all), std::begin(humanly), std::end(humanly));
+		return all;
+	}
+
 	float &find(std::string type) {
 
 		std::vector<std::string>::iterator c = std::find(consumableTypes.begin(), consumableTypes.end(), type);

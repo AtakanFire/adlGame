@@ -4,6 +4,7 @@
 
 #include "game/GameComponents/Misc/SelectableComponent.h"
 #include "game/GameComponents/Constructions/StorageConstruction.h"
+#include "game/GameComponents/Constructions/ManufacturerConstruction.h"
 #include "game/GameComponents/Player/Informer.h"
 
 #include "game/GameComponents/HUD/HUDComponent.h"
@@ -59,8 +60,13 @@ void HumanAttributes::update(float dt) {
 		else if (entity->has_component("StorageConstruction"))
 		{
 			SharedPointer<StorageConstruction> construction(entity->get_component<StorageConstruction>("StorageConstruction"));
-			construction->storing(owner, carrying.takenObject, carrying.taken);
+			construction->storing(carrying.takenObject, carrying.taken);
 			dropped();
+		}
+		else if (entity->has_component("ManufacturerConstruction"))
+		{
+			SharedPointer<ManufacturerConstruction> construction(entity->get_component<ManufacturerConstruction>("ManufacturerConstruction"));
+			construction->fabricating();
 		}
 
 	}
@@ -164,7 +170,7 @@ void HumanAttributes::bring()
 {
 	GameManager* gameMan = &GameManager::get();
 	SharedPointer<StorageConstruction> storage = (gameMan->getTaggedEntity("StorageConstruction")->get_component<StorageConstruction>("StorageConstruction")).lock();
-	storage->storing(owner, carrying.takenObject, carrying.taken);
+	storage->storing(carrying.takenObject, carrying.taken);
 	dropped();
 }
 
@@ -219,21 +225,22 @@ void HumanAttributes::live()
 {
 	for (int i = 0; i < requires.needsTypes.size(); i++)
 	{
+		if (requires.needs[i] < 25)
+		{
+			satisfy(requires.needsTypes[i], 100 - requires.needs[i]);
+		}
+
 		if (requires.needs[i] > 0)
 		{
 			requires.needs[i] -= requires.needRates[i];
 		}
 		else
 		{
+			requires.needs[i] = -1;
 			if (!died)
 			{
 				die();
 			}
-		}
-
-		if (requires.needs[i] < 25)
-		{
-			satisfy(requires.needsTypes[i], 100 - requires.needs[i]);
 		}
 	}
 }
@@ -247,6 +254,14 @@ void HumanAttributes::satisfy(std::string type, float val)
 	if (player->useStoredResource(type, val))
 	{
 		requires.find(type) += val;
+	}
+	else if(player->getStored().find(type) > 0 && requires.find(type) > 0)
+	{
+		if (player->useStoredResource(type, player->getStored().find(type)-0.1))
+		{
+			hud->gameLog.AddLog("%s: %.0f %.0f", type.c_str(), player->getStored().find(type), requires.find(type));
+			requires.find(type) += player->getStored().find(type);
+		}		
 	}
 	else {
 		//std::cout << "There is no stored resource" << type << std::endl;	

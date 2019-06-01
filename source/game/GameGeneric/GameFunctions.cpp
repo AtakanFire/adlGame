@@ -14,15 +14,23 @@ void GameFunctions::ImGuiStyler()
 
 	// Color
 	ImVec4* colors = ImGui::GetStyle().Colors;
-	colors[ImGuiCol_MenuBarBg] = ImVec4(0.08f, 0.16f, 0.16f, 0.50f);
+	colors[ImGuiCol_MenuBarBg] = ImVec4(0.20f, 0.10f, 0.08f, 0.16f);
 
-	colors[ImGuiCol_Header] = ImVec4(0.12f, 0.51f, 0.69f, 0.67f);
-	colors[ImGuiCol_HeaderHovered] = ImVec4(0.16f, 0.35f, 0.74f, 0.59f);
-	colors[ImGuiCol_HeaderActive] = ImVec4(0.11f, 0.69f, 0.54f, 0.75f);
+	colors[ImGuiCol_Header] = ImVec4(0.66f, 0.36f, 0.01f, 0.16f);
+	colors[ImGuiCol_HeaderHovered] = ImVec4(0.98f, 0.43f, 0.26f, 0.16f);
+	colors[ImGuiCol_HeaderActive] = ImVec4(0.79f, 0.65f, 0.22f, 1.00f);
 
-	colors[ImGuiCol_PlotHistogram] = ImVec4(0.16f, 0.18f, 0.04f, 0.89f);
+	colors[ImGuiCol_FrameBg] = ImVec4(0.96f, 1.00f, 0.31f, 0.1f);
+	colors[ImGuiCol_FrameBgHovered] = ImVec4(0.75f, 0.56f, 0.04f, 0.16f);
+	colors[ImGuiCol_FrameBgActive] = ImVec4(0.65f, 0.32f, 0.00f, 0.21f);
 
-	
+
+	colors[ImGuiCol_Button] = ImVec4(0.85f, 0.36f, 0.00f, 0.28f);
+	colors[ImGuiCol_ButtonHovered] = ImVec4(0.66f, 0.26f, 0.01f, 0.64f);
+	colors[ImGuiCol_ButtonActive] = ImVec4(0.96f, 0.83f, 0.25f, 0.72f);
+
+	colors[ImGuiCol_PlotHistogram] = ImVec4(0.95f, 0.57f, 0.06f, 0.6f);
+
 	colors[ImGuiCol_TitleBg] = ImVec4(0.06f, 0.06f, 0.06f, 0.40f);
 	colors[ImGuiCol_TitleBgActive] = ImVec4(0.06f, 0.06f, 0.06f, 0.40f);
 

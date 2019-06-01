@@ -32,6 +32,18 @@
 					"_comment":  "Default Value: 0"
 				}
 			}
+		},
+		{
+			"type": "ManufacturerConstruction",
+			"AllTypes": "Food Wood Stone Metal Cotton Cloth Lumber Gold Happy Knowledge",
+			"consume": {
+				"types": "Wood",
+				"values": ".08"
+			},
+			"derive": {
+				"types": "Lumber",
+				"values": ".02"
+			}
 		}
 	]
 }

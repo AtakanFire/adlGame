@@ -6,6 +6,7 @@
 #include "game/GameComponents/Humans/HumanAttributes.h"
 #include "game/GameComponents/Resources/ResourceAttributes.h"
 #include "game/GameComponents/Constructions/ConstructionAttributes.h"
+#include "game/GameComponents/Constructions/ManufacturerConstruction.h"
 #include "game/GameComponents/Player/Informer.h"
 
 
@@ -63,9 +64,9 @@ void HUDComponent::mainMenu()
 	AllResources& stored = player->getStored();
 	float storageCapacity = 800; // player->getStorageCapacity();
 
-
 	if (ImGui::BeginMainMenuBar())
 	{
+		ImGui::SetNextWindowBgAlpha(0.6f);
 		if (ImGui::BeginMenu("Stored Resources"))
 		{
 			//std::cout << stored.consumable[0] << std::endl;
@@ -90,17 +91,22 @@ void HUDComponent::mainMenu()
 		if (player->getSelection() != nullptr)
 		{
 			SharedPointer<SelectableComponent> selected(player->getSelection()->get_component<SelectableComponent>("SelectableComponent"));
-			ImGui::Text("Selected: ");
-			ImGui::Text(player->getSelection()->getName().c_str());
+			ImGui::Text(selected->getNameFromAttributes().c_str());
+			if (ImGui::IsItemHovered()) {
+				ImGui::SetTooltip("Selected: %s \n", selected->getNameFromAttributes().c_str());
+			}
 
 			if (selected->getTarget())
 			{
-				ImGui::Text(" -> ");
-				ImGui::Text(selected->getTarget()->getOwner()->getName().c_str());
+				ImGui::Text(" > ");
+				ImGui::Text(selected->getTarget()->getNameFromAttributes().c_str());
+				if (ImGui::IsItemHovered()) {
+					ImGui::SetTooltip("Targeted: %s \n", selected->getTarget()->getNameFromAttributes().c_str());
+				}
 			}
 			ImGui::Text("|");
-
 		}
+
 
 		//ImGui::Text("Loading %c", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) & 3]);
 
@@ -338,7 +344,6 @@ void HUDComponent::constructionAttributes()
 	SharedPointer<SelectableComponent> selected(player->getSelection()->get_component<SelectableComponent>("SelectableComponent"));
 
 	ConstructionAttributes::ConstructionProperties& pro = con->getProperties();
-	ConstructionAttributes::ConstructionRequires& req = con->getRequires();
 
 	std::string title("" + pro.name + "(Construction)");
 
@@ -370,39 +375,48 @@ void HUDComponent::constructionAttributes()
 
 			ImGui::Indent();
 
-			if (ImGui::CollapsingHeader("Minimum Experiences Needs"))
+			if (selected->hasComponent<StorageConstruction>())
 			{
+				ImGui::SameLine();
+				ImGui::Text("(StorageConstruction)");
+			}
+
+
+			if (selected->hasComponent<ManufacturerConstruction>())
+			{
+				ImGui::SameLine();
+				ImGui::Text("(Manufacturer)");
+
+				SharedPointer<ManufacturerConstruction> facturer = selected->getComponent<ManufacturerConstruction>();
+				AllResources consumeData = facturer->getConsume();
+				AllResources deriveData =  facturer->getDerive();
+
+				ImGui::Text("Needed");
 				ImGui::Indent();
+				for (int i = 0; i < consumeData.allTypes().size(); i++)
+				{
+					if (consumeData.allValues()[i] != 0)
+					{
+						ImGui::Text("%s: %.2f", consumeData.allTypes()[i].c_str(), consumeData.allValues()[i]);
+					}
+				}
+				ImGui::Unindent();
 
-				ImGui::Text("%s", "Consumable");
-				progressBarGenerator(req.experiences.consumableTypes, req.experiences.consumable);
+				ImGui::Text("Factored");
+				ImGui::Indent();
+				for (int i = 0; i < deriveData.allTypes().size(); i++)
+				{
+					if (deriveData.allValues()[i] != 0)
+					{
+						ImGui::Text("%s: %.2f", deriveData.allTypes()[i].c_str(), deriveData.allValues()[i]);
+					}
+				}
 
-				ImGui::Text("%s", "Derived");
-				progressBarGenerator(req.experiences.derivedTypes, req.experiences.derived);
 
-				ImGui::Text("%s", "Humanly");
-				progressBarGenerator(req.experiences.humanlyTypes, req.experiences.humanly);
 
 
 				ImGui::Unindent();
 			}
-			if (ImGui::CollapsingHeader("Minimum Resource Needs"))
-			{
-				ImGui::Indent();
-
-
-				ImGui::Text("%s", "Consumable");
-				progressBarGenerator(req.resources.consumableTypes, req.resources.consumable);
-
-				ImGui::Text("%s", "Derived");
-				progressBarGenerator(req.resources.derivedTypes, req.resources.derived);
-
-				ImGui::Text("%s", "Humanly");
-				progressBarGenerator(req.resources.humanlyTypes, req.resources.humanly);
-
-				ImGui::Unindent();
-			}
-
 
 			ImGui::Unindent();
 
@@ -458,7 +472,7 @@ void HUDComponent::progressBarGenerator(std::vector<std::string> text, float val
 			{
 				float c = (value[i] / limit);
 				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(1 - c, c, 0, 1.0));
-				ImGui::Text("%.3f", value[i] / limit);
+				//ImGui::Text("%.3f", value[i] / limit);
 			}
 
 			ImGui::ProgressBar(value[i] / limit, ImVec2(-1.f, 0.f), buf);

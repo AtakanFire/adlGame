@@ -136,7 +136,7 @@ function UpdateTablor(entityInfo) {
 
     for (const key in req[0]) {
         if (req[0].hasOwnProperty(key)) {
-            cols.push({title:key, field:key, width:180, align:"center", editor:true},)
+            cols.push({title:(key.charAt(0).toUpperCase() + key.slice(1)), field:key, width:180, align:"center", editor:true},)
         }
     }
 

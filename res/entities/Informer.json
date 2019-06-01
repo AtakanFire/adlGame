@@ -3,84 +3,85 @@
   "components": [
     {
       "type": "Informer",
+			"AllTypes": "Food,Wood,Stone,Metal,Cotton,Cloth,Lumber,Gold,Happy,Knowledge",
       "requires": [
         {
-          "Name": "House",
-          "Types": "Wood,Metal",
-          "Values": "4,8",
-          "Require": "Experience"
+          "name": "House",
+          "types": "Food,Wood",
+          "values": "2,4",
+          "require": "Experience"
         },
         {
-          "Name": "Blacksmith",
-          "Types": "Wood,Stone,Metal",
-          "Values": "10,20,40",
-          "Require": "Resource"
+          "name": "Blacksmith",
+          "types": "Wood,Stone,Metal",
+          "values": "10,20,40",
+          "require": "Resource"
         },
         {
-          "Name": "Construction",
-          "Types": "Wood",
-          "Values": "40",
-          "Require": "Resource"
+          "name": "Construction",
+          "types": "Wood",
+          "values": "40",
+          "require": "Resource"
         },
         {
-          "Name": "House",
-          "Types": "Wood,Food",
-          "Values": "30,10",
-          "Require": "Resource"
+          "name": "House",
+          "types": "Wood,Food",
+          "values": "30,10",
+          "require": "Resource"
         },
         {
-          "Name": "Inn",
-          "Types": "Food,Wood,Metal,Cotton",
-          "Values": "120,600,40,240",
-          "Require": "Resource"
+          "name": "Inn",
+          "types": "Food,Wood,Metal,Cotton",
+          "values": "120,600,40,240",
+          "require": "Resource"
         },
         {
-          "Name": "Human",
-          "Types": "",
-          "Values": "",
-          "Require": "Resource"
+          "name": "Human",
+          "types": "",
+          "values": "",
+          "require": "Resource"
         },
         {
-          "Name": "Cotton",
-          "Types": "",
-          "Values": "",
-          "Require": "Resource"
+          "name": "Cotton",
+          "types": "",
+          "values": "",
+          "require": "Resource"
         },
         {
-          "Name": "Cow",
-          "Types": "",
-          "Values": "",
-          "Require": "Resource"
+          "name": "Cow",
+          "types": "",
+          "values": "",
+          "require": "Resource"
         },
         {
-          "Name": "MetalMine",
-          "Types": "",
-          "Values": "",
-          "Require": "Resource"
+          "name": "MetalMine",
+          "types": "",
+          "values": "",
+          "require": "Resource"
         },
         {
-          "Name": "Resource",
-          "Types": "",
-          "Values": "",
-          "Require": "Resource"
+          "name": "Resource",
+          "types": "",
+          "values": "",
+          "require": "Resource"
         },
         {
-          "Name": "Sheep",
-          "Types": "",
-          "Values": "",
-          "Require": "Resource"
+          "name": "Sheep",
+          "types": "",
+          "values": "",
+          "require": "Resource"
         },
         {
-          "Name": "StoneMine",
-          "Types": "",
-          "Values": "",
-          "Require": "Resource"
+          "name": "StoneMine",
+          "types": "",
+          "values": "",
+          "require": "Resource"
         },
         {
-          "Name": "Tree",
-          "Types": "",
-          "Values": "",
-          "Require": "Resource"
+          "name": "Tree",
+          "types": "",
+          "values": "",
+          "require": "Resource"
         }
       ]
     }

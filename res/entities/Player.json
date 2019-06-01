@@ -6,7 +6,7 @@
 			"type": "PlayerAttributes",
 			"stored": {
 				"types": "Food Wood Metal Stone Happy",
-				"store": [ 200, 120, 15, 45, 20 ]
+				"store": [ 200, 400, 15, 45, 20 ]
 			}
 		}
 	]

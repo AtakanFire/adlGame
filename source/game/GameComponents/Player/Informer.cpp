@@ -12,10 +12,10 @@ bool Informer::init(const rapidjson::Value& json_object) {
 	const rapidjson::Value& req = json_object["requires"];
 	
 	for (rapidjson::Value::ConstValueIterator itr = req.Begin(); itr != req.End(); ++itr) {
-		std::string name = (*itr)["Name"].GetString();
-		std::string require = (*itr)["Require"].GetString();
-		std::string t = (*itr)["Types"].GetString();
-		std::string v = (*itr)["Values"].GetString();
+		std::string name = (*itr)["name"].GetString();
+		std::string require = (*itr)["require"].GetString();
+		std::string t = (*itr)["types"].GetString();
+		std::string v = (*itr)["values"].GetString();
 
 		std::vector<std::string> types(GameFunctions::SplitString(t, ","));
 

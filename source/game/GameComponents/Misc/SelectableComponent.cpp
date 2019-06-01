@@ -73,12 +73,12 @@ void SelectableComponent::under_mouse() {
 				//std::cout << selected->owner->getName() << " -> " << selected->getTarget()->getOwner()->getName() << std::endl;
 			}
 		}
-		std::cout << owner->getName() << " Targeted!" << std::endl;
+		//std::cout << owner->getName() << " Targeted!" << std::endl;
 	}
 	else
 	{
+		// On Entity Hovered
 		ImGui::BeginTooltip();
-
 		ImGui::PushItemWidth(-1);
 		ImGui::Text("  %s  ", getNameFromAttributes().c_str());
 		ImGui::EndTooltip();

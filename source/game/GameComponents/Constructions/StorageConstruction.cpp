@@ -31,7 +31,7 @@ void StorageConstruction::editor() {
 	ImGui::Unindent();
 }
 
-void StorageConstruction::storing(Entity& entity, std::string takenObject, float taken)
+void StorageConstruction::storing(std::string takenObject, float taken)
 {
 	if (takenObject != "")
 	{

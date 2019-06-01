@@ -10,6 +10,7 @@
 #include "game/GameComponents/Humans/HumanAttributes.h"
 #include "game/GameComponents/Resources/ResourceAttributes.h"
 #include "game/GameComponents/Constructions/ConstructionAttributes.h"
+#include "game/GameComponents/Constructions/StorageConstruction.h"
 
 class SelectableComponent : public adlPhysics_component { 
 
@@ -52,8 +53,21 @@ public:
 		}
 	};
 
+	template<typename T> 
+	SharedPointer<T> getComponent() { 
+		std::string tname = (typeid(T).name() + sizeof(char) * 6); // "class "...
+		//std::cout << "getComponent: |" << tname << "|" << std::endl;
+		return owner->get_component<T>(tname).lock();
+	};
 
-private:
+	template<typename T>
+	bool hasComponent() {
+		std::string tname = (typeid(T).name() + sizeof(char) * 6); 
+		return owner->has_component(tname);
+	};
+
+
+private:	
 
 	SharedPointer<PlayerAttributes> player;
 

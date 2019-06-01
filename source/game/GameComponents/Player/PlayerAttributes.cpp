@@ -67,10 +67,14 @@ bool PlayerAttributes::checkStoredResources(std::string entityName)
 {
 	GameManager* gameMan = &GameManager::get();
 	SharedPointer<Informer> informer = (gameMan->getTaggedEntity("Informer")->get_component<Informer>("Informer")).lock();
+	return checkStoredResources(informer->getGameObjectInfo(entityName).types, informer->getGameObjectInfo(entityName).values);
+}
 
-	for (int i = 0; i < informer->getGameObjectInfo(entityName).types.size(); i++)
+bool PlayerAttributes::checkStoredResources(std::vector<std::string> types, std::vector<float> values)
+{
+	for (int i = 0; i < types.size(); i++)
 	{
-		if (stored.find(informer->getGameObjectInfo(entityName).types[i]) < informer->getGameObjectInfo(entityName).values[i])
+		if (stored.find(types[i]) < values[i])
 		{
 			return false;
 		}

@@ -20,7 +20,7 @@
 #include "game/GameComponents/Player/Informer.h"	
 
 #include "game/GameComponents/Constructions/StorageConstruction.h"
-
+#include "game/GameComponents/Constructions/ManufacturerConstruction.h"
 
 #include "game/GameComponents/Misc/SelectableComponent.h"	
 #include "game/GameComponents/Misc/MovementComponent.h"	
@@ -82,6 +82,7 @@ bool Game::init()
 	Informer inf;
 
 	StorageConstruction strCon;
+	ManufacturerConstruction manCon;
 	
 	SelectableComponent selectC;
 	MovementComponent moveC;

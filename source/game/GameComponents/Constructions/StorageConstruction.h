@@ -17,7 +17,7 @@ public:
 	virtual void destroy() override;
 	virtual void editor() override;
 
-	void storing(Entity &entity, std::string takenObject, float taken);
+	void storing(std::string takenObject, float taken);
 	void production(std::string entityName);
 
 private:
