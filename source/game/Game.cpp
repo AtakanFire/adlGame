@@ -92,8 +92,13 @@ bool Game::init()
 
 	Entity hud = adl_scene_manager->add_entity_to_scene("HUD");
 
-
-	Entity tree = adl_scene_manager->add_entity_to_scene("Tree");
+	std::vector<Entity> trees;
+	for (int i = 0; i < 4; i++)
+	{
+		trees.push_back(adl_scene_manager->add_entity_to_scene("Tree"));
+		SharedPointer<SelectableComponent> tree = trees[i]->get_component<SelectableComponent>("SelectableComponent").lock();
+		tree->set_position(adlVec3(tree->get_position().x - i * 3, tree->get_position().y, tree->get_position().z - (i * 2) % 3));
+	}
 
 	Entity stoneMine = adl_scene_manager->add_entity_to_scene("StoneMine");
 	Entity metalMine = adl_scene_manager->add_entity_to_scene("MetalMine");
@@ -101,12 +106,17 @@ bool Game::init()
 	Entity sheep = adl_scene_manager->add_entity_to_scene("Sheep");
 	Entity cow = adl_scene_manager->add_entity_to_scene("Cow");
 
-	Entity cotton = adl_scene_manager->add_entity_to_scene("Cotton");
-	
-	Entity inn = adl_scene_manager->add_entity_to_scene("Inn");
-	Entity house = adl_scene_manager->add_entity_to_scene("House");
-	Entity blacksmith = adl_scene_manager->add_entity_to_scene("Blacksmith");
+	std::vector<Entity> cottons;
+	for (int i = 0; i < 2; i++)
+	{
+		cottons.push_back(adl_scene_manager->add_entity_to_scene("Cotton"));
+		SharedPointer<SelectableComponent> cotton = cottons[i]->get_component<SelectableComponent>("SelectableComponent").lock();
+		cotton->set_position(adlVec3(cotton->get_position().x - i * 2, cotton->get_position().y, cotton->get_position().z + i * 2));
+	}
 
+	Entity inn = adl_scene_manager->add_entity_to_scene("Inn");
+	//Entity house = adl_scene_manager->add_entity_to_scene("House");
+	//Entity blacksmith = adl_scene_manager->add_entity_to_scene("Blacksmith");
 
 	Entity human = adl_scene_manager->add_entity_to_scene("Human");
 

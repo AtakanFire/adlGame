@@ -18,7 +18,6 @@ public:
 	virtual void editor() override;
 
 	void storing(std::string takenObject, float taken);
-	void production(std::string entityName);
 
 private:
 

@@ -174,7 +174,7 @@ void HUDComponent::humanAttributes()
 	HumanAttributes::HumanCarry& carrying = human->getCarried();
 	
 
-	std::string title("" + pro.name + "(Human)" + (selected->getTarget() ? " -> " : " ") + (selected->getTarget() ? selected->getTarget()->getOwner()->getName() : " "));
+	std::string title("" + pro.name + "(Human)" + (selected->getTarget() ? " -> " : " ") + (selected->getTarget() ? selected->getTarget()->getNameFromAttributes() : " "));
 
 	if (ImGui::Begin(title.c_str(), NULL, ImGuiWindowFlags_NoResize /*| ImGuiWindowFlags_NoScrollWithMouse*/ | ImGuiWindowFlags_NoScrollbar |
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus /*| ImGuiWindowFlags_NoTitleBar*/))

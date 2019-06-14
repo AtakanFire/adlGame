@@ -47,8 +47,8 @@ void HumanAttributes::update(float dt) {
 
 	if (selectCom->getTarget())
 	{
-		SharedPointer<adlTransform_component> transCom(owner->get_component<adlTransform_component>("adlTransform_component"));
-		transCom->set_rotation(adlVec3(transCom->get_rotation().x, transCom->get_rotation().y + 1 * dt, transCom->get_rotation().z));
+		//SharedPointer<adlTransform_component> transCom(owner->get_component<adlTransform_component>("adlTransform_component"));
+		//transCom->set_rotation(adlVec3(transCom->get_rotation().x, transCom->get_rotation().y + 1 * dt, transCom->get_rotation().z));
 
 		Entity entity = selectCom->getTarget()->getOwner();
 

@@ -9,11 +9,6 @@
 			"scale": [1.0, 1.0, 1.0]
 		},
 		{
-			"type": "adlRender_component",
-			"model": "Sphere",
-			"material": "Sphere"
-		},
-		{
 			"type": "adlSun_component",
 			"ambient": [0.1, 0.1, 0.1],
 			"diffuse": [0.8, 0.8, 0.8],
