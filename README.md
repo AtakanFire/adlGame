@@ -1,23 +1,20 @@
 # ADL Game
-Code Name: ADL Game (ADL Game, Which game created with ADL Engine...)
+**Code Name:** ADL Game (ADL Game, Which game created with ADL Engine...)
+
+![adlGame Gameplay](./res/textures/adlGame.jpg)
 
 ## Game Engine: ADL Engine
-[ADL Engine](https://github.com/GeraldBostock/adl) is a open source 3D game engine. 
 
----
+[ADL Engine](https://github.com/GeraldBostock/adl) is a open source 3D game engine.
 
-# ADL Game Engine
+<details closed>
+<summary><strong>About adl Game Engine</strong></summary>
 
-## 3D cross-platform game engine
+### 3D cross-platform game engine
 
 ADL is a somewhat competent cross-platform 3D game engine.
 
-
-![adlGame Gameplay](./res/textures/adlGame.png)
-
-
-
-### Build Instructions
+#### Build Instructions
 
 **Windows**
 **Prerequisites**
@@ -39,3 +36,5 @@ and dlls under dependencies/bin folder.
 - [spdlog](https://github.com/gabime/spdlog)
 - [stb](https://github.com/nothings/stb)
 - [ImGui](https://github.com/ocornut/imgui)
+
+</details>
